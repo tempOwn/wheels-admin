@@ -24,6 +24,8 @@ const config = {
         "wheels-error": "var(--wheels-error)",
         "wheels-primary": "var(--wheels-primary)",
         "wheels-secondary": "var(--wheels-secondary)",
+        "wheels-purple": "var(--wheels-purple)",
+        "wheels-grey": "var(--wheels-grey)",
       },
       borderRadius: {
         xs: "2px",

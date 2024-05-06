@@ -42,7 +42,7 @@ const sidebarLinks = [
   {
     label: "Assets",
     icon: <AssetIcon />,
-    href: "/assets",
+    href: "/inventory",
   },
   {
     label: "Performance",
