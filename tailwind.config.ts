@@ -29,6 +29,7 @@ const config = {
         "wheels-grey-2": "var(--wheels-grey-2)",
         "wheels-grey-3": "var(--wheels-grey-3)",
         "wheels-grey-4": "var(--wheels-grey-4)",
+        "wheels-border": "var(--wheels-border)",
       },
       borderRadius: {
         xs: "2px",
