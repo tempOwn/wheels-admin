@@ -40,7 +40,7 @@ const sidebarLinks = [
     href: "/",
   },
   {
-    label: "Assets",
+    label: "Inventory",
     icon: <AssetIcon />,
     href: "/inventory",
   },
@@ -101,7 +101,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 href={href}
                 key={index}
                 onClick={handleSidebar}
-                className={`${pathname === href ? "text-wheels-primary font-medium" : "text-wheels-secondary hover:text-wheels-primary opacity-50 hover:opacity-100"} 3xl:text-lg lg:text-15 flex items-center space-x-3 text-sm transition-colors duration-200 ease-in-out lg:space-x-4 2xl:text-base`}
+                className={`${pathname === href ? "font-medium text-wheels-primary" : "text-wheels-secondary opacity-50 hover:text-wheels-primary hover:opacity-100"} 3xl:text-lg flex items-center space-x-3 text-sm transition-colors duration-200 ease-in-out lg:space-x-4 lg:text-15 2xl:text-base`}
               >
                 {icon}
                 <span>{label}</span>
@@ -116,7 +116,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             className="flex items-center space-x-3"
           >
             <LogoutIcon />
-            <span className="text-wheels-error 3xl:text-lg lg:text-15 text-sm duration-200 ease-in-out hover:font-medium hover:transition-colors 2xl:text-base">
+            <span className="3xl:text-lg text-sm text-wheels-error duration-200 ease-in-out hover:font-medium hover:transition-colors lg:text-15 2xl:text-base">
               Logout
             </span>
           </button>
@@ -135,7 +135,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <input
               ref={inputSearch}
               type="text"
-              className="text-wheels-primary text-15 border-none pl-7 outline-none"
+              className="border-none pl-7 text-15 text-wheels-primary outline-none"
               placeholder="Search..."
             />
           </div>
@@ -149,17 +149,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             </Link>
 
             <div className="lg:flex lg:items-center lg:space-x-3">
-              <p className="text-wheels-primary text-15 hidden font-medium lg:block">
+              <p className="hidden text-15 font-medium text-wheels-primary lg:block">
                 Daniel Benson
               </p>
-              <div className="bg-wheels-primary flex h-8 w-8 items-center justify-center rounded-full">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-wheels-primary">
                 <span className="text-[13px] font-semibold leading-[0px] text-white">
                   A
                 </span>
               </div>
             </div>
 
-            <button className="text-wheels-secondary flex h-6 w-6 items-center justify-center lg:hidden">
+            <button className="flex h-6 w-6 items-center justify-center text-wheels-secondary lg:hidden">
               <span
                 className={`${openSidebar && "hidden"}`}
                 onClick={() => setOpenSidebar(true)}
