@@ -14,6 +14,8 @@ import SheetIcon from "@/src/components/icons/SheetIcon";
 import { CheckboxRoot } from "@/src/components/core/checkbox/checkbox";
 import TableHead from "@/src/components/core/table-head";
 import DataTable from "@/src/components/core/data-table";
+import Sheet from "@/src/components/core/sheet";
+import AddInventory from "./components/AddInventory";
 
 type TData = {
   view: "list" | "grid";
@@ -227,7 +229,6 @@ const columns: ColumnDef<TInventory>[] = [
 ];
 
 export default function Inventory() {
-  const [rowSelection, setRowSelection] = useState<any>({});
   const [data, setData] = useQueryState<TData>(
     "data",
     parseAsJson<TData>().withDefault({
@@ -235,106 +236,133 @@ export default function Inventory() {
       tab: "all",
     }),
   );
+  const [data2, setData2] = useState<any>({
+    openSheet: false,
+    rowSelection: {},
+  });
 
   function handleDataChange(key: keyof TData, value: TData[keyof TData]) {
     setData({ ...data, [key]: value });
   }
 
+  function handleData2Change(
+    key: keyof typeof data2,
+    value: (typeof data2)[keyof typeof data2],
+  ) {
+    setData2({ ...data2, [key]: value });
+  }
+
   return (
-    <div>
-      <div className="flex items-center">
-        {[
-          { name: "All Assets", count: 690, value: "all" },
-          { name: "Reeddi System", count: 550, value: "reeddi-system" },
-          { name: "Others", count: 140, value: "others" },
-        ].map(({ name, count, value }, index) => (
-          <button
-            key={index}
-            onClick={() => handleDataChange("tab", value as TData["tab"])}
-            className={`$ flex items-center space-x-2 px-4 py-2.5 ${
-              value === data.tab
-                ? "rounded rounded-bl-none rounded-br-none bg-white text-wheels-primary"
-                : "text-wheels-grey"
-            }`}
-          >
-            <div
-              className={`rounded-md px-2 py-0.5 text-10 font-medium text-white ${value === data.tab ? "bg-wheels-purple" : "bg-wheels-grey"}`}
+    <>
+      <div>
+        <div className="flex items-center">
+          {[
+            { name: "All Assets", count: 690, value: "all" },
+            { name: "Reeddi System", count: 550, value: "reeddi-system" },
+            { name: "Others", count: 140, value: "others" },
+          ].map(({ name, count, value }, index) => (
+            <button
+              key={index}
+              onClick={() => handleDataChange("tab", value as TData["tab"])}
+              className={`$ flex items-center space-x-2 px-4 py-2.5 ${
+                value === data.tab
+                  ? "rounded rounded-bl-none rounded-br-none bg-white text-wheels-primary"
+                  : "text-wheels-grey"
+              }`}
             >
-              {count}
-            </div>
-            <p className="text-sm font-medium">{name}</p>
-          </button>
-        ))}
-      </div>
+              <div
+                className={`rounded-md px-2 py-0.5 text-10 font-medium text-white ${value === data.tab ? "bg-wheels-purple" : "bg-wheels-grey"}`}
+              >
+                {count}
+              </div>
+              <p className="text-sm font-medium">{name}</p>
+            </button>
+          ))}
+        </div>
 
-      <div className="rounded bg-white p-5 pt-8">
-        <div className="flex items-center justify-between space-x-3">
-          <div className="flex w-2/3 space-x-5">
-            <div className="flex items-center">
-              {[
-                {
-                  icon: <ListIcon />,
-                  value: "list",
-                },
-                {
-                  icon: <GridIcon />,
-                  value: "grid",
-                },
-              ].map(({ icon, value }, index) => (
-                <button
-                  key={index}
-                  onClick={() =>
-                    handleDataChange("view", value as TData["view"])
-                  }
-                  className={`p-2 ${index === 0 ? "rounded-bl-sm rounded-tl-sm" : "rounded-br-sm rounded-tr-sm"} ${data.view === value ? "bg-wheels-primary text-white" : "bg-wheels-grey-2 text-wheels-grey-3"}`}
-                >
-                  {icon}
-                </button>
-              ))}
+        <div className="rounded bg-white p-5 pt-8">
+          <div className="flex items-center justify-between space-x-3">
+            <div className="flex w-2/3 space-x-5">
+              <div className="flex items-center">
+                {[
+                  {
+                    icon: <ListIcon />,
+                    value: "list",
+                  },
+                  {
+                    icon: <GridIcon />,
+                    value: "grid",
+                  },
+                ].map(({ icon, value }, index) => (
+                  <button
+                    key={index}
+                    onClick={() =>
+                      handleDataChange("view", value as TData["view"])
+                    }
+                    className={`p-2 ${index === 0 ? "rounded-bl-sm rounded-tl-sm" : "rounded-br-sm rounded-tr-sm"} ${data.view === value ? "bg-wheels-primary text-white" : "bg-wheels-grey-2 text-wheels-grey-3"}`}
+                  >
+                    {icon}
+                  </button>
+                ))}
+              </div>
+
+              <div className="relative h-12 w-full">
+                <MagnifyingGlassIcon className="absolute left-4 top-[16px]" />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="h-12 w-full rounded-sm border border-wheels-grey-4 pl-10 pr-3 text-sm text-wheels-primary outline-none focus:border-wheels-primary"
+                />
+              </div>
             </div>
 
-            <div className="relative h-12 w-full">
-              <MagnifyingGlassIcon className="absolute left-4 top-[16px]" />
-              <input
-                type="text"
-                placeholder="Search"
-                className="border-wheels-grey-4 h-12 w-full rounded-sm border pl-10 pr-3 text-sm text-wheels-primary outline-none focus:border-wheels-primary"
-              />
+            <div className="flex items-center space-x-3 lg:space-x-4">
+              <button className="flex items-center space-x-2">
+                <FilterIcon />
+                <span className="text-sm font-medium text-wheels-primary">
+                  Filters
+                </span>
+              </button>
+
+              <button className="flex items-center space-x-2 rounded-lg border border-wheels-grey-4 px-3 py-2.5">
+                <SheetIcon />
+                <span className="text-sm font-medium text-wheels-primary">
+                  Export
+                </span>
+                <ChevronDownIcon />
+              </button>
+
+              <button
+                onClick={() => handleData2Change("openSheet", !data2.openSheet)}
+                className="flex items-center space-x-2 rounded-lg bg-wheels-primary px-4 py-2.5 text-white"
+              >
+                <PlusIcon />
+                <span className="text-sm font-medium">Add New</span>
+              </button>
             </div>
           </div>
 
-          <div className="flex items-center space-x-3 lg:space-x-4">
-            <button className="flex items-center space-x-2">
-              <FilterIcon />
-              <span className="text-sm font-medium text-wheels-primary">
-                Filters
-              </span>
-            </button>
-
-            <button className="border-wheels-grey-4 flex items-center space-x-2 rounded-lg border px-3 py-2.5">
-              <SheetIcon />
-              <span className="text-sm font-medium text-wheels-primary">
-                Export
-              </span>
-              <ChevronDownIcon />
-            </button>
-
-            <button className="flex items-center space-x-2 rounded-lg bg-wheels-primary px-4 py-2.5 text-white">
-              <PlusIcon />
-              <span className="text-sm font-medium">Add New</span>
-            </button>
+          <div className="mt-5">
+            <DataTable
+              data={inventoryList}
+              columns={columns}
+              rowSelection={data2.rowSelection}
+              setRowSelection={(value: TInventory) =>
+                handleData2Change("rowSelection", value)
+              }
+            />
           </div>
         </div>
-
-        <div className="mt-5">
-          <DataTable
-            data={inventoryList}
-            columns={columns}
-            rowSelection={rowSelection}
-            setRowSelection={setRowSelection}
-          />
-        </div>
       </div>
-    </div>
+
+      <Sheet
+        open={data2.openSheet}
+        onOpenChange={() => handleData2Change("openSheet", !data2.openSheet)}
+        className="w-full max-w-full px-0 pb-0 md:max-w-[520px]"
+        showCloseButton
+      >
+        <AddInventory close={() => handleData2Change("openSheet", false)} />
+      </Sheet>
+    </>
   );
 }
