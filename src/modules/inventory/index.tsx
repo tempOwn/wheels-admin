@@ -247,7 +247,7 @@ export default function Inventory() {
           <div className="mt-10">
             {data.view === "list" ? (
               <DataTable
-                data={assets}
+                data={refineAssets()}
                 columns={columns}
                 rowSelection={data2.rowSelection}
                 setRowSelection={(value: TInventory) =>
