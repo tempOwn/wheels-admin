@@ -11,15 +11,11 @@ const config = {
   ],
   prefix: "",
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
+    extend: {
       screens: {
         xs: "420px",
         "3xl": "1600px",
       },
-    },
-    extend: {
       colors: {
         "wheels-error": "var(--wheels-error)",
         "wheels-primary": "var(--wheels-primary)",
