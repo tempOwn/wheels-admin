@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { useQueryState, parseAsJson } from "nuqs";
 import { format } from "date-fns";
+import { getAssetImage, getAssetType } from "@/src/lib/utils";
 import Image from "next/image";
 import { ColumnDef } from "@tanstack/react-table";
 import ChevronDownIcon from "@/src/components/icons/ChevronDownIcon";
-import FilterIcon from "@/src/components/icons/FilterIcon";
 import GridIcon from "@/src/components/icons/GridIcon";
 import ListIcon from "@/src/components/icons/ListIcon";
 import MagnifyingGlassIcon from "@/src/components/icons/MagnifyingGlassIcon";
@@ -16,128 +16,10 @@ import TableHead from "@/src/components/core/table-head";
 import DataTable from "@/src/components/core/data-table";
 import Sheet from "@/src/components/core/sheet";
 import AddInventory from "./components/AddInventory";
-
-type TData = {
-  view: "list" | "grid";
-  tab: "all" | "reeddi-system" | "others";
-};
-
-type TInventory = {
-  id: string;
-  type: "capsule" | "energy-box" | "big-energy" | "bike" | "van";
-  status: "active" | "inactive";
-  dateAdded: Date;
-};
-
-function getImage(type: TInventory["type"]) {
-  switch (type) {
-    case "capsule":
-      return "/assets/images/reeddi-capsule.png";
-    case "energy-box":
-      return "/assets/images/reeddi-energy-box.png";
-    case "big-energy":
-      return "/assets/images/reeddi-big-energy.png";
-    case "bike":
-      return "/assets/images/bike.png";
-    case "van":
-      return "/assets/images/van.png";
-  }
-}
-
-function getType(type: TInventory["type"]) {
-  switch (type) {
-    case "capsule":
-      return "Reeddi Capsule";
-    case "energy-box":
-      return "Reeddi Energy Box";
-    case "big-energy":
-      return "Reeddi Big Energy";
-    case "bike":
-      return "Bike";
-    case "van":
-      return "Van";
-  }
-}
-
-function getStatusClasses(status: TInventory["status"]) {
-  switch (status) {
-    case "active":
-      return "bg-[rgba(16,185,129,0.1)] text-[#10B981]";
-    case "inactive":
-      return "bg-[rgba(239,68,68,0.1)] text-wheels-error";
-    default:
-      return "";
-  }
-}
-
-const inventoryList: TInventory[] = [
-  {
-    id: "RC-81247931",
-    type: "capsule",
-    status: "active",
-    dateAdded: new Date("2021-09-01"),
-  },
-  {
-    id: "RC-81247932",
-    type: "energy-box",
-    status: "inactive",
-    dateAdded: new Date("2022-04-01"),
-  },
-  {
-    id: "RC-81247933",
-    type: "big-energy",
-    status: "active",
-    dateAdded: new Date("2021-09-01"),
-  },
-  {
-    id: "RC-81247934",
-    type: "bike",
-    status: "inactive",
-    dateAdded: new Date("2021-09-01 04:00"),
-  },
-  {
-    id: "RC-81247935",
-    type: "van",
-    status: "active",
-    dateAdded: new Date("2021-09-01 12:00"),
-  },
-  {
-    id: "RC-21247935",
-    type: "capsule",
-    status: "active",
-    dateAdded: new Date("2021-09-01"),
-  },
-  {
-    id: "RC-81247936",
-    type: "energy-box",
-    status: "inactive",
-    dateAdded: new Date("2022-04-01"),
-  },
-  {
-    id: "RC-91247931",
-    type: "capsule",
-    status: "active",
-    dateAdded: new Date("2021-09-01"),
-  },
-  {
-    id: "RC-83247932",
-    type: "energy-box",
-    status: "inactive",
-    dateAdded: new Date("2022-04-01"),
-  },
-  {
-    id: "RC-41247931",
-    type: "capsule",
-    status: "active",
-    dateAdded: new Date("2021-09-01"),
-  },
-  {
-    id: "RC-71247932",
-    type: "energy-box",
-    status: "inactive",
-    dateAdded: new Date("2022-04-01"),
-  },
-];
+import AssetCard from "./components/AssetCard";
+import StatusTag from "./components/StatusTag";
+import { assets } from "@/src/data/assets";
+import type { TInventory, TData } from "./types";
 
 const columns: ColumnDef<TInventory>[] = [
   {
@@ -180,7 +62,12 @@ const columns: ColumnDef<TInventory>[] = [
         <div className="flex items-center space-x-2">
           {type && (
             <div>
-              <Image src={getImage(type)} alt={type} width={30} height={30} />
+              <Image
+                src={getAssetImage(type)}
+                alt={type}
+                width={30}
+                height={30}
+              />
             </div>
           )}
           <span className="text-sm font-medium text-[#00080C]">{id}</span>
@@ -194,7 +81,9 @@ const columns: ColumnDef<TInventory>[] = [
     cell: ({ row }) => {
       const { type } = row.original;
 
-      return <span className="text-sm text-[#434956]">{getType(type)}</span>;
+      return (
+        <span className="text-sm text-[#434956]">{getAssetType(type)}</span>
+      );
     },
   },
   {
@@ -203,14 +92,7 @@ const columns: ColumnDef<TInventory>[] = [
     cell: ({ row }) => {
       const { status } = row.original;
 
-      return (
-        <div
-          className={`inline-flex items-center space-x-2 rounded-lg px-2.5 py-1 ${getStatusClasses(status)}`}
-        >
-          <div className="h-2 w-2 rounded-full bg-current"></div>
-          <span className="text-xs capitalize">{status}</span>
-        </div>
-      );
+      return <StatusTag status={status} />;
     },
   },
   {
@@ -252,19 +134,39 @@ export default function Inventory() {
     setData2({ ...data2, [key]: value });
   }
 
+  function refineAssets() {
+    if (
+      data.tab === "capsule" ||
+      data.tab === "big-energy" ||
+      data.tab === "energy-box"
+    ) {
+      return assets.filter((asset) => asset.type === data.tab);
+    }
+
+    if (data.tab === "others") {
+      return assets.filter(
+        (asset) => asset.type === "bike" || asset.type === "van",
+      );
+    }
+
+    return assets;
+  }
+
   return (
     <>
       <div>
         <div className="flex items-center">
           {[
             { name: "All Assets", count: 690, value: "all" },
-            { name: "Reeddi System", count: 550, value: "reeddi-system" },
+            { name: "Reeddi Capsule", count: 550, value: "capsule" },
+            { name: "EnergyBOX", count: 550, value: "energy-box" },
+            { name: "BigEnergy", count: 550, value: "big-energy" },
             { name: "Others", count: 140, value: "others" },
           ].map(({ name, count, value }, index) => (
             <button
               key={index}
               onClick={() => handleDataChange("tab", value as TData["tab"])}
-              className={`$ flex items-center space-x-2 px-4 py-2.5 ${
+              className={`$ flex items-center space-x-2 px-3 py-2.5 ${
                 value === data.tab
                   ? "rounded rounded-bl-none rounded-br-none bg-white text-wheels-primary"
                   : "text-wheels-grey"
@@ -281,9 +183,9 @@ export default function Inventory() {
         </div>
 
         <div className="rounded bg-white p-5 pt-8">
-          <div className="flex items-center justify-between space-x-3">
-            <div className="flex w-2/3 space-x-5">
-              <div className="flex items-center">
+          <div className="flex flex-col space-y-5 md:flex-row md:items-center md:justify-between md:space-x-3 md:space-y-0">
+            <div className="flex w-full sm:space-x-5 md:w-[44%] md:items-center xl:w-[65%]">
+              <div className="hidden items-center sm:flex">
                 {[
                   {
                     icon: <ListIcon />,
@@ -306,28 +208,28 @@ export default function Inventory() {
                 ))}
               </div>
 
-              <div className="relative h-12 w-full">
-                <MagnifyingGlassIcon className="absolute left-4 top-[16px]" />
+              <div className="relative w-full">
+                <MagnifyingGlassIcon className="absolute left-4 top-3" />
                 <input
                   type="text"
                   placeholder="Search"
-                  className="h-12 w-full rounded-sm border border-wheels-grey-4 pl-10 pr-3 text-sm text-wheels-primary outline-none focus:border-wheels-primary"
+                  className="h-[42px] w-full rounded-sm border border-wheels-grey-4 pl-10 pr-3 text-sm text-wheels-primary outline-none focus:border-wheels-primary"
                 />
               </div>
             </div>
 
-            <div className="flex items-center space-x-3 lg:space-x-4">
-              <button className="flex items-center space-x-2">
-                <FilterIcon />
-                <span className="text-sm font-medium text-wheels-primary">
-                  Filters
-                </span>
-              </button>
-
-              <button className="flex items-center space-x-2 rounded-lg border border-wheels-grey-4 px-3 py-2.5">
+            <div className="flex items-center sm:space-x-3 md:w-[55%] md:justify-end xl:w-[35%]">
+              <button className="hidden items-center space-x-2.5 rounded-lg border border-wheels-grey-4 px-4 py-2.5 sm:flex">
                 <SheetIcon />
                 <span className="text-sm font-medium text-wheels-primary">
                   Export
+                </span>
+              </button>
+
+              <button className="mr-3 flex items-center space-x-2.5 rounded-lg border border-wheels-grey-4 px-4 py-2.5 sm:mr-0">
+                <SheetIcon />
+                <span className="text-sm font-medium text-wheels-primary">
+                  More
                 </span>
                 <ChevronDownIcon />
               </button>
@@ -342,15 +244,23 @@ export default function Inventory() {
             </div>
           </div>
 
-          <div className="mt-5">
-            <DataTable
-              data={inventoryList}
-              columns={columns}
-              rowSelection={data2.rowSelection}
-              setRowSelection={(value: TInventory) =>
-                handleData2Change("rowSelection", value)
-              }
-            />
+          <div className="mt-10">
+            {data.view === "list" ? (
+              <DataTable
+                data={assets}
+                columns={columns}
+                rowSelection={data2.rowSelection}
+                setRowSelection={(value: TInventory) =>
+                  handleData2Change("rowSelection", value)
+                }
+              />
+            ) : (
+              <div className="xs:grid-cols-2 grid grid-cols-1 gap-5 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                {refineAssets().map((asset, index) => (
+                  <AssetCard key={index} {...asset} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

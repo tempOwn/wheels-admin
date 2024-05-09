@@ -1,8 +1,4 @@
-import type { TInventory } from "../types";
-
-type TProps = {
-  status: TInventory["status"];
-};
+import type { TInventory, StatusTagProps } from "../types";
 
 function getStatusClasses(status: TInventory["status"]) {
   switch (status) {
@@ -19,7 +15,7 @@ function getStatusClasses(status: TInventory["status"]) {
   }
 }
 
-export default function StatusTag({ status }: TProps) {
+export default function StatusTag({ status }: StatusTagProps) {
   return (
     <div
       className={`inline-flex items-center space-x-2 rounded-lg px-2.5 py-1 ${getStatusClasses(status)}`}
