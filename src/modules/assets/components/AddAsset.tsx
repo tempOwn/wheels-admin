@@ -16,7 +16,7 @@ import CustomSelect from "@/src/components/core/custom-select";
 import TextInput from "@/src/components/core/text-input";
 import ScrollArea from "@/src/components/core/scroll-area";
 
-type AddInventoryProps = {
+type AddAssetProps = {
   close: () => void;
 };
 
@@ -25,7 +25,7 @@ const formSchema = z
     category: z.string().min(1, { message: "Select a category" }),
     serialNumber: z.string(),
     type: z.string(),
-    otherInventoryType: z.string().optional(),
+    otherAssetType: z.string().optional(),
     brandName: z.string().optional(),
     model: z.string().optional(),
     color: z.string().optional(),
@@ -39,7 +39,7 @@ const formSchema = z
         category,
         serialNumber,
         type,
-        otherInventoryType,
+        otherAssetType,
         brandName,
         model,
         color,
@@ -82,8 +82,8 @@ const formSchema = z
       if (category === "others") {
         [
           {
-            field: otherInventoryType,
-            path: ["otherInventoryType"],
+            field: otherAssetType,
+            path: ["otherAssetType"],
             message: "Select a type",
           },
           {
@@ -136,7 +136,7 @@ const categoryOptions = [
   },
 ];
 
-const otherInventoryFields = [
+const otherAssetFields = [
   {
     key: "brandName",
     label: "Brand Name",
@@ -157,14 +157,14 @@ const otherInventoryFields = [
   },
 ];
 
-export default function AddInventory({ close }: AddInventoryProps) {
+export default function AddAsset({ close }: AddAssetProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       category: "",
       serialNumber: "",
       type: "",
-      otherInventoryType: "",
+      otherAssetType: "",
       brandName: "",
       model: "",
       color: "",
@@ -281,27 +281,25 @@ export default function AddInventory({ close }: AddInventoryProps) {
 
             {form.watch("category") === "others" && (
               <>
-                {otherInventoryFields.map(
-                  ({ key, label, placeholder }, index) => (
-                    <FormField
-                      key={index}
-                      control={form.control}
-                      name={key as any}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <TextInput
-                              placeholder={placeholder}
-                              label={label}
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  ),
-                )}
+                {otherAssetFields.map(({ key, label, placeholder }, index) => (
+                  <FormField
+                    key={index}
+                    control={form.control}
+                    name={key as any}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <TextInput
+                            placeholder={placeholder}
+                            label={label}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ))}
 
                 <div>
                   <p className="text-sm text-[rgba(85,112,126,1)]">
@@ -313,7 +311,7 @@ export default function AddInventory({ close }: AddInventoryProps) {
                       <FormField
                         key={index}
                         control={form.control}
-                        name="otherInventoryType"
+                        name="otherAssetType"
                         render={({ field }) => (
                           <FormItem className="w-full">
                             <FormControl>
@@ -334,9 +332,9 @@ export default function AddInventory({ close }: AddInventoryProps) {
                     ))}
                   </div>
 
-                  {form.formState.errors.otherInventoryType && (
+                  {form.formState.errors.otherAssetType && (
                     <p className="text-xs text-wheels-error lg:text-13">
-                      {form.formState.errors.otherInventoryType.message}
+                      {form.formState.errors.otherAssetType.message}
                     </p>
                   )}
                 </div>
@@ -357,7 +355,7 @@ export default function AddInventory({ close }: AddInventoryProps) {
             type="submit"
             className="w-1/2 rounded-md bg-wheels-primary px-8 py-4 text-sm font-medium text-white lg:text-15"
           >
-            Add to Inventory
+            Add to Assets
           </button>
         </div>
       </form>

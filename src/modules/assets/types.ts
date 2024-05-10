@@ -1,4 +1,4 @@
-export type TInventoryStatus =
+export type TAssetStatus =
   | "active"
   | "inactive"
   | "rented-out"
@@ -6,27 +6,27 @@ export type TInventoryStatus =
   | "available"
   | "faulty";
 
-export type TInventory = {
+export type TAsset = {
   id: string;
   type: "capsule" | "energy-box" | "big-energy" | "bike" | "van";
-  status: TInventoryStatus;
+  status: TAssetStatus;
   dateAdded: Date;
 };
 
 export type TData = {
   view: "list" | "grid";
-  tab: TInventory["type"] | "all" | "others";
+  tab: TAsset["type"] | "all" | "others";
 };
 
 export type AssetCardProps = {
   id: string;
-  type: TInventory["type"];
-  status: TInventory["status"];
+  type: TAsset["type"];
+  status: TAssetStatus;
   dateAdded: Date;
 };
 
 export type StatusTagProps = {
-  status: TInventory["status"];
+  status: TAssetStatus;
   className?: string;
-  onClick?: (status: TInventoryStatus) => void;
+  onClick?: (status: TAssetStatus) => void;
 };

@@ -25,13 +25,13 @@ import { CheckboxRoot } from "@/src/components/core/checkbox/checkbox";
 import TableHead from "@/src/components/core/table-head";
 import DataTable from "@/src/components/core/data-table";
 import Sheet from "@/src/components/core/sheet";
-import AddInventory from "./components/AddInventory";
 import AssetCard from "./components/AssetCard";
 import StatusTag, { statuses } from "./components/StatusTag";
 import { assets } from "@/src/data/assets";
-import type { TInventory, TData } from "./types";
+import type { TAsset, TAssetStatus, TData } from "./types";
+import AddAsset from "./components/AddAsset";
 
-const columns: ColumnDef<TInventory>[] = [
+const columns: ColumnDef<TAsset>[] = [
   {
     id: "select",
     header: ({ table }) => {
@@ -120,7 +120,7 @@ const columns: ColumnDef<TInventory>[] = [
   },
 ];
 
-export default function Inventory() {
+export default function Assets() {
   const [data, setData] = useQueryState<TData>(
     "data",
     parseAsJson<TData>().withDefault({
@@ -163,7 +163,7 @@ export default function Inventory() {
     return assets;
   }
 
-  function updateAssetStatus(status: TInventory["status"]) {
+  function updateAssetStatus(status: TAssetStatus) {
     handleApiSuccessResponse({
       message: `Asset status updated to ${status}`,
     });
@@ -323,7 +323,7 @@ export default function Inventory() {
                 data={refineAssets()}
                 columns={columns}
                 rowSelection={data2.rowSelection}
-                setRowSelection={(value: TInventory) =>
+                setRowSelection={(value: TAsset) =>
                   handleData2Change("rowSelection", value)
                 }
               />
@@ -344,7 +344,7 @@ export default function Inventory() {
         className="w-full max-w-full px-0 pb-0 md:max-w-[520px]"
         showCloseButton
       >
-        <AddInventory close={() => handleData2Change("openSheet", false)} />
+        <AddAsset close={() => handleData2Change("openSheet", false)} />
       </Sheet>
     </>
   );

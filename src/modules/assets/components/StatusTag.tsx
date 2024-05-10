@@ -1,7 +1,7 @@
 import { cn } from "@/src/lib/utils";
-import type { TInventoryStatus, StatusTagProps } from "../types";
+import type { TAssetStatus, StatusTagProps } from "../types";
 
-export const statuses: TInventoryStatus[] = [
+export const statuses: TAssetStatus[] = [
   "active",
   "inactive",
   "rented-out",
@@ -10,7 +10,7 @@ export const statuses: TInventoryStatus[] = [
   "faulty",
 ];
 
-function getStatusClasses(status: TInventoryStatus) {
+function getStatusClasses(status: TAssetStatus) {
   switch (status) {
     case "active":
     case "available":

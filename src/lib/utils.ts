@@ -1,12 +1,12 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { TInventory } from "@/src/modules/inventory/types";
+import type { TAsset } from "@/src/modules/assets/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getAssetImage(type: TInventory["type"]) {
+export function getAssetImage(type: TAsset["type"]) {
   switch (type) {
     case "capsule":
       return "/assets/images/reeddi-capsule.png";
@@ -21,7 +21,7 @@ export function getAssetImage(type: TInventory["type"]) {
   }
 }
 
-export function getAssetType(type: TInventory["type"]) {
+export function getAssetType(type: TAsset["type"]) {
   switch (type) {
     case "capsule":
       return "Reeddi Capsule";
