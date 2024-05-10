@@ -348,6 +348,7 @@ export default function AddInventory({ close }: AddInventoryProps) {
         <div className="flex items-center justify-end space-x-5 px-5 py-2 lg:py-4">
           <button
             onClick={close}
+            type="button"
             className="w-1/2 rounded-md bg-[rgba(225,225,225,1)] px-8 py-4 text-sm font-medium text-[rgba(143,143,143,1)]"
           >
             Cancel
