@@ -1,9 +1,21 @@
-import type { TInventory, StatusTagProps } from "../types";
+import { cn } from "@/src/lib/utils";
+import type { TInventoryStatus, StatusTagProps } from "../types";
 
-function getStatusClasses(status: TInventory["status"]) {
+export const statuses: TInventoryStatus[] = [
+  "active",
+  "inactive",
+  "rented-out",
+  "returned",
+  "available",
+  "faulty",
+];
+
+function getStatusClasses(status: TInventoryStatus) {
   switch (status) {
     case "active":
+    case "available":
       return "bg-[rgba(16,185,129,0.1)] text-[#10B981]";
+    case "faulty":
     case "inactive":
       return "bg-[rgba(239,68,68,0.1)] text-wheels-error";
     case "rented-out":
@@ -15,10 +27,21 @@ function getStatusClasses(status: TInventory["status"]) {
   }
 }
 
-export default function StatusTag({ status }: StatusTagProps) {
+export default function StatusTag({
+  status,
+  className,
+  onClick,
+}: StatusTagProps) {
   return (
     <div
-      className={`inline-flex items-center space-x-2 rounded-lg px-2.5 py-1 ${getStatusClasses(status)}`}
+      onClick={() => {
+        if (typeof onClick === "function") onClick(status);
+      }}
+      role="button"
+      className={cn(
+        `inline-flex items-center space-x-2 rounded-lg px-2.5 py-1 ${getStatusClasses(status)}`,
+        className,
+      )}
     >
       <div className="h-2 w-2 rounded-full bg-current"></div>
       <span className="text-xs capitalize">{status}</span>

@@ -1,7 +1,15 @@
+export type TInventoryStatus =
+  | "active"
+  | "inactive"
+  | "rented-out"
+  | "returned"
+  | "available"
+  | "faulty";
+
 export type TInventory = {
   id: string;
   type: "capsule" | "energy-box" | "big-energy" | "bike" | "van";
-  status: "active" | "inactive" | "rented-out" | "returned";
+  status: TInventoryStatus;
   dateAdded: Date;
 };
 
@@ -19,4 +27,6 @@ export type AssetCardProps = {
 
 export type StatusTagProps = {
   status: TInventory["status"];
+  className?: string;
+  onClick?: (status: TInventoryStatus) => void;
 };

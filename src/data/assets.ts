@@ -28,7 +28,7 @@ export const assets: TInventory[] = [
   {
     id: "RC-81247936",
     type: "van",
-    status: "inactive",
+    status: "faulty",
     dateAdded: new Date("2021-09-05"),
   },
   {
@@ -52,7 +52,7 @@ export const assets: TInventory[] = [
   {
     id: "RC-81247935",
     type: "bike",
-    status: "active",
+    status: "available",
     dateAdded: new Date("2021-06-05"),
   },
   {
