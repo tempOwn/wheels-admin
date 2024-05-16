@@ -39,13 +39,16 @@ export default function RentalGraph (){
                     <p className="text-3xl font-bold">157 Systems</p>
                     <div className="flex items-center text-[#C2C2C2] space-x-2">
                       <button className="flex items-center space-x-2 p-1 border">
-                        <span><SortIcon/></span>All Systems
+                        <span><SortIcon/></span> 
+                        <span>All Systems</span>
                       </button>  
                       <button className="flex items-center space-x-2 p-1 border">
-                        <span><PdfIcon/></span>Export as PDF
+                        <span><PdfIcon/></span> 
+                        <span>Export as PDF</span>
                       </button>  
                       <button className="flex items-center space-x-2 p-1 border">
-                        <span><ToggleIcon/></span>This Week
+                        <span><ToggleIcon/></span>
+                        <span>This Week</span>
                       </button>  
                     </div>
                 </div>

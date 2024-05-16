@@ -15,6 +15,14 @@ type TActivityLogs = {
   time: string;
   opened: boolean;
 }
+ 
+type TTopSales = {
+  id: number;
+  name: string;
+  sales: number;
+  image: StaticImageData;
+}
+
 const activityLogs :TActivityLogs[] = [
     {
       id: 1,
@@ -83,26 +91,23 @@ const activityLogs :TActivityLogs[] = [
 
       
   ]
-  const topSales = [
+  const topSales: TTopSales[] = [
     {
       id: 1,
       name: "Reeddi Capsules",
       sales: 345,
-      change: 66,
       image: Capsules
     },
     {
       id: 2,
       name: "EnergyBOX",
       sales: 134,
-      change: 28,
       image: EnergyBox
     },
     {
       id: 3,
       name: "BigEnergy",
       sales: 64,
-      change: 6,
       image: BigEnergy
     }
   ]
@@ -113,6 +118,11 @@ export default function ActivityLogCard() {
       setIsVisible(!isVisible)
     }
     let firstFiveActivities = activityLogs.slice(0,5)
+    
+    let totalSales = 0
+    topSales.forEach((topSale) =>{
+      totalSales+= topSale.sales
+    })
 
     return(
         <>
@@ -151,7 +161,7 @@ export default function ActivityLogCard() {
                 </div>
 
             </div>
-            <div className={`${isVisible ? "" : "hidden"} bg-white w-2/5 absolute border rounded-lg top-20 right-40 flex items-start flex-col space-y-2`}>
+            {/* <div className={`${isVisible ? "" : "hidden"} bg-white w-2/5 absolute border rounded-lg top-20 right-40 flex items-start flex-col space-y-2`}>
               <div className="flex w-full items-center justify-between pl-6 py-5 pr-5">
                 <p className="text-wheels-primary font-semibold text-lg">Notifications</p>
                 <div className="flex items-center space-x-2">
@@ -187,13 +197,13 @@ export default function ActivityLogCard() {
                   )
                 }
               </div>
-            </div>
+            </div> */}
             
             <div className="bg-white p-4">
                 <p className="text-lg font-semibold mb-6">Top Selling Items</p>
                 <div>
                     {
-                    topSales.map(({name, id, image, sales, change})=>
+                    topSales.map(({name, id, image, sales})=>
                         <div key={id} className="flex items-center border-b py-2 space-x-2">
                         <span className="font-bold">{id}</span>
                         <div className="rounded-full p-2 bg-[#ECF5FA]">
@@ -202,13 +212,13 @@ export default function ActivityLogCard() {
                         <div className="flex flex-col items-start space-y-2">
                             <p className="text-sm font-semibold ">{name}</p>
                             <div className="flex items-center space-x-1">
-                            <div className="rounded-lg bg-[#ECF5FA] w-full">
-                                <div className={`w-[20px]py-2 bg-wheels-primary rounded-lg`}>
-                                
+                            <div className="rounded-lg bg-[#ECF5FA] pr-2">
+                                <div className={` py-1 px-8 bg-wheels-primary rounded-lg`}>
+
                                 </div>
                             </div>
                             <span className="text-sm text-[#C2C2C2]">{sales}</span>
-                            <span className="text-sm text-[#C2C2C2]">{`(${change}%)`}</span>
+                            <span className="text-sm text-[#C2C2C2]">{"(" + Math.round((sales/totalSales) * 100)+ "%)"}</span>
                             </div>
                         </div>
                         </div>

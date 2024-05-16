@@ -5,7 +5,6 @@ import InfoIcon from "@/src/components/icons/InfoIcon";
 import RentalGraph from "./components/RentalGraph";
 import AmbassadorCard from "./components/AmbassadorCard";
 import ActivityLogCard from "./components/ActivityLogCard";
-import SlantArrowIcon from "@/src/components/icons/SlantArrowIcon";
 import CalendarIcon from "@/src/components/icons/CalendarIcon";
 
 type Tanalytics = {
@@ -23,7 +22,7 @@ const analytics :Tanalytics[] = [
     change: 24
   },
   {
-    icon: <SlantArrowIcon/>,
+    icon: <CapsulesIcon/>,
     category: "Rentals",
     value: 12,
     change: 17
