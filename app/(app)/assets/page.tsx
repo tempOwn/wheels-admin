@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Inventory from "@/src/modules/inventory";
+import Assets from "@/src/modules/assets";
 
 export const metadata: Metadata = {
-  title: "Inventory",
+  title: "Assets",
 };
 
 export default function Page() {
-  return <Inventory />;
+  return <Assets />;
 }
