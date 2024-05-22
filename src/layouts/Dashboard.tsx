@@ -25,11 +25,6 @@ const sidebarLinks = [
     href: "/dashboard",
   },
   {
-    label: "Team",
-    icon: <UsersIcon />,
-    href: "/",
-  },
-  {
     label: "Ambassadors",
     icon: <UserIcon />,
     href: "/",
@@ -43,6 +38,11 @@ const sidebarLinks = [
     label: "Assets",
     icon: <AssetIcon />,
     href: "/assets",
+  },
+  {
+    label: "Team",
+    icon: <UsersIcon />,
+    href: "/",
   },
   {
     label: "Performance",
@@ -88,7 +88,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className="flex">
       <aside
         ref={ref}
-        className={`${openSidebar ? "translate-x-0" : "-translate-x-full"} 3xl:w-1/3 fixed z-10 flex h-full w-60 flex-col justify-between space-y-10 border-r border-[rgba(0,0,0,0.10)] bg-white px-5 py-10 transition-transform duration-300 ease-in-out lg:translate-x-0 2xl:w-80`}
+        className={`${openSidebar ? "translate-x-0" : "-translate-x-full"} fixed z-10 flex h-full w-60 flex-col justify-between space-y-10 border-r border-[rgba(0,0,0,0.10)] bg-white px-5 py-10 transition-transform duration-300 ease-in-out lg:translate-x-0 2xl:w-80 3xl:w-1/3`}
       >
         <div>
           <div className="flex items-center justify-center">
@@ -101,7 +101,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 href={href}
                 key={index}
                 onClick={handleSidebar}
-                className={`${pathname === href ? "text-wheels-primary font-medium" : "text-wheels-secondary hover:text-wheels-primary opacity-50 hover:opacity-100"} 3xl:text-lg lg:text-15 flex items-center space-x-3 text-sm transition-colors duration-200 ease-in-out lg:space-x-4 2xl:text-base`}
+                className={`${pathname === href ? "font-medium text-wheels-primary" : "text-wheels-secondary opacity-50 hover:text-wheels-primary hover:opacity-100"} flex items-center space-x-3 text-sm transition-colors duration-200 ease-in-out lg:space-x-4 lg:text-15 2xl:text-base 3xl:text-lg`}
               >
                 {icon}
                 <span>{label}</span>
@@ -116,15 +116,15 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             className="flex items-center space-x-3"
           >
             <LogoutIcon />
-            <span className="text-wheels-error 3xl:text-lg lg:text-15 text-sm duration-200 ease-in-out hover:font-medium hover:transition-colors 2xl:text-base">
+            <span className="text-sm text-wheels-error duration-200 ease-in-out hover:font-medium hover:transition-colors lg:text-15 2xl:text-base 3xl:text-lg">
               Logout
             </span>
           </button>
         </div>
       </aside>
 
-      <div className="3xl:left-1/3 3xl:w-[calc(100%-1/3)] relative w-full lg:left-60 lg:w-[calc(100%-240px)] 2xl:left-80 2xl:w-[calc(100%-320px)]">
-        <div className="3xl:px-16 flex items-center justify-between border-b border-[rgba(0,0,0,0.10)] p-5 xl:px-10">
+      <div className="relative w-full lg:left-60 lg:w-[calc(100%-240px)] 2xl:left-80 2xl:w-[calc(100%-320px)] 3xl:left-1/3 3xl:w-[calc(100%-1/3)]">
+        <div className="flex items-center justify-between border-b border-[rgba(0,0,0,0.10)] p-5 xl:px-10 3xl:px-16">
           <div className="relative">
             <span
               onClick={() => inputSearch.current.focus()}
@@ -135,7 +135,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <input
               ref={inputSearch}
               type="text"
-              className="text-wheels-primary text-15 border-none pl-7 outline-none"
+              className="border-none pl-7 text-15 text-wheels-primary outline-none"
               placeholder="Search..."
             />
           </div>
@@ -149,17 +149,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             </Link>
 
             <div className="lg:flex lg:items-center lg:space-x-3">
-              <p className="text-wheels-primary text-15 hidden font-medium lg:block">
+              <p className="hidden text-15 font-medium text-wheels-primary lg:block">
                 Daniel Benson
               </p>
-              <div className="bg-wheels-primary flex h-8 w-8 items-center justify-center rounded-full">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-wheels-primary">
                 <span className="text-[13px] font-semibold leading-[0px] text-white">
                   A
                 </span>
               </div>
             </div>
 
-            <button className="text-wheels-secondary flex h-6 w-6 items-center justify-center lg:hidden">
+            <button className="flex h-6 w-6 items-center justify-center text-wheels-secondary lg:hidden">
               <span
                 className={`${openSidebar && "hidden"}`}
                 onClick={() => setOpenSidebar(true)}
@@ -175,7 +175,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </div>
 
-        <main className="3xl:px-16 3xl:py-10 bg-[#F1F5F8] p-5 xl:px-10 xl:py-8">
+        <main className="bg-[#F1F5F8] p-5 xl:px-10 xl:py-8 3xl:px-16 3xl:py-10">
           {children}
         </main>
       </div>

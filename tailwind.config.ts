@@ -11,19 +11,21 @@ const config = {
   ],
   prefix: "",
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
+    extend: {
       screens: {
         xs: "420px",
         "3xl": "1600px",
       },
-    },
-    extend: {
       colors: {
         "wheels-error": "var(--wheels-error)",
         "wheels-primary": "var(--wheels-primary)",
         "wheels-secondary": "var(--wheels-secondary)",
+        "wheels-purple": "var(--wheels-purple)",
+        "wheels-grey": "var(--wheels-grey)",
+        "wheels-grey-2": "var(--wheels-grey-2)",
+        "wheels-grey-3": "var(--wheels-grey-3)",
+        "wheels-grey-4": "var(--wheels-grey-4)",
+        "wheels-border": "var(--wheels-border)",
       },
       borderRadius: {
         xs: "2px",

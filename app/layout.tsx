@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Wheels Admin",
@@ -13,7 +14,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Toaster
+          richColors
+          position="top-right"
+          toastOptions={{
+            duration: 2000,
+          }}
+        />
+      </body>
     </html>
   );
 }

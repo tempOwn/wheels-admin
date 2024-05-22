@@ -1,4 +1,7 @@
-export default function UserIcon() {
+import { cn } from "@/src/lib/utils";
+import type { TProps } from "./types";
+
+export default function UserIcon({ className }: TProps) {
   return (
     <svg
       width="16"
@@ -6,6 +9,7 @@ export default function UserIcon() {
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={cn("", className)}
     >
       <path
         d="M13.3333 14V12.6667C13.3333 11.9594 13.0523 11.2811 12.5522 10.781C12.0521 10.281 11.3739 10 10.6666 10H5.33329C4.62605 10 3.94777 10.281 3.44767 10.781C2.94758 11.2811 2.66663 11.9594 2.66663 12.6667V14"
