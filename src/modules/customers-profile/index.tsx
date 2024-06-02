@@ -193,7 +193,7 @@ export default function CustomersProfile ({id = 0}:{id ?: number}){
                     </div>
 
                     <div className="flex flex-col px-2 py-6 shadow-md space-y-2">
-                        <div className="flex items-center spacce-x-2">
+                        <div className="flex items-center space-x-2">
                                 <label className="w-1/2">
                                     <span className="text-[#55707E]">Phone Number</span>
                                     <div className="border flex items-center space-x-2 rounded-lg pr-2">
@@ -231,7 +231,7 @@ export default function CustomersProfile ({id = 0}:{id ?: number}){
                                 customer.activities.map( ({serialNumber, status, id, rentalDuration}) =>
                                     <button key={id} onClick={() => getActivity(id)} className="flex w-full py-2 border-b justify-between items-center">
                                         <div className="flex items-center space-x-2">
-                                        <span className={` p-2 rounded-full ${status === "returned" ? "bg-[#CCECFF]" :"bg-[#E8E3DD] rotate-180 text-[#8B7357]"}`}>
+                                        <span className={` p-2 rounded-full ${status === "returned" ? "bg-[#CCECFF] text-[#0070B2]" :"bg-[#E8E3DD] rotate-180 text-[#8B7357]"}`}>
                                             <SlantArrowIcon/>
                                         </span>
                                         <p className="font-bold">{ serialNumber +(status === "returned" ? " Returned" : " Rented out")}</p>
@@ -247,8 +247,8 @@ export default function CustomersProfile ({id = 0}:{id ?: number}){
                 </div>
                 {
                 activity &&(
-                        <div className=" bg-white px-3 py-5 w-1/4 flex flex-col items-start space-y-2">
-                            <span className={`p-5 m-[auto] rounded-full ${activity.status === "returned" ? "bg-[#CCECFF]" :"bg-[#E8E3DD] rotate-180 fill-[#8B7357]"}`}>
+                        <div className=" bg-white px-3 py-5 w-1/3 flex flex-col items-start space-y-2">
+                            <span className={`p-5 m-[auto] rounded-full ${activity.status === "returned" ? "bg-[#CCECFF] text-[#0070B2]" :"bg-[#E8E3DD] rotate-180 text-[#8B7357]"}`}>
                                 <SlantArrowIcon/>
                             </span>
                             <p className="m-[auto] text-lg font-bold pb-6">{activity.status === "returned" ? "Capsule Returned" : "Capsule Rented"}</p>
