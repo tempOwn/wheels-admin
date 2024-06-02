@@ -6,6 +6,7 @@ import RentalGraph from "./components/RentalGraph";
 import AmbassadorCard from "./components/AmbassadorCard";
 import ActivityLogCard from "./components/ActivityLogCard";
 import CalendarIcon from "@/src/components/icons/CalendarIcon";
+import { useState, useEffect } from "react";
 
 type Tanalytics = {
   icon: React.ReactNode | string;
@@ -40,8 +41,13 @@ const analytics :Tanalytics[] = [
 ]
 
 export default function Dashboard() {
-  // const currentDate= new Date("2023-10-25")
-  // console.log(currentDate)
+  const [currentDate, setCurrentDate] = useState(new Date().toDateString());
+
+
+  useEffect(() => {
+    const date = new Date();
+    setCurrentDate(date.toDateString());
+  }, []);
   return(
     <div>
       <div className="flex items-center justify-between pb-6">
@@ -51,7 +57,7 @@ export default function Dashboard() {
         </div>
         <p className="border flex items-center text-[#55707E] py-4 px-2">
           <span className="mr-2"><CalendarIcon/></span>
-          Thurs 25th October,2023
+         { currentDate ? currentDate : "Thurs 25th October,2023"}
         </p>
       </div>
       <div className="flex items-start space-x-5">

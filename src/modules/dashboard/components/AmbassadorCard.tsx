@@ -104,10 +104,10 @@ export default function AmbassadorCard(){
                 <h2 className="font-semibold">Top Performers</h2>
                 <div className="flex items-center space-x-3">
                 <button onClick={toggleOnCurrent}>
-                  <span className={`${onCurrent ? "fill-wheels-primary": "fill-[#C2C2C2]"}`}><ChevronLeft/></span>
+                  <span className={`${onCurrent ? "text-wheels-primary": "text-[#C2C2C2]"}`}><ChevronLeft/></span>
                 </button>
                 <button onClick={toggleOnCurrent} className="rotate-180">
-                  <span className={`${onCurrent ? "fill-[#C2C2C2]" : "fill-wheels-primary"} `}><ChevronLeft/></span>
+                  <span className={`${onCurrent ? "text-[#C2C2C2]" : "text-wheels-primary"} `}><ChevronLeft/></span>
                 </button>
                 </div>
               </div>
