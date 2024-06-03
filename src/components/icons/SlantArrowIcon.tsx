@@ -1,8 +1,11 @@
-export default function SlantArrow (){
+import { cn } from "@/src/lib/utils";
+import { TProps } from "./types";
+
+export default function SlantArrowIcon ({className}: TProps){
     return(
-        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4.375 10.625L10.625 4.375" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M4.375 4.375H10.625V10.625" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" className={cn("", className)}>
+        <path d="M15.2311 6.36328L6.34219 15.2521" stroke="currentColor" stroke-width="2.08696" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15.2311 15.2521H6.34219V6.36328" stroke="currentColor" stroke-width="2.08696" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
 
     )
