@@ -119,7 +119,7 @@ export default function RentalGraph() {
   }
 
   return (
-    <div className="border-wheels-border-2 rounded-lg border bg-white p-5 shadow-lg">
+    <div className="rounded-lg border border-wheels-border-2 bg-white p-5 shadow-lg">
       <div className="space-y-3 border-b-4 pb-4">
         <div className="space-y-2 md:space-y-4 lg:flex lg:items-center lg:justify-between lg:space-y-0">
           <p className="text-xl font-bold md:text-2xl lg:text-3xl">
@@ -135,9 +135,8 @@ export default function RentalGraph() {
                   value: !data.openFiltersDropDown,
                 })
               }
-              contentClassName="mt-2 rounded"
-            >
-              <span className="border-wheels-border-2 flex h-10 w-full items-center space-x-3 rounded border bg-white px-3 sm:w-[140px]">
+              contentClassName="mt-2 rounded">
+              <span className="flex h-10 w-full items-center space-x-3 rounded border border-wheels-border-2 bg-white px-3 sm:w-[140px]">
                 <FilterLinesIcon />
                 <span>
                   {
@@ -152,15 +151,14 @@ export default function RentalGraph() {
                   <li
                     key={index}
                     onClick={handleData.bind(null, { key: "filter", value })}
-                    className="cursor-pointer px-2 py-1 text-sm hover:font-bold hover:text-wheels-primary"
-                  >
+                    className="cursor-pointer px-2 py-1 text-sm hover:font-bold hover:text-wheels-primary">
                     {label}
                   </li>
                 ))}
               </ul>
             </DropdownMenu>
 
-            <button className="border-wheels-border-2 flex h-10 w-full items-center space-x-2 rounded border px-3 font-medium sm:w-auto">
+            <button className="flex h-10 w-full items-center space-x-2 rounded border border-wheels-border-2 px-3 font-medium sm:w-auto">
               <SheetIcon />
               <span>Export as PDF</span>
             </button>
@@ -173,9 +171,8 @@ export default function RentalGraph() {
                   value: !data.openSortDropDown,
                 })
               }
-              contentClassName="mt-2 rounded"
-            >
-              <span className="border-wheels-border-2 flex h-10 w-full items-center space-x-3 rounded border bg-white px-3 sm:w-[140px]">
+              contentClassName="mt-2 rounded">
+              <span className="flex h-10 w-full items-center space-x-3 rounded border border-wheels-border-2 bg-white px-3 sm:w-[140px]">
                 <SortIcon />
                 <span>
                   {
@@ -190,8 +187,7 @@ export default function RentalGraph() {
                   <li
                     key={index}
                     onClick={handleData.bind(null, { key: "sort", value })}
-                    className="cursor-pointer px-2 py-1 text-sm hover:font-bold hover:text-wheels-primary"
-                  >
+                    className="cursor-pointer px-2 py-1 text-sm hover:font-bold hover:text-wheels-primary">
                     {label}
                   </li>
                 ))}
@@ -203,7 +199,7 @@ export default function RentalGraph() {
         <div className="flex items-center space-x-2 text-xs">
           <span>Total Systems rented</span>
           <p className="text-wheels-tertiary">
-            <span className="text-wheels-success font-bold">24%</span> Yesterday
+            <span className="font-bold text-wheels-success">24%</span> Yesterday
           </p>
         </div>
       </div>

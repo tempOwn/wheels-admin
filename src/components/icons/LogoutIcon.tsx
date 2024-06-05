@@ -5,8 +5,7 @@ export default function LogoutIcon() {
       height="17"
       viewBox="0 0 16 17"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <path
         d="M10.6666 11.8327L14 8.49935L10.6666 5.16602"
         stroke="#EF4444"

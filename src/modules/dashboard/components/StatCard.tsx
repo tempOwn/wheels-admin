@@ -18,14 +18,13 @@ export default function StatCard({
   title,
 }: StatsCardProps) {
   return (
-    <div className="border-wheels-border-2 flex flex-col justify-between rounded-lg border bg-white p-4">
+    <div className="flex flex-col justify-between rounded-lg border border-wheels-border-2 bg-white p-4">
       <div className="mb-10 flex items-center justify-between space-x-2 lg:mb-5">
         <div
           className={cn(
             "flex h-6 w-6 items-center justify-center rounded-full",
             iconBackgroundClass,
-          )}
-        >
+          )}>
           {icon ? icon : <SystemsIcon />}
         </div>
 

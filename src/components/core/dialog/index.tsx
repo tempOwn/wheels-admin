@@ -26,8 +26,7 @@ export default function Dialog({
           className={cn(
             "mx-auto w-full max-w-xl rounded-lg bg-white p-5 shadow-lg",
             containerClassName,
-          )}
-        >
+          )}>
           {closeButton && (
             <div className="w-full" onClick={onOpenChange}>
               {typeof closeButton === "boolean" ? (

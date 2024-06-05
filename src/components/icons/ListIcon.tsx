@@ -5,8 +5,7 @@ export default function ListIcon() {
       height="17"
       viewBox="0 0 18 17"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <path
         d="M6.16663 12.5H15.375"
         stroke="currentColor"

@@ -1,8 +1,13 @@
 {
   "extends": [
+    "next",
+    "eslint:recommended",
+    "prettier",
     "next/core-web-vitals",
-    "plugin:storybook/recommended",
-    "plugin:testing-library/react",
-    "plugin:jest-dom/recommended"
-  ]
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "react", "prettier"]
 }

@@ -5,8 +5,7 @@ export default function ChevronDownIcon() {
       height="21"
       viewBox="0 0 20 21"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <path
         d="M5 8L10 13L15 8"
         stroke="#80939E"

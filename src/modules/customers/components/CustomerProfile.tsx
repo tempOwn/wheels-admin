@@ -276,12 +276,10 @@ export default function CustomerProfile({ id = 0 }: { id?: number }) {
                   <button
                     key={id}
                     onClick={() => getActivity(id)}
-                    className="flex w-full items-center justify-between border-b py-2"
-                  >
+                    className="flex w-full items-center justify-between border-b py-2">
                     <div className="flex items-center space-x-2">
                       <span
-                        className={` rounded-full p-2 ${status === "returned" ? "bg-[#CCECFF] text-[#0070B2]" : "rotate-180 bg-[#E8E3DD] text-[#8B7357]"}`}
-                      >
+                        className={` rounded-full p-2 ${status === "returned" ? "bg-[#CCECFF] text-[#0070B2]" : "rotate-180 bg-[#E8E3DD] text-[#8B7357]"}`}>
                         <SlantArrowIcon />
                       </span>
                       <p className="font-bold">
@@ -304,8 +302,7 @@ export default function CustomerProfile({ id = 0 }: { id?: number }) {
         {activity && (
           <div className=" flex w-1/3 flex-col items-start space-y-2 bg-white px-3 py-5">
             <span
-              className={`m-[auto] rounded-full p-5 ${activity.status === "returned" ? "bg-[#CCECFF] text-[#0070B2]" : "rotate-180 bg-[#E8E3DD] text-[#8B7357]"}`}
-            >
+              className={`m-[auto] rounded-full p-5 ${activity.status === "returned" ? "bg-[#CCECFF] text-[#0070B2]" : "rotate-180 bg-[#E8E3DD] text-[#8B7357]"}`}>
               <SlantArrowIcon />
             </span>
             <p className="m-[auto] pb-6 text-lg font-bold">

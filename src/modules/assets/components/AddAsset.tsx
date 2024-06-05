@@ -183,8 +183,7 @@ export default function AddAsset({ close }: AddAssetProps) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex h-full flex-col justify-between"
-      >
+        className="flex h-full flex-col justify-between">
         <h2 className="border-b border-[rgba(207,207,207,1)] px-5 pb-2 text-lg font-medium text-wheels-primary lg:text-xl">
           Add New Asset
         </h2>
@@ -258,8 +257,7 @@ export default function AddAsset({ close }: AddAssetProps) {
                                     )
                                   }
                                   className={`
-                            ${field.value === type.toLowerCase().split(" ").join("-") ? "border-wheels-primary bg-wheels-primary text-white" : "border-[rgba(65,64,66,0.5)] bg-[rgba(85,112,126,0.1)] text-[rgba(143,143,143,1)]"} flex h-12 w-full items-center justify-center rounded-lg border text-sm font-medium`}
-                                >
+                            ${field.value === type.toLowerCase().split(" ").join("-") ? "border-wheels-primary bg-wheels-primary text-white" : "border-[rgba(65,64,66,0.5)] bg-[rgba(85,112,126,0.1)] text-[rgba(143,143,143,1)]"} flex h-12 w-full items-center justify-center rounded-lg border text-sm font-medium`}>
                                   {type}
                                 </button>
                               </FormControl>
@@ -321,8 +319,7 @@ export default function AddAsset({ close }: AddAssetProps) {
                                   field.onChange(type.toLowerCase())
                                 }
                                 className={`
-                            ${field.value === type.toLowerCase() ? "border-wheels-primary bg-wheels-primary text-white" : "border-[rgba(65,64,66,0.5)] bg-[rgba(85,112,126,0.1)] text-[rgba(143,143,143,1)]"} flex h-12 w-full items-center justify-center rounded-lg border text-sm font-medium`}
-                              >
+                            ${field.value === type.toLowerCase() ? "border-wheels-primary bg-wheels-primary text-white" : "border-[rgba(65,64,66,0.5)] bg-[rgba(85,112,126,0.1)] text-[rgba(143,143,143,1)]"} flex h-12 w-full items-center justify-center rounded-lg border text-sm font-medium`}>
                                 {type}
                               </button>
                             </FormControl>
@@ -347,14 +344,12 @@ export default function AddAsset({ close }: AddAssetProps) {
           <button
             onClick={close}
             type="button"
-            className="w-1/2 rounded-md bg-[rgba(225,225,225,1)] px-8 py-4 text-sm font-medium text-[rgba(143,143,143,1)]"
-          >
+            className="w-1/2 rounded-md bg-[rgba(225,225,225,1)] px-8 py-4 text-sm font-medium text-[rgba(143,143,143,1)]">
             Cancel
           </button>
           <button
             type="submit"
-            className="w-1/2 rounded-md bg-wheels-primary px-8 py-4 text-sm font-medium text-white lg:text-15"
-          >
+            className="w-1/2 rounded-md bg-wheels-primary px-8 py-4 text-sm font-medium text-white lg:text-15">
             Add to Assets
           </button>
         </div>

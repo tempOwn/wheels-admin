@@ -194,11 +194,9 @@ export default function Assets() {
                 value === data.tab
                   ? "rounded rounded-bl-none rounded-br-none bg-white text-wheels-primary"
                   : "text-wheels-grey"
-              }`}
-            >
+              }`}>
               <div
-                className={`rounded-md px-2 py-0.5 text-10 font-medium text-white ${value === data.tab ? "bg-wheels-purple" : "bg-wheels-grey"}`}
-              >
+                className={`rounded-md px-2 py-0.5 text-10 font-medium text-white ${value === data.tab ? "bg-wheels-purple" : "bg-wheels-grey"}`}>
                 {count}
               </div>
               <p className="text-sm font-medium">{name}</p>
@@ -225,8 +223,7 @@ export default function Assets() {
                     onClick={() =>
                       handleDataChange("view", value as TData["view"])
                     }
-                    className={`p-2 ${index === 0 ? "rounded-bl-sm rounded-tl-sm" : "rounded-br-sm rounded-tr-sm"} ${data.view === value ? "bg-wheels-primary text-white" : "bg-wheels-grey-2 text-wheels-grey-3"}`}
-                  >
+                    className={`p-2 ${index === 0 ? "rounded-bl-sm rounded-tl-sm" : "rounded-br-sm rounded-tr-sm"} ${data.view === value ? "bg-wheels-primary text-white" : "bg-wheels-grey-2 text-wheels-grey-3"}`}>
                     {icon}
                   </button>
                 ))}
@@ -248,8 +245,7 @@ export default function Assets() {
                 onOpenChange={(value) =>
                   handleData2Change("openMoreDropdown", value)
                 }
-                contentClassName="shadow-[0px_32px_64px_-12px_rgba(16,24,40,0.2)] py-5 px-3 w-[240px] rounded-md border border-[rgba(204,212,216,0.5)]"
-              >
+                contentClassName="shadow-[0px_32px_64px_-12px_rgba(16,24,40,0.2)] py-5 px-3 w-[240px] rounded-md border border-[rgba(204,212,216,0.5)]">
                 <div className="mr-3 flex items-center space-x-2.5 rounded-lg border border-wheels-grey-4 px-4 py-2.5 sm:mr-0">
                   <SheetIcon />
                   <span className="text-sm font-medium text-wheels-primary">
@@ -261,8 +257,7 @@ export default function Assets() {
                 <div className="w-full space-y-4">
                   <div
                     role="button"
-                    className="flex cursor-pointer items-center space-x-2 lg:space-x-4"
-                  >
+                    className="flex cursor-pointer items-center space-x-2 lg:space-x-4">
                     <InfoIcon />
                     <span className="text-sm text-[rgba(85,112,126,1)]">
                       Report
@@ -273,8 +268,7 @@ export default function Assets() {
                     <DropdownMenuSubTrigger className="flex w-full items-center justify-between space-x-2 p-0">
                       <div
                         role="button"
-                        className="flex cursor-pointer items-center space-x-2 lg:space-x-4"
-                      >
+                        className="flex cursor-pointer items-center space-x-2 lg:space-x-4">
                         <SheetIcon />
                         <span className="text-sm text-[rgba(85,112,126,1)]">
                           Change Status
@@ -299,8 +293,7 @@ export default function Assets() {
 
               <button
                 onClick={exportAssets}
-                className="hidden items-center space-x-2.5 rounded-lg border border-wheels-grey-4 px-4 py-2.5 sm:flex"
-              >
+                className="hidden items-center space-x-2.5 rounded-lg border border-wheels-grey-4 px-4 py-2.5 sm:flex">
                 <SheetIcon />
                 <span className="text-sm font-medium text-wheels-primary">
                   Export
@@ -309,8 +302,7 @@ export default function Assets() {
 
               <button
                 onClick={() => handleData2Change("openSheet", !data2.openSheet)}
-                className="flex items-center space-x-2 rounded-lg bg-wheels-primary px-4 py-2.5 text-white"
-              >
+                className="flex items-center space-x-2 rounded-lg bg-wheels-primary px-4 py-2.5 text-white">
                 <PlusIcon />
                 <span className="text-sm font-medium">Add New</span>
               </button>
@@ -342,8 +334,7 @@ export default function Assets() {
         open={data2.openSheet}
         onOpenChange={() => handleData2Change("openSheet", !data2.openSheet)}
         className="w-full max-w-full px-0 pb-0 md:max-w-[520px]"
-        showCloseButton
-      >
+        showCloseButton>
         <AddAsset close={() => handleData2Change("openSheet", false)} />
       </Sheet>
     </>

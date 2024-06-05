@@ -88,8 +88,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className="flex">
       <aside
         ref={ref}
-        className={`${openSidebar ? "translate-x-0" : "-translate-x-full"} fixed z-10 flex h-full w-60 flex-col justify-between space-y-10 border-r border-[rgba(0,0,0,0.10)] bg-white px-5 py-10 transition-transform duration-300 ease-in-out lg:translate-x-0 2xl:w-80 3xl:w-1/3`}
-      >
+        className={`${openSidebar ? "translate-x-0" : "-translate-x-full"} fixed z-10 flex h-full w-60 flex-col justify-between space-y-10 border-r border-[rgba(0,0,0,0.10)] bg-white px-5 py-10 transition-transform duration-300 ease-in-out lg:translate-x-0 2xl:w-80 3xl:w-1/3`}>
         <div>
           <div className="flex items-center justify-center">
             <WheelsLogo />
@@ -101,8 +100,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 href={href}
                 key={index}
                 onClick={handleSidebar}
-                className={`${pathname === href ? "font-medium text-wheels-primary" : "text-wheels-secondary opacity-50 hover:text-wheels-primary hover:opacity-100"} flex items-center space-x-3 text-sm transition-colors duration-200 ease-in-out lg:space-x-4 lg:text-15 2xl:text-base 3xl:text-lg`}
-              >
+                className={`${pathname === href ? "font-medium text-wheels-primary" : "text-wheels-secondary opacity-50 hover:text-wheels-primary hover:opacity-100"} flex items-center space-x-3 text-sm transition-colors duration-200 ease-in-out lg:space-x-4 lg:text-15 2xl:text-base 3xl:text-lg`}>
                 {icon}
                 <span>{label}</span>
               </Link>
@@ -113,8 +111,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="space-y-5">
           <button
             onClick={handleLogout}
-            className="flex items-center space-x-3"
-          >
+            className="flex items-center space-x-3">
             <LogoutIcon />
             <span className="text-sm text-wheels-error duration-200 ease-in-out hover:font-medium hover:transition-colors lg:text-15 2xl:text-base 3xl:text-lg">
               Logout
@@ -128,8 +125,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="relative">
             <span
               onClick={() => inputSearch.current.focus()}
-              className="absolute left-0 top-[5px] opacity-50"
-            >
+              className="absolute left-0 top-[5px] opacity-50">
               <MagnifyingGlassIcon />
             </span>
             <input
@@ -143,8 +139,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="flex items-center space-x-4 lg:space-x-8">
             <Link
               href="/notifications"
-              className="opacity-50 hover:opacity-100"
-            >
+              className="opacity-50 hover:opacity-100">
               <BellIcon />
             </Link>
 
@@ -162,13 +157,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <button className="flex h-6 w-6 items-center justify-center text-wheels-secondary lg:hidden">
               <span
                 className={`${openSidebar && "hidden"}`}
-                onClick={() => setOpenSidebar(true)}
-              >
+                onClick={() => setOpenSidebar(true)}>
                 <MenuIcon />
               </span>
               <span
-                className={`text-xl font-medium ${!openSidebar && "hidden"}`}
-              >
+                className={`text-xl font-medium ${!openSidebar && "hidden"}`}>
                 X
               </span>
             </button>

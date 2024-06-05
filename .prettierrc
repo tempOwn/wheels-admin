@@ -1,7 +1,11 @@
 {
   "singleQuote": false,
   "jsxSingleQuote": false,
+  "bracketSameLine": true,
+  "bracketSpacing": true,
   "semi": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
   "plugins": ["prettier-plugin-tailwindcss"],
   "pluginSearchDirs": false
 }

@@ -46,8 +46,7 @@ export default function DataTable<TData, TValue>({
                 return (
                   <TableHead
                     key={header.id}
-                    className="border-b border-[#DEE1E8] text-[#434956]"
-                  >
+                    className="border-b border-[#DEE1E8] text-[#434956]">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -65,8 +64,7 @@ export default function DataTable<TData, TValue>({
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
+                data-state={row.getIsSelected() && "selected"}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="text-wheels-primary">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

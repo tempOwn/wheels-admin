@@ -5,8 +5,7 @@ export default function GridIcon() {
       height="17"
       viewBox="0 0 18 17"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <path
         d="M15.375 9.83398H10.4166V14.5007H15.375V9.83398Z"
         stroke="currentColor"

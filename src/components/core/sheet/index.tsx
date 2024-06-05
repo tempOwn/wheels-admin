@@ -18,8 +18,7 @@ export function Close({ onOpenChange }: TClose) {
   return (
     <button
       onClick={onOpenChange}
-      className="absolute right-5 top-[22px] flex items-center space-x-2 border-none outline-none"
-    >
+      className="absolute right-5 top-[22px] flex items-center space-x-2 border-none outline-none">
       <span className="flex h-4 w-4 items-center justify-center rounded-full border-[0.5px] border-wheels-grey">
         <XIcon />
       </span>

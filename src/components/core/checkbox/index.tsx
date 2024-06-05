@@ -14,8 +14,7 @@ export default function Checkbox({ value, label, className }: CheckboxProps) {
       <div className="grid gap-1.5 leading-none">
         <label
           htmlFor={value}
-          className="cursor-pointer text-sm leading-none text-wheels-primary peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
+          className="cursor-pointer text-sm leading-none text-wheels-primary peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
           {label}
         </label>
       </div>

@@ -53,7 +53,7 @@ const activityLogs: TActivityLog[] = [
 
 export default function ActivityLogCard() {
   return (
-    <div className="border-wheels-border-2 rounded-md border bg-white p-5">
+    <div className="rounded-md border border-wheels-border-2 bg-white p-5">
       <div className="mb-3 flex items-center justify-between">
         <p className="ttext-wheels-primary font-semibold lg:text-lg">
           Activity Log
@@ -65,8 +65,7 @@ export default function ActivityLogCard() {
         {activityLogs.map(({ type, title, time, description, read }, index) => (
           <div
             key={index}
-            className={`${index !== activityLogs.length - 1 ? "border-b border-black/20 py-4" : "pb-1 pt-4"} flex items-center space-x-2`}
-          >
+            className={`${index !== activityLogs.length - 1 ? "border-b border-black/20 py-4" : "pb-1 pt-4"} flex items-center space-x-2`}>
             <div className="">
               <Image src={Avatar} width={56} height={56} alt="avatar" />
             </div>
@@ -79,8 +78,7 @@ export default function ActivityLogCard() {
               </p>
 
               <p
-                className={`max-w-[95%] text-sm text-wheels-primary ${read ? "font-medium" : ""}`}
-              >
+                className={`max-w-[95%] text-sm text-wheels-primary ${read ? "font-medium" : ""}`}>
                 {description}
               </p>
             </div>

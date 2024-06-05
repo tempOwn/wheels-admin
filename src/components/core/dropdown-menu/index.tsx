@@ -28,8 +28,7 @@ export default function DropdownMenu({
   return (
     <DropDownMenuRoot open={open} onOpenChange={onOpenChange}>
       <DropdownMenuTrigger
-        className={cn("border-none outline-none", triggerClassName)}
-      >
+        className={cn("border-none outline-none", triggerClassName)}>
         {triggerSlot}
       </DropdownMenuTrigger>
 

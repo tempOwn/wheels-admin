@@ -157,8 +157,7 @@ const FormMessage = React.forwardRef<
       ref={ref}
       id={formMessageId}
       className={cn("text-xs text-wheels-error lg:text-13", className)}
-      {...props}
-    >
+      {...props}>
       {body}
     </p>
   );

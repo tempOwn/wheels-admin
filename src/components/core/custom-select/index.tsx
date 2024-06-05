@@ -32,8 +32,7 @@ export default function CustomSelect({
   return (
     <SelectRoot onValueChange={onChange} defaultValue={value}>
       <SelectTrigger
-        className={cn("h-12 w-40 rounded-md xl:w-52", tiggerClassName)}
-      >
+        className={cn("h-12 w-40 rounded-md xl:w-52", tiggerClassName)}>
         <SelectValue placeholder={placeholder || "Select an Option"} />
       </SelectTrigger>
       <SelectContent className={cn("w-[300px]", contentClassName)}>
@@ -41,8 +40,7 @@ export default function CustomSelect({
           <SelectItem
             value={value}
             key={index}
-            className={`py-3 ${index !== options.length - 1 && "mb-0.5"}`}
-          >
+            className={`py-3 ${index !== options.length - 1 && "mb-0.5"}`}>
             <div className="flex items-center space-x-2.5">
               {typeof icon === "string" ? (
                 <Image src={icon} width={20} height={20} alt={name} />

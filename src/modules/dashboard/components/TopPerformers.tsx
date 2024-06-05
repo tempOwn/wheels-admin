@@ -147,7 +147,7 @@ export default function TopPerformers() {
   };
 
   return (
-    <div className="border-wheels-border-2 w-full rounded-lg border bg-white p-3 lg:w-1/3">
+    <div className="w-full rounded-lg border border-wheels-border-2 bg-white p-3 lg:w-1/3">
       <div className="mb-2 flex items-center justify-between">
         <h2 className="font-semibold">Top Performers</h2>
         <div className="flex items-center space-x-3">
@@ -160,7 +160,7 @@ export default function TopPerformers() {
         </div>
       </div>
 
-      <p className="text-wheels-tertiary mb-4 text-xs font-bold uppercase">
+      <p className="mb-4 text-xs font-bold uppercase text-wheels-tertiary">
         {
           {
             1: "Ambassadors",
@@ -187,7 +187,7 @@ export default function TopPerformers() {
                     <p className="font-semibold text-wheels-primary">
                       {ambassadors?.topPerformingAmb.name}
                     </p>
-                    <p className="text-wheels-tertiary text-xs font-medium uppercase">
+                    <p className="text-xs font-medium uppercase text-wheels-tertiary">
                       Rental Made
                     </p>
                     <p className="text-xs font-semibold uppercase text-wheels-primary">
@@ -205,7 +205,7 @@ export default function TopPerformers() {
             ),
             2: (
               <>
-                <div className="text-wheels-tertiary mb-4 w-full rounded-sm border p-2">
+                <div className="mb-4 w-full rounded-sm border p-2 text-wheels-tertiary">
                   <p className="mb-1 text-[10px] font-semibold">
                     TOTAL SYSTEM RENTED
                   </p>

@@ -5,8 +5,7 @@ export default function WheelsLogo() {
       height="31"
       viewBox="0 0 215 31"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <path
         d="M32 0.349609H38.9125L44.0046 22.4306L49.1858 0.349609H57.0085L62.2533 22.3854L67.3454 0.349609H74.2897L65.8814 30.6586H58.7334L53.164 9.57211L47.5308 30.6586H40.491L32 0.349609Z"
         fill="#00283D"

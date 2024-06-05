@@ -41,8 +41,7 @@ export default function StatusTag({
       className={cn(
         `inline-flex items-center space-x-2 rounded-lg px-2.5 py-1 ${getStatusClasses(status)}`,
         className,
-      )}
-    >
+      )}>
       <div className="h-2 w-2 rounded-full bg-current"></div>
       <span className="text-xs capitalize">{status}</span>
     </div>

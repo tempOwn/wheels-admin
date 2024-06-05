@@ -35,15 +35,14 @@ const totalSales = topSales.reduce((sum, topSale) => sum + topSale.sales, 0);
 
 export default function TopSellingSystems() {
   return (
-    <div className="border-wheels-border-2 rounded-md border bg-white p-5">
+    <div className="rounded-md border border-wheels-border-2 bg-white p-5">
       <p className="mb-3 font-semibold lg:text-lg">Top Selling Items</p>
 
       <div>
         {topSales.map(({ name, id, image, sales }, index) => (
           <div
             key={id}
-            className={`flex items-center space-x-4 py-2 ${index !== topSales.length - 1 ? "border-wheels-border-2 border-b" : ""}`}
-          >
+            className={`flex items-center space-x-4 py-2 ${index !== topSales.length - 1 ? "border-b border-wheels-border-2" : ""}`}>
             <span className="font-bold">{id}</span>
             <div className="rounded-full bg-[#ECF5FA] p-2">
               <Image src={image} width={36} height={36} alt={name} />
