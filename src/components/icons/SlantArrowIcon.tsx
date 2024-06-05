@@ -13,16 +13,16 @@ export default function SlantArrowIcon({ className }: TProps) {
       <path
         d="M15.2311 6.36328L6.34219 15.2521"
         stroke="currentColor"
-        stroke-width="2.08696"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.08696"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M15.2311 15.2521H6.34219V6.36328"
         stroke="currentColor"
-        stroke-width="2.08696"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.08696"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
