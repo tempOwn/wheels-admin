@@ -97,8 +97,6 @@ function refineData(dataType: "customers" | "ambassadors") {
       (amb) => amb.id !== topPerformingAmb.id,
     );
 
-    console.log(topPerformingAmb);
-
     return {
       topPerformingAmb,
       otherAmbassadors,

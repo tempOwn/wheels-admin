@@ -1,115 +1,93 @@
-"use client"
-import BatteryIcon from "@/src/components/icons/BatteryIcon";
-import CapsulesIcon from "@/src/components/icons/CapsulesIcon";
-import InfoIcon from "@/src/components/icons/InfoIcon";
-import RentalGraph from "./components/RentalGraph";
-import AmbassadorCard from "./components/AmbassadorCard";
-import ActivityLogCard from "./components/ActivityLogCard";
+"use client";
+import { format } from "date-fns";
 import CalendarIcon from "@/src/components/icons/CalendarIcon";
-import { useState, useEffect } from "react";
+import StatCard from "./components/StatCard";
+import PositiveGraphIcon from "@/src/components/icons/PositiveGraphIcon";
+import BatteryIcon from "@/src/components/icons/BatteryIcon";
+import TopPerformers from "./components/TopPerformers";
+import ActivityLogCard from "./components/ActivityLogCard";
+import TopSellingSystems from "./components/TopSellingSystems";
+import RentalGraph from "./components/RentalGraph";
+import type { StatsCardProps } from "./components/StatCard";
 
-type Tanalytics = {
-  icon: React.ReactNode | string;
-  category: string;
-  value: number;
-  change?: number
-}
-   
-const analytics :Tanalytics[] = [
+const stats: StatsCardProps[] = [
   {
-    icon: <CapsulesIcon/>,
-    category: "System transferred",
-    value: 46,
-    change: 24
+    iconBackgroundClass: "bg-wheels-primary",
+    title: "Systems transferred",
+    statValue: 46,
+    description: (
+      <div className="flex items-center space-x-2">
+        <div className="inline-flex items-center space-x-2 font-bold">
+          <PositiveGraphIcon />
+          <span className="text-wheels-success">24%</span>
+        </div>
+        <span className="text-sm text-wheels-grey">Yesterday</span>
+      </div>
+    ),
   },
   {
-    icon: <CapsulesIcon/>,
-    category: "Rentals",
-    value: 12,
-    change: 17
+    iconBackgroundClass: "bg-wheels-success",
+    title: "Rentals",
+    statValue: 12,
+    description: (
+      <div className="flex items-center space-x-2">
+        <span className="font-bold text-wheels-error">17%</span>
+        <span className="text-sm text-wheels-grey">Yesterday</span>
+      </div>
+    ),
   },
   {
-    icon: <CapsulesIcon/>,
-    category: "System returned",
-    value: 46
+    iconBackgroundClass: "bg-wheels-cyan",
+    title: "Systems Returned",
+    statValue: 32,
   },
   {
-    icon: <BatteryIcon/>,
-    category: "Faulty System",
-    value: 46
-  }
-]
+    icon: <BatteryIcon />,
+    iconBackgroundClass: "bg-wheels-error",
+    title: "Faulty Systems",
+    statValue: 20,
+  },
+];
 
 export default function Dashboard() {
-  const [currentDate, setCurrentDate] = useState(new Date().toDateString());
-
-
-  useEffect(() => {
-    const date = new Date();
-    setCurrentDate(date.toDateString());
-  }, []);
-  return(
-    <div>
-      <div className="flex items-center justify-between pb-6">
+  return (
+    <div className="space-y-8">
+      <div className="space-y-5 sm:flex sm:items-end sm:justify-between sm:space-x-3 sm:space-y-0">
         <div>
-          <p className="text-3xl font-medium">Welcome back, Daniel 👋</p>
+          <h1 className="mb-2 text-xl font-medium sm:text-2xl lg:text-3xl">
+            Welcome back, Daniel 👋
+          </h1>
           <span className="text-sm">See detailed analytics</span>
         </div>
-        <p className="border flex items-center text-[#55707E] py-4 px-2">
-          <span className="mr-2"><CalendarIcon/></span>
-         { currentDate ? currentDate : "Thurs 25th October,2023"}
+
+        <p className="inline-flex items-center space-x-2 rounded border border-wheels-border px-2.5 py-3">
+          <CalendarIcon />
+          <span className="text-sm font-medium text-wheels-grey">
+            {format(new Date(), "EEEE do MMMM, yyyy")}
+          </span>
         </p>
       </div>
-      <div className="flex items-start space-x-5">
-        <div className=" w-2/3 space-y-5">
-          <div className="flex items-center space-x-3">
-            <div className="flex flex-wrap items-center w-2/3">
-              {
-                analytics ? 
-                analytics.map(({category, icon, value, change}:Tanalytics) =>
-                  <div key={category} className="border bg-white mr-2 mb-2 p-4 w-[48%] rounded-lg">
-                    <div className="flex items-center justify-between mb-8">
-                      <span className={`rounded-full ${category === "System transferred" ? "bg-wheels-primary p-1" :
-                       category === "Rentals" ? "bg-[#10B981] p-1":
-                        category === "System returned" ? "bg-[#53C5D3] p-1" :
-                         "bg-wheels-error p-2" }`}>
-                          {icon}
-                      </span>
-                      <div className="flex items-center space-x-1">
-                        <span className={`${change === 24 ? "text-[#10B981]" : "text-wheels-error"}`}>
-                          {change ? change + "%" : null}
-                        </span>
-                        <p>{category === "System transferred" || "Rentals" ? "Yesterday" : null}</p>
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-wheels-primary text-4xl font-bold">{value}</p>
-                      <div className="flex items-center justify-between">
-                        <p>{category}</p>
-                        <span><InfoIcon/></span> 
-                      </div>
-                    </div>
-                  </div>
-                )
-                :
-                null
-                
-              }
+
+      <div className="space-y-5 xl:flex xl:space-x-5 xl:space-y-0">
+        <div className="space-y-5 xl:w-2/3">
+          <div className="space-y-5 lg:flex lg:space-x-5 lg:space-y-0">
+            <div className="gap-5 space-y-5 sm:grid sm:grid-cols-2 sm:space-y-0 lg:w-2/3">
+              {stats.map((stat) => (
+                <StatCard key={stat.title} {...stat} />
+              ))}
             </div>
 
-            <AmbassadorCard/>
+            <TopPerformers />
           </div>
 
-          <div className="w-full shadow-lg">
-              <RentalGraph/>
-          </div>
+          <RentalGraph />
         </div>
 
-        <div className="w-2/5">
-          <ActivityLogCard/>
+        <div className="space-y-5 xl:w-1/3">
+          <ActivityLogCard />
+          <TopSellingSystems />
         </div>
       </div>
-
     </div>
-  ) 
+  );
 }
