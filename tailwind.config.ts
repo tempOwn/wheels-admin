@@ -18,14 +18,18 @@ const config = {
       },
       colors: {
         "wheels-error": "var(--wheels-error)",
+        "wheels-success": "var(--wheels-success)",
+        "wheels-cyan": "var(--wheels-cyan)",
         "wheels-primary": "var(--wheels-primary)",
         "wheels-secondary": "var(--wheels-secondary)",
+        "wheels-tertiary": "var(--wheels-tertiary)",
         "wheels-purple": "var(--wheels-purple)",
         "wheels-grey": "var(--wheels-grey)",
         "wheels-grey-2": "var(--wheels-grey-2)",
         "wheels-grey-3": "var(--wheels-grey-3)",
         "wheels-grey-4": "var(--wheels-grey-4)",
         "wheels-border": "var(--wheels-border)",
+        "wheels-border-2": "var(--wheels-border-2)",
       },
       borderRadius: {
         xs: "2px",

@@ -12,12 +12,16 @@ html {
     --wheels-error: #ef4444;
     --wheels-primary: #00283d;
     --wheels-secondary: #0f0f0f;
+    --wheels-tertiary: #b9b9b9;
     --wheels-purple: #5654d1;
     --wheels-grey: #55707e;
     --wheels-grey-2: #dbdfe1;
     --wheel-grey-3: #808285;
     --wheels-grey-4: #d0d5dd;
     --wheels-border: #d1d1d1;
+    --wheels-border-2: #e0e0e0;
+    --wheels-success: #10b981;
+    --wheels-cyan: #53c5d3;
   }
 
   /* FONTS */
