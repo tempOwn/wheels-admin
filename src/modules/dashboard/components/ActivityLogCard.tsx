@@ -1,232 +1,92 @@
-import Image, { StaticImageData } from "next/image";
-import Capsules from  "@/public/assets/images/reeddi_capsule.png";
-import BigEnergy from "@/public/assets/images/big_energy.png";
-import EnergyBox from  "@/public/assets/images/reeddi_energy_box.png"
-import Avatar from "@/public/assets/images/avatar.png"
-import { useState } from "react";
-import DoubleTickIcon from "@/src/components/icons/DoubleTickIcon";
-import WheelIcon from "@/src/components/icons/WheelIcon";
+import Image from "next/image";
+import Avatar from "@/public/assets/images/avatar.png";
 
-type TActivityLogs = {
-  id : number;
-  image: StaticImageData;
+type TActivityLog = {
+  type: "asset" | "user";
   title: string;
-  message: string;
   time: string;
-  opened: boolean;
-}
- 
-type TTopSales = {
-  id: number;
-  name: string;
-  sales: number;
-  image: StaticImageData;
-}
+  description: string;
+  read: boolean;
+};
 
-const activityLogs :TActivityLogs[] = [
-    {
-      id: 1,
-      image: Avatar,
-      title: "Customer Registration",
-      message: "Amb. Edmund Doyle added a new customer, Your approval is needed.",
-      time: "58 minutes ago",
-      opened: false
-    },
-    {
-      id: 2,
-      image: Avatar,
-      title: "Ambassador Registration",
-      message: "You just registered a new ambassador to the team. AMB-MOW2345",
-      time: "58 minutes ago",
-      opened: true
-    },
-    {
-      id: 3,
-      image: BigEnergy,
-      title: "Asset",
-      message: "Big Energy has been added to your inventory.",
-      time: "34 minutes ago",
-      opened: false
-    },
-    {
-      id: 4,
-      image: Avatar,
-      title: "Team Member",
-      message: "You just registered a new ambassador to the team. AMB-MOW2345",
-      time: "58 minutes ago",
-      opened: true
-    },
-    {
-      id: 5,
-      image: Avatar,
-      title: "Customer Registration",
-      message: "I will like to change my address on my profile to 34, Funsho Williams Ave, Ikeja, Lagos.",
-      time: "58 minutes ago",
-      opened: true
-    },
-    {
-      id: 6,
-      image: Avatar,
-      title: "Team Member",
-      message: "You just registered a new ambassador to the team. AMB-MOW2345",
-      time: "58 minutes ago",
-      opened: true
-    },
-    {
-        id: 7,
-        image: Avatar,
-        title: "Customer Registration",
-        message: "I will like to change my address on my profile to 34, Funsho Williams Ave, Ikeja, Lagos.",
-        time: "58 minutes ago",
-        opened: true
-    },
-    {
-        id: 8,
-        image: Avatar,
-        title: "Team Member",
-        message: "You just registered a new ambassador to the team. AMB-MOW2345",
-        time: "58 minutes ago",
-        opened: true
-    }
-
-      
-  ]
-  const topSales: TTopSales[] = [
-    {
-      id: 1,
-      name: "Reeddi Capsules",
-      sales: 345,
-      image: Capsules
-    },
-    {
-      id: 2,
-      name: "EnergyBOX",
-      sales: 134,
-      image: EnergyBox
-    },
-    {
-      id: 3,
-      name: "BigEnergy",
-      sales: 64,
-      image: BigEnergy
-    }
-  ]
+const activityLogs: TActivityLog[] = [
+  {
+    type: "user",
+    title: "Customer Registration",
+    time: "58 minutes ago",
+    description:
+      "Amb. Edmund Doyle added a new customer, Your approval is needed.",
+    read: false,
+  },
+  {
+    type: "user",
+    title: "Ambassador Registration",
+    time: "23 minutes ago",
+    description:
+      "You just registered a new ambassador to the team. AMB-MOW2345",
+    read: true,
+  },
+  {
+    type: "asset",
+    title: "Ambassador Registration",
+    time: "44 minutes ago",
+    description: "Big Energy has been added to the inventory dkdk kekee",
+    read: false,
+  },
+  {
+    type: "user",
+    title: "Team Member",
+    time: "44 minutes ago",
+    description:
+      "You just registered a new ambassador to the team. AMB-MOW2345",
+    read: false,
+  },
+  {
+    type: "user",
+    title: "Ambassador",
+    time: "44 minutes ago",
+    description:
+      "I'm Will like to change my address on my profile to 34, Funsho Williams Ave, Ikeja, Lagos",
+    read: true,
+  },
+];
 
 export default function ActivityLogCard() {
-    const[isVisible, setIsVisible] = useState(false)
-    const toggleVisibility = () =>{
-      setIsVisible(!isVisible)
-    }
-    let firstFiveActivities = activityLogs.slice(0,5)
-    
-    let totalSales = 0
-    topSales.forEach((topSale) =>{
-      totalSales+= topSale.sales
-    })
+  return (
+    <div className="border-wheels-border-2 rounded-md border bg-white p-5">
+      <div className="mb-3 flex items-center justify-between">
+        <p className="ttext-wheels-primary font-semibold lg:text-lg">
+          Activity Log
+        </p>
+        <button className="text-sm">View all</button>
+      </div>
 
-    return(
-        <>
-            <div className="bg-white rounded-md p-6">
-                <div className="flex items-center mb-8 justify-between">
-                <p className="text-lg ttext-wheels-primary font-semibold">Activity Log</p>
-                <button onClick={toggleVisibility} className="text-sm">
-                    View all
-                </button>
-                </div>
-                <div>
-                { 
-                  firstFiveActivities.map(({id,image, title, time, message, opened}) =>
-                      <div key={id} className="flex items-center mb-2.5 pt-2 border-t space-x-2">
-                      {
-                          title === "Asset" ?
-                          <span className="p-3 rounded-full bg-[#ECF5FA]">
-                          <Image src={image} width={36} height={30} alt={title}/>
-                          </span>
-                          :
-                          <Image src={image} alt={title}/>
-                      }
-                      
-                      <div className="flex flex-col items-center space-y-2">
-                          <div className="flex w-full items-center text-sm space-x-1">
-                          <p className="text-[#8D8D8D] font-bold">{title}</p>
-                          <li className="list-disc text-[#C2C2C2]">{time}</li>
-                          </div>
-                          <p className={`${opened ? "#8D8D8D" : "text-wheels-primary font-semibold"}`}>{message}</p>
-                      </div>
-                      <span className={`${opened ? "hidden":""} rounded-full bg-wheels-primary p-1`}></span>
-    
-                      </div>
-                  )
-                }
-                </div>
-
+      <div>
+        {activityLogs.map(({ type, title, time, description, read }, index) => (
+          <div
+            key={index}
+            className={`${index !== activityLogs.length - 1 ? "border-b border-black/20 py-4" : "pb-1 pt-4"} flex items-center space-x-2`}
+          >
+            <div className="">
+              <Image src={Avatar} width={56} height={56} alt="avatar" />
             </div>
-            {/* <div className={`${isVisible ? "" : "hidden"} bg-white w-2/5 absolute border rounded-lg top-20 right-40 flex items-start flex-col space-y-2`}>
-              <div className="flex w-full items-center justify-between pl-6 py-5 pr-5">
-                <p className="text-wheels-primary font-semibold text-lg">Notifications</p>
-                <div className="flex items-center space-x-2">
-                  <span><DoubleTickIcon/></span>
-                  <span><WheelIcon/></span>
-                </div>
-              </div>
-              <nav className="flex w-full items-center list-none border-b pb-0 space-x-8 px-6">
-                <li>All</li>
-                <li>Inbox</li>
-                <li>BlackList Request </li>
-                <li>Incident Reports</li>
-              </nav>
-              <div>
-                {
-                  activityLogs.map(({id, image, title, time, message, opened}) =>
-                    <div key={id} className="flex flex-col items-start py-2 px-6 border-b">
-                      <div className="flex items-center space-x-2">
-                        {
-                            title === "Asset" ?
-                            <span className="p-3 rounded-full bg-[#ECF5FA]">
-                            <Image src={image} width={36} height={30} alt={title}/>
-                            </span>
-                            :
-                            <Image src={image} alt={title}/>
-                        }
-                        <p className={`${opened ? "#8D8D8D" : "text-wheels-primary font-semibold"}`}>{message}</p>
-                        <span className={`${opened ? "hidden":""} rounded-full bg-wheels-primary p-1`}></span>
-    
-                      </div>
-                      <p className="text-[#C2C2C2] ml-10">{time}</p>
-                    </div>
-                  )
-                }
-              </div>
-            </div> */}
-            
-            <div className="bg-white p-4">
-                <p className="text-lg font-semibold mb-6">Top Selling Items</p>
-                <div>
-                    {
-                    topSales.map(({name, id, image, sales})=>
-                        <div key={id} className="flex items-center border-b py-2 space-x-2">
-                        <span className="font-bold">{id}</span>
-                        <div className="rounded-full p-2 bg-[#ECF5FA]">
-                        <Image src={image} width={36} height={36} alt={name}/>
-                        </div>
-                        <div className="flex flex-col items-start space-y-2">
-                            <p className="text-sm font-semibold ">{name}</p>
-                            <div className="flex items-center space-x-1">
-                            <div className="rounded-lg bg-[#ECF5FA] pr-2">
-                                <div className={` py-1 px-8 bg-wheels-primary rounded-lg`}>
 
-                                </div>
-                            </div>
-                            <span className="text-sm text-[#C2C2C2]">{sales}</span>
-                            <span className="text-sm text-[#C2C2C2]">{"(" + Math.round((sales/totalSales) * 100)+ "%)"}</span>
-                            </div>
-                        </div>
-                        </div>
-                    )
-                    }
-                </div>
+            <div className="w-full space-y-1">
+              <p className="flex items-center space-x-4 text-sm text-[#1A1A1A80] lg:text-xs 2xl:text-sm">
+                <span className="font-bold">{title}</span>
+                <span className="h-1.5 w-1.5 rounded-full bg-[#1A1A1A80]"></span>
+                <span>{time}</span>
+              </p>
+
+              <p
+                className={`max-w-[95%] text-sm text-wheels-primary ${read ? "font-medium" : ""}`}
+              >
+                {description}
+              </p>
             </div>
-        </>
-    )
-    
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
