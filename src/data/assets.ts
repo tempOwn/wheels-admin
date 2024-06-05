@@ -1,6 +1,6 @@
-import type { TInventory } from "../modules/assets/types";
+import type { TAsset } from "../modules/assets/types";
 
-export const assets: TInventory[] = [
+export const assets: TAsset[] = [
   {
     id: "RC-81247932",
     type: "capsule",
