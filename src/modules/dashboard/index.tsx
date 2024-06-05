@@ -60,12 +60,12 @@ export default function Dashboard() {
           <span className="text-sm">See detailed analytics</span>
         </div>
 
-        <p className="inline-flex items-center space-x-2 rounded border border-wheels-border px-2.5 py-3">
+        <div className="inline-flex items-center space-x-2 rounded border border-wheels-border bg-white px-2.5 py-3">
           <CalendarIcon />
           <span className="text-sm font-medium text-wheels-grey">
             {format(new Date(), "EEEE do MMMM, yyyy")}
           </span>
-        </p>
+        </div>
       </div>
 
       <div className="space-y-5 xl:flex xl:space-x-5 xl:space-y-0">
