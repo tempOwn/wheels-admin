@@ -107,7 +107,7 @@ export default function Login() {
                 </div>
               </div>
               <button
-                className="w-full rounded-sm bg-wheels-primary px-10 py-4 text-white"
+                className={`${validation ? "bg-white text-wheels-primary" : "bg-wheels-primary text-white"} text-semibold w-full rounded-lg border-[1px] border-wheels-primary px-10 py-4`}
                 type="submit">
                 Sign in
               </button>
