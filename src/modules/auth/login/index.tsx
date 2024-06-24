@@ -50,7 +50,7 @@ export default function Login() {
 
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="mx-auto mt-10 flex w-full max-w-96 flex-col items-center justify-center">
+          className="mx-auto mt-10 flex w-full max-w-96 flex-col items-center justify-center xl:max-w-md">
           <div className="flex w-full flex-col">
             <label className="flex w-full flex-col items-start space-y-1">
               <span className="text-sm text-wheels-grey">Email Address</span>

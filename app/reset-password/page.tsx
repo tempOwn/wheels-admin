@@ -1,4 +1,4 @@
-import { ResetPassword } from "@/src/modules/auth/reset-password/ResetPassword";
+import { ResetPassword } from "@/src/modules/auth/reset-password";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
