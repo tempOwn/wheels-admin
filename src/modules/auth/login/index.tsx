@@ -4,6 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { loginFormSchema } from "../formSchema";
+import { useState } from "react";
+import OpenEyeIcon from "@/src/components/icons/OpenEyeIcon";
+import ClosedEyeIcon from "@/src/components/icons/ClosedEyeIcon";
 
 export default function Login() {
   const {
@@ -17,6 +20,11 @@ export default function Login() {
       password: "",
     },
   });
+
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  };
 
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     console.log(values);
@@ -43,12 +51,17 @@ export default function Login() {
 
         <label className="mb-2 mt-5 flex w-full flex-col items-start space-y-2">
           <span className="text-sm text-wheels-grey">Password</span>
-          <input
-            {...register("password")}
-            className="w-full rounded-lg border border-wheels-border bg-white p-3 text-sm outline-none focus:border-wheels-primary"
-            type="password"
-            placeholder="Enter Password"
-          />
+          <div className="flex w-full items-center space-x-2 rounded-lg border border-wheels-border bg-white p-3 focus:border-wheels-primary">
+            <input
+              {...register("password")}
+              className="w-full bg-white text-sm outline-none"
+              type={isVisible ? "text" : "password"}
+              placeholder="Enter Password"
+            />
+            <span onClick={toggleVisibility}>
+              {isVisible ? <OpenEyeIcon /> : <ClosedEyeIcon />}
+            </span>
+          </div>
           {errors.password && (
             <span className="text-xs text-red-500">
               {errors.password.message}
