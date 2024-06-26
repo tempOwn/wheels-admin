@@ -4,9 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { loginFormSchema } from "../formSchema";
-import { useState } from "react";
-import OpenEyeIcon from "@/src/components/icons/OpenEyeIcon";
-import ClosedEyeIcon from "@/src/components/icons/ClosedEyeIcon";
+import PasswordInput from "@/src/components/core/password-input";
+import FormButton from "@/src/components/core/button";
 
 export default function Login() {
   const {
@@ -20,11 +19,6 @@ export default function Login() {
       password: "",
     },
   });
-
-  const [isVisible, setIsVisible] = useState(false);
-  const toggleVisibility = () => {
-    setIsVisible(!isVisible);
-  };
 
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     console.log(values);
@@ -48,27 +42,18 @@ export default function Login() {
             <span className="text-xs text-red-500">{errors.email.message}</span>
           )}
         </label>
-
-        <label className="mb-2 mt-5 flex w-full flex-col items-start space-y-2">
-          <span className="text-sm text-wheels-grey">Password</span>
-          <div className="flex w-full items-center space-x-2 rounded-lg border border-wheels-border bg-white p-3 focus:border-wheels-primary">
-            <input
-              {...register("password")}
-              className="w-full bg-white text-sm outline-none"
-              type={isVisible ? "text" : "password"}
-              placeholder="Enter Password"
-            />
-            <span onClick={toggleVisibility}>
-              {isVisible ? <OpenEyeIcon /> : <ClosedEyeIcon />}
-            </span>
-          </div>
+        <div>
+          <PasswordInput
+            {...register("password")}
+            label="Password"
+            placeholder="Enter Password"
+          />
           {errors.password && (
             <span className="text-xs text-red-500">
               {errors.password.message}
             </span>
           )}
-        </label>
-
+        </div>
         <Link
           href="/forgot-password"
           className="ml-auto text-sm text-wheels-grey">
@@ -86,11 +71,7 @@ export default function Login() {
           <span className="font-medium text-wheels-grey-3">Privacy Policy</span>
         </p>
 
-        <button
-          className="w-full rounded-lg border border-wheels-primary bg-white px-10 py-3 font-semibold transition-all duration-200 ease-in-out hover:bg-wheels-primary hover:text-white"
-          type="submit">
-          Sign in
-        </button>
+        <FormButton>Login</FormButton>
       </div>
     </form>
   );

@@ -3,9 +3,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { resetPasswordFormSchema } from "../formSchema";
-import { useState } from "react";
-import OpenEyeIcon from "@/src/components/icons/OpenEyeIcon";
-import ClosedEyeIcon from "@/src/components/icons/ClosedEyeIcon";
+import PasswordInput from "@/src/components/core/password-input";
+import FormButton from "@/src/components/core/button";
 
 export default function ResetPassword() {
   const {
@@ -20,11 +19,6 @@ export default function ResetPassword() {
       confirmPassword: "",
     },
   });
-
-  const [isVisible, setIsVisible] = useState(false);
-  const toggleVisibility = () => {
-    setIsVisible(!isVisible);
-  };
 
   async function onSubmit(values: z.infer<typeof resetPasswordFormSchema>) {
     console.log(values);
@@ -48,54 +42,34 @@ export default function ResetPassword() {
             <span className="text-xs text-red-500">{errors.code.message}</span>
           )}
         </label>
-
-        <label className="flex w-full flex-col items-start space-y-2">
-          <span className="text-sm text-wheels-grey">Password</span>
-          <div className="flex w-full items-center space-x-2 rounded-lg border border-wheels-border bg-white p-3 focus:border-wheels-primary">
-            <input
-              {...register("password")}
-              className="w-full text-sm outline-none focus:border-wheels-primary"
-              type={isVisible ? "text" : "password"}
-              placeholder="Enter Password"
-            />
-            <span onClick={toggleVisibility}>
-              {isVisible ? <OpenEyeIcon /> : <ClosedEyeIcon />}
-            </span>
-          </div>
+        <div>
+          <PasswordInput
+            {...register("password")}
+            label="Password"
+            placeholder="Enter Password"
+          />
           {errors.password && (
             <span className="text-xs text-red-500">
               {errors.password.message}
             </span>
           )}
-        </label>
-
-        <label className="flex w-full flex-col items-start space-y-2">
-          <span className="text-sm text-wheels-grey">Confirm Password</span>
-          <div className="flex w-full items-center space-x-2 rounded-lg border border-wheels-border bg-white p-3 focus:border-wheels-primary">
-            <input
-              {...register("confirmPassword")}
-              className="w-full text-sm outline-none focus:border-wheels-primary"
-              type={isVisible ? "text" : "password"}
-              placeholder="Enter Password"
-            />
-            <span onClick={toggleVisibility}>
-              {isVisible ? <OpenEyeIcon /> : <ClosedEyeIcon />}
-            </span>
-          </div>
+        </div>
+        <div>
+          <PasswordInput
+            {...register("confirmPassword")}
+            label="Confirm Password"
+            placeholder="Enter Password"
+          />
           {errors.confirmPassword && (
             <span className="text-xs text-red-500">
               {errors.confirmPassword.message}
             </span>
           )}
-        </label>
+        </div>
       </div>
 
-      <div className="mt-20 flex w-full text-sm text-wheels-grey lg:space-y-6">
-        <button
-          className="w-full rounded-lg border border-wheels-primary bg-white px-10 py-3 font-semibold transition-all duration-200 ease-in-out hover:bg-wheels-primary hover:text-white"
-          type="submit">
-          Reset Password
-        </button>
+      <div className="mt-4 flex w-full text-sm text-wheels-grey lg:space-y-6">
+        <FormButton>Reset Password</FormButton>
       </div>
     </form>
   );
