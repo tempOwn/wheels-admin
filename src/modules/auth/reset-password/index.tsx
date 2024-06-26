@@ -3,6 +3,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { resetPasswordFormSchema } from "../formSchema";
+import PasswordInput from "@/src/components/core/password-input";
+import FormButton from "@/src/components/core/button";
 
 export default function ResetPassword() {
   const {
@@ -40,13 +42,10 @@ export default function ResetPassword() {
             <span className="text-xs text-red-500">{errors.code.message}</span>
           )}
         </label>
-
-        <label className="flex w-full flex-col items-start space-y-2">
-          <span className="text-sm text-wheels-grey">Password</span>
-          <input
+        <div>
+          <PasswordInput
             {...register("password")}
-            className="w-full rounded-lg border border-wheels-border bg-white p-3 text-sm outline-none focus:border-wheels-primary"
-            type="password"
+            label="Password"
             placeholder="Enter Password"
           />
           {errors.password && (
@@ -54,14 +53,11 @@ export default function ResetPassword() {
               {errors.password.message}
             </span>
           )}
-        </label>
-
-        <label className="flex w-full flex-col items-start space-y-2">
-          <span className="text-sm text-wheels-grey">Confirm Password</span>
-          <input
+        </div>
+        <div>
+          <PasswordInput
             {...register("confirmPassword")}
-            className="w-full rounded-lg border border-wheels-border bg-white p-3 text-sm outline-none focus:border-wheels-primary"
-            type="password"
+            label="Confirm Password"
             placeholder="Enter Password"
           />
           {errors.confirmPassword && (
@@ -69,15 +65,11 @@ export default function ResetPassword() {
               {errors.confirmPassword.message}
             </span>
           )}
-        </label>
+        </div>
       </div>
 
-      <div className="mt-20 flex w-full text-sm text-wheels-grey lg:space-y-6">
-        <button
-          className="w-full rounded-lg border border-wheels-primary bg-white px-10 py-3 font-semibold transition-all duration-200 ease-in-out hover:bg-wheels-primary hover:text-white"
-          type="submit">
-          Reset Password
-        </button>
+      <div className="mt-4 flex w-full text-sm text-wheels-grey lg:space-y-6">
+        <FormButton>Reset Password</FormButton>
       </div>
     </form>
   );

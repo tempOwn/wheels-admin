@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { loginFormSchema } from "../formSchema";
+import PasswordInput from "@/src/components/core/password-input";
+import FormButton from "@/src/components/core/button";
 
 export default function Login() {
   const {
@@ -40,13 +42,10 @@ export default function Login() {
             <span className="text-xs text-red-500">{errors.email.message}</span>
           )}
         </label>
-
-        <label className="mb-2 mt-5 flex w-full flex-col items-start space-y-2">
-          <span className="text-sm text-wheels-grey">Password</span>
-          <input
+        <div>
+          <PasswordInput
             {...register("password")}
-            className="w-full rounded-lg border border-wheels-border bg-white p-3 text-sm outline-none focus:border-wheels-primary"
-            type="password"
+            label="Password"
             placeholder="Enter Password"
           />
           {errors.password && (
@@ -54,8 +53,7 @@ export default function Login() {
               {errors.password.message}
             </span>
           )}
-        </label>
-
+        </div>
         <Link
           href="/forgot-password"
           className="ml-auto text-sm text-wheels-grey">
@@ -73,11 +71,7 @@ export default function Login() {
           <span className="font-medium text-wheels-grey-3">Privacy Policy</span>
         </p>
 
-        <button
-          className="w-full rounded-lg border border-wheels-primary bg-white px-10 py-3 font-semibold transition-all duration-200 ease-in-out hover:bg-wheels-primary hover:text-white"
-          type="submit">
-          Sign in
-        </button>
+        <FormButton>Login</FormButton>
       </div>
     </form>
   );
