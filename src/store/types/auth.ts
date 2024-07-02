@@ -1,6 +1,14 @@
+import { TUser } from "./user";
+
 export type TLoginDto = {
-  email: string;
+  id: string;
   password: string;
+};
+export type TLoginResponse = {
+  statusCode: number;
+  message: string;
+  success?: boolean;
+  data: TUser;
 };
 export type TResetPasswordDto = {
   email: string;
