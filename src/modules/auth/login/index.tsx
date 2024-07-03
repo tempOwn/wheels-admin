@@ -4,10 +4,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { loginFormSchema } from "../formSchema";
+import { useLoginMutation } from "@/src/store/api/auth";
+import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/src/store/hooks";
+import { setToLocalStorage } from "@/src/lib/storage";
+import { WHEELS_ADMIN_TOKEN, WHEELS_ADMIN_USER } from "@/src/lib/constants";
+import { setCredentials } from "@/src/store/features/authSlice";
+import { handleApiErrors } from "@/src/store/api/helper";
 import PasswordInput from "@/src/components/core/password-input";
 import { Button } from "@/src/components/core/button";
+import LoadingSpinner from "@/src/components/loaders/LoadingSpinner";
+import { cn } from "@/src/lib/utils";
 
 export default function Login() {
+  const [login, { isLoading }] = useLoginMutation();
+
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
   const {
     formState: { errors },
     register,
@@ -15,31 +29,51 @@ export default function Login() {
   } = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      email: "",
+      id: "",
       password: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
-    console.log(values);
-    // TODO: Call api and handle response
+    await login(values)
+      .unwrap()
+      .then((response) => {
+        const user = response.data?.userUID;
+        const token = response.data?.auth_token as string;
+
+        setToLocalStorage(WHEELS_ADMIN_USER, JSON.stringify(user));
+        setToLocalStorage(WHEELS_ADMIN_TOKEN, token);
+
+        dispatch(
+          setCredentials({
+            token,
+            user,
+          }),
+        );
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 500);
+      })
+      .catch((err) => {
+        handleApiErrors(err);
+      });
   }
 
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className=";flex mx-auto w-full max-w-96 flex-col items-center justify-center xl:max-w-md">
+      className="mx-auto flex w-full max-w-96 flex-col items-center justify-center xl:max-w-md">
       <div className="flex w-full flex-col space-y-5">
         <label className="flex w-full flex-col items-start space-y-1">
-          <span className="text-sm text-wheels-grey">Email Address</span>
+          <span className="text-sm text-wheels-grey">User ID</span>
           <input
-            {...register("email")}
+            {...register("id")}
             className="w-full rounded-lg border border-wheels-border bg-white p-3 text-sm outline-none focus:border-wheels-primary"
-            type="email"
-            placeholder="Enter Email Address"
+            type="text"
+            placeholder="Enter User Id"
           />
-          {errors.email && (
-            <span className="text-xs text-red-500">{errors.email.message}</span>
+          {errors.id && (
+            <span className="text-xs text-red-500">{errors.id.message}</span>
           )}
         </label>
 
@@ -74,8 +108,14 @@ export default function Login() {
           <span className="font-medium text-wheels-grey-3">Privacy Policy</span>
         </p>
 
-        <Button size="lg" className="w-full">
-          Login
+        <Button
+          type="submit"
+          size="lg"
+          className={cn("w-full", {
+            "cursor-not-allowed": isLoading,
+          })}
+          disabled={isLoading}>
+          {isLoading ? <LoadingSpinner /> : "Login"}
         </Button>
       </div>
     </form>
