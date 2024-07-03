@@ -6,7 +6,6 @@ const parseJSON = (value: string | null) => {
   try {
     return value ? JSON.parse(value) || "{}" : null;
   } catch (error) {
-    console.error("Invalid JSON:", error);
     return null;
   }
 };
@@ -35,5 +34,6 @@ export const authSlice = createSlice({
     },
   },
 });
+
 export default authSlice.reducer;
 export const { setCredentials, removeCredentials } = authSlice.actions;

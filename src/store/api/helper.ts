@@ -24,6 +24,7 @@ export const handleApiErrors = (err: any, callback?: () => void) => {
 
 const publicUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const mutex = new Mutex();
+
 const baseQuery = fetchBaseQuery({
   baseUrl: publicUrl,
   prepareHeaders: (headers, { getState }) => {
