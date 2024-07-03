@@ -1,5 +1,5 @@
 import DashboardLayout from "@/src/layouts/Dashboard";
-import RouteGuard from "@/src/layouts/route-guard";
+import RouteGuard from "@/src/layouts/RouteGuard";
 
 export default function RootLayout({
   children,
