@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import useOnclickOutside from "react-cool-onclickoutside";
 import Link from "next/link";
 
@@ -17,6 +17,10 @@ import HelpIcon from "../components/icons/HelpIcon";
 import WheelIcon from "../components/icons/WheelIcon";
 import MenuIcon from "../components/icons/MenuIcon";
 import MagnifyingGlassIcon from "../components/icons/MagnifyingGlassIcon";
+import { useAppDispatch } from "../store/hooks";
+import { removeCredentials } from "../store/features/authSlice";
+import { getFromLocalStorage } from "../lib/storage";
+import { WHEELS_ADMIN_TOKEN } from "../lib/constants";
 
 const sidebarLinks = [
   {
@@ -68,7 +72,9 @@ type DashboardLayoutProps = {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [openSidebar, setOpenSidebar] = useState(false);
   const pathname = usePathname();
-
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const token = getFromLocalStorage(WHEELS_ADMIN_TOKEN);
   const inputSearch = useRef<any>(null);
 
   const ref = useOnclickOutside(() => {
@@ -77,7 +83,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const handleLogout = () => {
     //
-    setOpenSidebar(!openSidebar);
+    token && dispatch(removeCredentials());
+    router.push("/");
   };
 
   const handleSidebar = () => {
