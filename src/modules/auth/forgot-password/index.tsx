@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { forgotPasswordFormSchema } from "../formSchema";
-import FormButton from "@/src/components/core/button";
+import { Button } from "@/src/components/core/button";
 
 export default function ForgotPassword() {
   const {
@@ -47,7 +47,9 @@ export default function ForgotPassword() {
       </div>
 
       <div className="mt-20 flex w-full text-sm text-wheels-grey">
-        <FormButton>Submit</FormButton>
+        <Button size="lg" className="w-full">
+          Submit
+        </Button>
       </div>
     </form>
   );

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { loginFormSchema } from "../formSchema";
 import PasswordInput from "@/src/components/core/password-input";
-import FormButton from "@/src/components/core/button";
+import { Button } from "@/src/components/core/button";
 
 export default function Login() {
   const {
@@ -29,7 +29,7 @@ export default function Login() {
     <form
       onSubmit={form.handleSubmit(onSubmit)}
       className=";flex mx-auto w-full max-w-96 flex-col items-center justify-center xl:max-w-md">
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col space-y-5">
         <label className="flex w-full flex-col items-start space-y-1">
           <span className="text-sm text-wheels-grey">Email Address</span>
           <input
@@ -42,6 +42,7 @@ export default function Login() {
             <span className="text-xs text-red-500">{errors.email.message}</span>
           )}
         </label>
+
         <div>
           <PasswordInput
             {...register("password")}
@@ -54,6 +55,7 @@ export default function Login() {
             </span>
           )}
         </div>
+
         <Link
           href="/forgot-password"
           className="ml-auto text-sm text-wheels-grey">
@@ -65,13 +67,16 @@ export default function Login() {
         <p className="text-center">
           You acknowledge that you read and agree to our
           <span className="font-medium text-wheels-grey-3">
+            {" "}
             Terms of Service
           </span>{" "}
           and our{" "}
           <span className="font-medium text-wheels-grey-3">Privacy Policy</span>
         </p>
 
-        <FormButton>Login</FormButton>
+        <Button size="lg" className="w-full">
+          Login
+        </Button>
       </div>
     </form>
   );

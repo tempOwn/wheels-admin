@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { resetPasswordFormSchema } from "../formSchema";
 import PasswordInput from "@/src/components/core/password-input";
-import FormButton from "@/src/components/core/button";
+import { Button } from "@/src/components/core/button";
 
 export default function ResetPassword() {
   const {
@@ -42,6 +42,7 @@ export default function ResetPassword() {
             <span className="text-xs text-red-500">{errors.code.message}</span>
           )}
         </label>
+
         <div>
           <PasswordInput
             {...register("password")}
@@ -54,6 +55,7 @@ export default function ResetPassword() {
             </span>
           )}
         </div>
+
         <div>
           <PasswordInput
             {...register("confirmPassword")}
@@ -68,8 +70,10 @@ export default function ResetPassword() {
         </div>
       </div>
 
-      <div className="mt-4 flex w-full text-sm text-wheels-grey lg:space-y-6">
-        <FormButton>Reset Password</FormButton>
+      <div className="mt-10 flex w-full text-sm text-wheels-grey lg:space-y-6">
+        <Button size="lg" className="w-full">
+          Reset Password
+        </Button>
       </div>
     </form>
   );
