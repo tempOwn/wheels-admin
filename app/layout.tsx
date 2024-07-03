@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/src/components/core/toast";
+import ReduxProviderWrapper from "@/src/store/Provider";
 
 export const metadata: Metadata = {
   title: "Wheels Admin",
@@ -15,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <ReduxProviderWrapper>{children}</ReduxProviderWrapper>
         <Toaster
           richColors
           position="top-right"
