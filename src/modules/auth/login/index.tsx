@@ -35,8 +35,8 @@ export default function Login() {
     await login({ ...values })
       .unwrap()
       .then((response) => {
-        const user = response.data?.user;
-        const token = response.data?.accessToken as string;
+        const user = response.data?.userUID;
+        const token = response.data?.auth_token as string;
         console.log(response);
         setToLocalStorage(WHEELS_ADMIN_USER, JSON.stringify(user));
         setToLocalStorage(WHEELS_ADMIN_TOKEN, token);

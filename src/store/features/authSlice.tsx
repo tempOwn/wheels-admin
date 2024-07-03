@@ -2,13 +2,18 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { WHEELS_ADMIN_USER, WHEELS_ADMIN_TOKEN } from "@/src/lib/constants";
 import { getFromLocalStorage } from "@/src/lib/storage";
 
+const parseJSON = (value: string | null) => {
+  try {
+    return value ? JSON.parse(value) || "{}" : null;
+  } catch (error) {
+    console.error("Invalid JSON:", error);
+    return null;
+  }
+};
+
 const initialState = {
-  user: getFromLocalStorage(WHEELS_ADMIN_USER)
-    ? JSON.parse(getFromLocalStorage(WHEELS_ADMIN_USER) || "{}")
-    : null,
-  token: getFromLocalStorage(WHEELS_ADMIN_TOKEN)
-    ? JSON.parse(getFromLocalStorage(WHEELS_ADMIN_TOKEN) || "{}")
-    : null,
+  user: parseJSON(getFromLocalStorage(WHEELS_ADMIN_USER)),
+  token: parseJSON(getFromLocalStorage(WHEELS_ADMIN_TOKEN)),
 };
 
 export const authSlice = createSlice({
