@@ -1,9 +1,9 @@
 "use client";
+import { useState } from "react";
 import * as React from "react";
 import { cn } from "@/src/lib/utils";
 import ClosedEyeIcon from "@/src/components/icons/ClosedEyeIcon";
 import OpenEyeIcon from "@/src/components/icons/OpenEyeIcon";
-import { useState } from "react";
 
 type PasswordInputProps = {
   label?: string | React.ReactNode;
