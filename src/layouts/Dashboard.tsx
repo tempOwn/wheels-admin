@@ -21,8 +21,7 @@ import { useAppDispatch } from "../store/hooks";
 import { removeCredentials } from "../store/features/authSlice";
 import { getFromLocalStorage } from "../lib/storage";
 import { WHEELS_ADMIN_TOKEN } from "../lib/constants";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../store/selectors";
+import { getUserInfo } from "../lib/userInfo";
 
 const sidebarLinks = [
   {
@@ -77,19 +76,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const token = getFromLocalStorage(WHEELS_ADMIN_TOKEN);
-  const currentUser = useSelector(selectCurrentUser);
 
-  const firstName =
-    currentUser &&
-    currentUser?.firstName[0].toUpperCase() + currentUser?.firstName.slice(1);
-
-  const lastName =
-    currentUser &&
-    currentUser?.lastName[0].toUpperCase() + currentUser?.lastName.slice(1);
-
-  const userName = firstName + " " + lastName;
-
-  const userInitials = firstName && firstName[0];
+  const fullName = getUserInfo("fullName");
+  const userInitials = fullName && fullName[0];
 
   const inputSearch = useRef<any>(null);
 
@@ -169,7 +158,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
             <div className="lg:flex lg:items-center lg:space-x-3">
               <p className="hidden text-15 font-medium text-wheels-primary lg:block">
-                {userName}
+                {fullName}
               </p>
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-wheels-primary">
                 <span className="text-[13px] font-semibold leading-[0px] text-white">
