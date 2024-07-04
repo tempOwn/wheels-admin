@@ -17,6 +17,8 @@ import TextInput from "@/src/components/core/text-input";
 import { Button } from "@/src/components/core/button";
 
 type TeamMemberFormProps = {
+  type: "add" | "edit";
+  member: Record<string, any>;
   close: () => void;
 };
 
@@ -53,15 +55,20 @@ const formSchema = z
     }
   });
 
-export default function TeamMemberForm({ close }: TeamMemberFormProps) {
+export default function TeamMemberForm({
+  close,
+  type,
+  member,
+}: TeamMemberFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    // TODO - Finish this alongside the api integration
     defaultValues: {
       firstName: "",
       lastName: "",
-      email: "",
-      address: "",
-      phone: "",
+      email: member.email || "",
+      address: member.address || "",
+      phone: member.phone || "",
       nin: "",
     },
   });
@@ -78,7 +85,8 @@ export default function TeamMemberForm({ close }: TeamMemberFormProps) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex h-full flex-col justify-between">
         <h2 className="border-b border-[rgba(207,207,207,1)] px-5 pb-2 text-lg font-medium text-wheels-primary lg:text-xl">
-          Add New Team Member
+          {type === "add" ? "Add New" : "Edit"}
+          Team Member
         </h2>
 
         <ScrollArea className="h-full w-full px-5 py-8">
