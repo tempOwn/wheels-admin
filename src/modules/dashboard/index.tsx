@@ -1,4 +1,5 @@
 "use client";
+import { useUserInfo } from "@/src/lib/userInfo";
 import { format } from "date-fns";
 import CalendarIcon from "@/src/components/icons/CalendarIcon";
 import StatCard from "./components/StatCard";
@@ -9,7 +10,6 @@ import ActivityLogCard from "./components/ActivityLogCard";
 import TopSellingSystems from "./components/TopSellingSystems";
 import RentalGraph from "./components/RentalGraph";
 import type { StatsCardProps } from "./components/StatCard";
-import { getUserInfo } from "@/src/lib/userInfo";
 
 const stats: StatsCardProps[] = [
   {
@@ -51,7 +51,8 @@ const stats: StatsCardProps[] = [
 ];
 
 export default function Dashboard() {
-  const firstName = getUserInfo("firstName");
+  const firstName = useUserInfo("firstName");
+
   return (
     <div className="space-y-8">
       <div className="space-y-5 sm:flex sm:items-end sm:justify-between sm:space-x-3 sm:space-y-0">

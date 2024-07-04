@@ -13,6 +13,7 @@ export const removeFromLocalStorage = (key: string) => {
     return window.localStorage.removeItem(key);
   }
 };
+
 export const setToLocalStorage = (key: string, value: string) => {
   if (!key || typeof window === "undefined") {
     return "";
