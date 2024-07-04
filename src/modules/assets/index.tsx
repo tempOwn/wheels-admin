@@ -26,10 +26,10 @@ import TableHead from "@/src/components/core/table-head";
 import DataTable from "@/src/components/core/data-table";
 import Sheet from "@/src/components/core/sheet";
 import AssetCard from "./components/AssetCard";
-import StatusTag, { statuses } from "./components/StatusTag";
+import StatusTag, { statuses } from "@/src/components/common/StatusTag";
 import { assets } from "@/src/data/assets";
-import type { TAsset, TAssetStatus, TData } from "./types";
 import AddAsset from "./components/AddAsset";
+import type { TAsset, TAssetStatus, TData } from "./types";
 
 const columns: ColumnDef<TAsset>[] = [
   {
@@ -80,7 +80,7 @@ const columns: ColumnDef<TAsset>[] = [
               />
             </div>
           )}
-          <span className="text-sm font-medium text-[#00080C]">{id}</span>
+          <span className="text-sm font-medium text-wheels-primary">{id}</span>
         </div>
       );
     },
@@ -170,7 +170,7 @@ export default function Assets() {
     setData2({ ...data2, openMoreDropdown: false });
   }
 
-  function exportAssets() {
+  function handleExportAssets() {
     handleApiSuccessResponse({
       message: "Assets exported successfully",
     });
@@ -178,7 +178,7 @@ export default function Assets() {
 
   return (
     <>
-      <div>
+      <section className="p-5">
         <div className="flex items-center">
           {[
             { name: "All Assets", count: 690, value: "all" },
@@ -279,11 +279,7 @@ export default function Assets() {
                     <DropdownMenuPortal>
                       <DropdownMenuSubContent className="relative left-5 space-y-4 px-3 py-4 shadow-[0px_32px_64px_-12px_rgba(16,24,40,0.2)]">
                         {statuses.map((status, index) => (
-                          <StatusTag
-                            key={index}
-                            status={status}
-                            onClick={updateAssetStatus}
-                          />
+                          <StatusTag key={index} status={status} />
                         ))}
                       </DropdownMenuSubContent>
                     </DropdownMenuPortal>
@@ -292,7 +288,7 @@ export default function Assets() {
               </DropdownMenu>
 
               <button
-                onClick={exportAssets}
+                onClick={handleExportAssets}
                 className="hidden items-center space-x-2.5 rounded-lg border border-wheels-grey-4 px-4 py-2.5 sm:flex">
                 <SheetIcon />
                 <span className="text-sm font-medium text-wheels-primary">
@@ -328,7 +324,7 @@ export default function Assets() {
             )}
           </div>
         </div>
-      </div>
+      </section>
 
       <Sheet
         open={data2.openSheet}

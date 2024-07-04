@@ -51,7 +51,7 @@ const stats: StatsCardProps[] = [
 
 export default function Dashboard() {
   return (
-    <div className="space-y-8">
+    <section className="space-y-8 p-5">
       <div className="space-y-5 sm:flex sm:items-end sm:justify-between sm:space-x-3 sm:space-y-0">
         <div>
           <h1 className="mb-2 text-xl font-medium sm:text-2xl lg:text-3xl">
@@ -88,6 +88,6 @@ export default function Dashboard() {
           <TopSellingSystems />
         </div>
       </div>
-    </div>
+    </section>
   );
 }
