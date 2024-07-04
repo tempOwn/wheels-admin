@@ -1,3 +1,4 @@
+import { TApiResponse } from "./generic";
 import { TUser } from "./user";
 
 export type TLoginDto = {
@@ -5,12 +6,13 @@ export type TLoginDto = {
   password: string;
 };
 
-export type TLoginResponse = {
+export type TLoginResponse = TApiResponse<{
   statusCode: number;
   message: string;
   success?: boolean;
-  data: TUser;
-};
+  auth_token: string;
+  user?: TUser;
+}>;
 
 export type TResetPasswordDto = {
   email: string;

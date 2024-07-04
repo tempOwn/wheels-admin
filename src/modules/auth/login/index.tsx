@@ -15,6 +15,7 @@ import PasswordInput from "@/src/components/core/password-input";
 import { Button } from "@/src/components/core/button";
 import LoadingSpinner from "@/src/components/loaders/LoadingSpinner";
 import { cn } from "@/src/lib/utils";
+import { TLoginResponse } from "@/src/store/types/auth";
 
 export default function Login() {
   const [login, { isLoading }] = useLoginMutation();
@@ -37,10 +38,9 @@ export default function Login() {
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     await login(values)
       .unwrap()
-      .then((response) => {
-        const user = response.data?.userUID;
-        const token = response.data?.auth_token as string;
-
+      .then((response: TLoginResponse) => {
+        const user = response.data;
+        const token = user?.auth_token as string;
         setToLocalStorage(WHEELS_ADMIN_USER, JSON.stringify(user));
         setToLocalStorage(WHEELS_ADMIN_TOKEN, token);
 

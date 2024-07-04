@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { useUserInfo } from "../lib/userInfo";
+import { usePathname, useRouter } from "next/navigation";
 import useOnclickOutside from "react-cool-onclickoutside";
 import Link from "next/link";
 
@@ -17,6 +18,10 @@ import HelpIcon from "../components/icons/HelpIcon";
 import WheelIcon from "../components/icons/WheelIcon";
 import MenuIcon from "../components/icons/MenuIcon";
 import MagnifyingGlassIcon from "../components/icons/MagnifyingGlassIcon";
+import { useAppDispatch } from "../store/hooks";
+import { removeCredentials } from "../store/features/authSlice";
+import { removeFromLocalStorage } from "../lib/storage";
+import { WHEELS_ADMIN_TOKEN, WHEELS_ADMIN_USER } from "../lib/constants";
 
 const sidebarLinks = [
   {
@@ -68,6 +73,11 @@ type DashboardLayoutProps = {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [openSidebar, setOpenSidebar] = useState(false);
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const fullName = useUserInfo("fullName");
+  const userInitials = fullName && fullName[0];
 
   const inputSearch = useRef<any>(null);
 
@@ -76,8 +86,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   });
 
   const handleLogout = () => {
-    //
     setOpenSidebar(!openSidebar);
+    dispatch(removeCredentials());
+
+    [WHEELS_ADMIN_TOKEN, WHEELS_ADMIN_USER].forEach((item) => {
+      removeFromLocalStorage(item);
+    });
+
+    router.push("/");
   };
 
   const handleSidebar = () => {
@@ -145,11 +161,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
             <div className="lg:flex lg:items-center lg:space-x-3">
               <p className="hidden text-15 font-medium text-wheels-primary lg:block">
-                Daniel Benson
+                {fullName}
               </p>
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-wheels-primary">
                 <span className="text-[13px] font-semibold leading-[0px] text-white">
-                  A
+                  {userInitials}
                 </span>
               </div>
             </div>

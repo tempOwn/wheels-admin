@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { WHEELS_ADMIN_USER, WHEELS_ADMIN_TOKEN } from "@/src/lib/constants";
 import { getFromLocalStorage } from "@/src/lib/storage";
+import { TUser } from "../types/user";
 
 const parseJSON = (value: string | null) => {
   try {
@@ -10,7 +11,12 @@ const parseJSON = (value: string | null) => {
   }
 };
 
-const initialState = {
+type AuthState = {
+  user: null | TUser;
+  token: null | string;
+};
+
+const initialState: AuthState = {
   user: parseJSON(getFromLocalStorage(WHEELS_ADMIN_USER)),
   token: parseJSON(getFromLocalStorage(WHEELS_ADMIN_TOKEN)),
 };
@@ -21,16 +27,14 @@ export const authSlice = createSlice({
   reducers: {
     setCredentials: (
       state,
-      {
-        payload: { user, token },
-      }: PayloadAction<{ user: string; token: string }>,
+      { payload: { user, token } }: PayloadAction<{ user: any; token: string }>,
     ) => {
       state.user = user;
       state.token = token;
     },
     removeCredentials: (state) => {
-      state.user = "";
-      state.token = "";
+      state.user = null;
+      state.token = null;
     },
   },
 });
