@@ -15,6 +15,4 @@ export type TUser = {
   updatedAt: string;
   userUID: string;
   _id: string;
-  accessToken: string;
-  refreshToken: string;
 };

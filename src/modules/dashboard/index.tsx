@@ -9,6 +9,8 @@ import ActivityLogCard from "./components/ActivityLogCard";
 import TopSellingSystems from "./components/TopSellingSystems";
 import RentalGraph from "./components/RentalGraph";
 import type { StatsCardProps } from "./components/StatCard";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/src/store/selectors";
 
 const stats: StatsCardProps[] = [
   {
@@ -50,12 +52,18 @@ const stats: StatsCardProps[] = [
 ];
 
 export default function Dashboard() {
+  const currentUser = useSelector(selectCurrentUser);
+
+  const firstName =
+    currentUser &&
+    currentUser?.firstName[0].toUpperCase() + currentUser?.firstName.slice(1);
+
   return (
     <div className="space-y-8">
       <div className="space-y-5 sm:flex sm:items-end sm:justify-between sm:space-x-3 sm:space-y-0">
         <div>
           <h1 className="mb-2 text-xl font-medium sm:text-2xl lg:text-3xl">
-            Welcome back, Daniel 👋
+            Welcome back, {firstName} 👋
           </h1>
           <span className="text-sm">See detailed analytics</span>
         </div>
