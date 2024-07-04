@@ -22,6 +22,7 @@ import Sheet from "@/src/components/core/sheet";
 import TeamMemberForm from "./components/TeamMemberForm";
 import { Button } from "@/src/components/core/button";
 import TeamMemberDetails from "./components/TeamMemberDetails";
+import Pagination from "@/src/components/common/Pagination";
 import type { TMember, TData, TData2 } from "./types";
 
 const backgroundColors = ["#FF9797", "#E3B439", "#32BA50", "#97AEFF"];
@@ -457,6 +458,16 @@ export default function Team() {
             </div>
           )}
         </div>
+
+        <Pagination
+          initialPage={data.page ? data.page - 1 : 0}
+          pageCount={10} // TODO - replace with actual data from api
+          totalDataLength={200} // TODO - replace with actual data from api
+          currentRange={{ start: 1, end: 10 }} // TODO - replace with actual data from api
+          onPageChange={(page) => {
+            handleDataChange("page", page + 1);
+          }}
+        />
       </section>
 
       <Sheet

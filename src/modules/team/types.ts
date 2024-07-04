@@ -1,5 +1,6 @@
 export type TData = {
   view: "list" | "grid";
+  page?: number;
 };
 
 export type TData2 = {
