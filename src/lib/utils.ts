@@ -35,3 +35,10 @@ export function getAssetType(type: TAsset["type"]) {
       return "Van";
   }
 }
+
+export function getIntials(name: string) {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("");
+}
