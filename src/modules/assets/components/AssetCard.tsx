@@ -1,6 +1,6 @@
 import Image from "next/image";
 import UserIcon from "@/src/components/icons/UserIcon";
-import StatusTag from "./StatusTag";
+import StatusTag from "@/src/components/common/StatusTag";
 import { getAssetImage } from "@/src/lib/utils";
 import type { AssetCardProps } from "../types";
 

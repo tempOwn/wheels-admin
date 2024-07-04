@@ -47,7 +47,7 @@ const sidebarLinks = [
   {
     label: "Team",
     icon: <UsersIcon />,
-    href: "/",
+    href: "/team",
   },
   {
     label: "Performance",
@@ -184,9 +184,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </div>
 
-        <main className="bg-[#F1F5F8] p-5 xl:px-10 xl:py-8 3xl:px-16 3xl:py-10">
-          {children}
-        </main>
+        <main className="bg-[#F1F5F8]">{children}</main>
       </div>
     </div>
   );
