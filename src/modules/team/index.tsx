@@ -342,7 +342,7 @@ export default function Team() {
 
             <div className="mt-5 inline-flex items-center space-x-1 rounded-sm bg-white p-1 text-xs font-medium uppercase text-wheels-grey">
               <UserIcon className="h-3 w-3" />
-              <span>CHARGE AGENT: 25</span>
+              <span>Team Members Count: 25</span>
             </div>
           </div>
 
