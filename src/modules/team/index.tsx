@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { parseAsJson, useQueryState } from "nuqs";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -10,7 +10,10 @@ import MagnifyingGlassIcon from "@/src/components/icons/MagnifyingGlassIcon";
 import UserIcon from "@/src/components/icons/UserIcon";
 import DropdownMenu from "@/src/components/core/dropdown-menu";
 import SheetIcon from "@/src/components/icons/SheetIcon";
-import { handleApiSuccessResponse } from "@/src/store/api/helper";
+import {
+  handleApiErrors,
+  handleApiSuccessResponse,
+} from "@/src/store/api/helper";
 import PlusIcon from "@/src/components/icons/PlusIcon";
 import FilterLinesIcon from "@/src/components/icons/FilterLinesIcon";
 import DataTable from "@/src/components/core/data-table";
@@ -24,162 +27,19 @@ import { Button } from "@/src/components/core/button";
 import TeamMemberDetails from "./components/TeamMemberDetails";
 import Pagination from "@/src/components/common/Pagination";
 import type { TMember, TData, TData2 } from "./types";
+import { useGetAllTeamMembersMutation } from "@/src/store/api/team";
+import { useAppDispatch } from "@/src/store/hooks";
+import { getAllTeamMembers } from "@/src/store/features/teamSlice";
+import { TTeamMember, TTeamMembers } from "@/src/store/types/team";
+import { selectTeamMembers } from "@/src/store/selectors";
+import { useSelector } from "react-redux";
 
 const backgroundColors = ["#FF9797", "#E3B439", "#32BA50", "#97AEFF"];
-const members: TMember[] = [
-  {
-    name: "Daniel Oluwaseun",
-    role: "Super Admin",
-    id: "RFS-23409111",
-    dateCreated: new Date(),
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "John Doe",
-    role: "Admin",
-    id: "RFS-23409112",
-    dateCreated: new Date(),
-    status: "inactive",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Jane Matt",
-    role: "Field Staff",
-    id: "RFS-23409113",
-    dateCreated: new Date(),
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Doe John",
-    role: "Gateman",
-    id: "RFS-23409114",
-    dateCreated: new Date(),
-    status: "inactive",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Babalola John",
-    role: "Charge Agent",
-    id: "RFS-23409115",
-    dateCreated: new Date(),
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Daniel Oluwaseun",
-    role: "Super Admin",
-    id: "RFS-23409116",
-    dateCreated: new Date(),
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "John Doe",
-    role: "Admin",
-    id: "RFS-23409117",
-    dateCreated: new Date(),
-    status: "inactive",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Jane Matt",
-    role: "Field Staff",
-    id: "RFS-23409118",
-    dateCreated: new Date(),
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Doe John",
-    role: "Gateman",
-    id: "RFS-23409119",
-    dateCreated: new Date(),
-    status: "inactive",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Babalola John",
-    role: "Charge Agent",
-    id: "RFS-23409110",
-    dateCreated: new Date(),
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Daniel Oluwaseun",
-    role: "Super Admin",
-    id: "RFS-23409199",
-    dateCreated: new Date(),
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "John Doe",
-    role: "Admin",
-    id: "RFS-23409188",
-    dateCreated: new Date(),
-    status: "inactive",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Jane Matt",
-    role: "Field Staff",
-    id: "RFS-23409177",
-    dateCreated: new Date(),
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Doe John",
-    role: "Gateman",
-    id: "RFS-23409166",
-    dateCreated: new Date(),
-    status: "inactive",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Babalola John",
-    role: "Charge Agent",
-    id: "RFS-23409155",
-    dateCreated: new Date(),
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-];
-
 export default function Team() {
+  const teamMembers = useSelector(selectTeamMembers);
+  const members = teamMembers ? teamMembers.docs : [];
+  console.log("team", members);
+
   const [data, setData] = useQueryState<TData>(
     "data",
     parseAsJson<TData>().withDefault({
@@ -195,20 +55,20 @@ export default function Team() {
     member: {},
   });
 
-  const columns: ColumnDef<TMember>[] = [
+  const columns: ColumnDef<TTeamMember>[] = [
     {
       accessorKey: "name",
       header: () => <TableHead name="Name" />,
       cell: ({ row }) => {
-        const { name } = row.original;
+        const { firstName } = row.original;
 
         return (
           <div className="flex items-center space-x-2">
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#F1F5F8] text-wheels-primary">
-              {getIntials(name)}
+              {getIntials(firstName)}
             </div>
             <span className="text-sm font-medium text-wheels-primary">
-              {name}
+              {firstName}
             </span>
           </div>
         );
@@ -236,11 +96,11 @@ export default function Team() {
       accessorKey: "dateCreated",
       header: () => <TableHead name="Created" />,
       cell: ({ row }) => {
-        const { dateCreated } = row.original;
+        const { createdAt } = row.original;
 
         return (
           <span className="text-sm text-wheels-primary">
-            {format(dateCreated, "MMM d, yyyy h:mma")}
+            {format(createdAt, "MMM d, yyyy h:mma")}
           </span>
         );
       },
@@ -320,6 +180,28 @@ export default function Team() {
     setData2({ ...data2, openSheet: true, sheetType });
   }
 
+  const [getMembers, isLoading] = useGetAllTeamMembersMutation();
+  const dispatch = useAppDispatch();
+
+  async function getAllMembers() {
+    try {
+      await getMembers("")
+        .unwrap()
+        .then((response) => {
+          const teamData: TTeamMembers = response.data;
+          console.log(response);
+
+          dispatch(getAllTeamMembers({ teamMembers: teamData }));
+        });
+    } catch (err) {
+      handleApiErrors(err);
+      console.log(err);
+    }
+  }
+  useEffect(() => {
+    getAllMembers();
+  }, []);
+
   return (
     <>
       <section className="bg-white p-5">
@@ -347,7 +229,7 @@ export default function Team() {
           </div>
 
           <div className="hidden lg:flex lg:items-center">
-            {members.slice(0, 4).map(({ name }, index) => (
+            {members.slice(0, 4).map(({ fullName }, index) => (
               <div
                 key={index}
                 style={{
@@ -356,7 +238,7 @@ export default function Team() {
                 }}
                 className="flex h-10 w-10 items-center justify-center rounded-full">
                 <span className="text-base font-semibold text-white">
-                  {getIntials(name)}
+                  {getIntials(fullName)}
                 </span>
               </div>
             ))}
@@ -446,7 +328,7 @@ export default function Team() {
               data={members}
               columns={columns}
               rowSelection={data2.rowSelection}
-              setRowSelection={(value: TMember) =>
+              setRowSelection={(value: TTeamMember) =>
                 handleData2Change("rowSelection", value)
               }
             />

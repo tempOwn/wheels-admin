@@ -3,20 +3,17 @@ import { baseQueryWithReauth } from "./helper";
 import {
   TAddTeamMemberDto,
   TAddTeamMemberResponse,
-  TGetTeamMemberById,
-  TGetTeamMemberByIdResponse,
+  TGetAllTeamMembersResponse,
 } from "../types/team";
+import { getAllTeamMembers } from "../features/teamSlice";
 
 export const teamApi = createApi({
   reducerPath: "teamApi",
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
-    getTeamMemberById: builder.query<
-      TGetTeamMemberByIdResponse,
-      TGetTeamMemberById
-    >({
-      query: (id) => ({
-        url: `/admin-teams/${id}`,
+    getAllTeamMembers: builder.mutation<TGetAllTeamMembersResponse, any>({
+      query: () => ({
+        url: "/admin-teams",
         method: "GET",
       }),
     }),
@@ -30,4 +27,5 @@ export const teamApi = createApi({
   }),
 });
 
-export const { useGetTeamMemberByIdQuery, useAddTeamMemberMutation } = teamApi;
+export const { useGetAllTeamMembersMutation, useAddTeamMemberMutation } =
+  teamApi;

@@ -1,8 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  TGetAllTeamMembersResponse,
+  TTeamMember,
+  TTeamMembers,
+} from "../types/team";
 
-const initialState = {
+interface TeamState {
+  id: string;
+  teamMembers: TTeamMembers | null;
+}
+const initialState: TeamState = {
   id: "",
-  searchQuery: "",
+  teamMembers: null,
 };
 
 export const teamSlice = createSlice({
@@ -15,12 +24,18 @@ export const teamSlice = createSlice({
     ) => {
       state.id = id;
     },
-    searchTeamMembers: (
+    getAllTeamMembers: (
       state,
-      { payload: { searchQuery } }: PayloadAction<{ searchQuery: string }>,
-    ) => {},
+      {
+        payload: { teamMembers },
+      }: PayloadAction<{
+        teamMembers: null | TTeamMembers;
+      }>,
+    ) => {
+      state.teamMembers = teamMembers;
+    },
   },
 });
 
 export default teamSlice.reducer;
-export const { getTeamMemberById, searchTeamMembers } = teamSlice.actions;
+export const { getTeamMemberById, getAllTeamMembers } = teamSlice.actions;

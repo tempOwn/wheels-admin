@@ -1,30 +1,65 @@
-import { type } from "os";
-import { TApiResponse } from "./generic";
-
+export interface TApiTeamsResponse<T> {
+  data: T;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  limit: number;
+  nextPage: number | null;
+  offset: number;
+  page: number;
+  pagingCounter: number;
+  prevPage: number | null;
+  totalDocs: number;
+  totalPages: number;
+  message: string;
+  statusCode: number;
+  success: boolean;
+}
+export type TTeamMembers = {
+  docs: TTeamMember[];
+};
 export type TAddTeamMemberDto = {
   firstName: string;
   lastName: string;
-  address: string;
+  role: string;
   email: string;
+  address: string;
   phoneNumber: string;
   gender: string;
-  role: string;
   nin: string;
 };
-export type TAddTeamMemberResponse = TApiResponse<{}>;
 
-export type TGetTeamMemberById = {
+export type TAddTeamMemberResponse = {
+  status: number;
+  message: {
+    message: [string];
+    error: string;
+    statusCode: number;
+  };
+  timeStamp: string;
+};
+
+export type TTeamMember = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  email: string;
+  address: string;
+  status:
+    | "active"
+    | "inactive"
+    | "rented-out"
+    | "returned"
+    | "available"
+    | "faulty";
+  phoneNumber: string;
+  gender: string;
+  createdAt: string;
+  updatedAt: string;
+  userUID: string;
+  phoneOrEmailVerified: boolean;
+  fullName: string;
   id: string;
 };
-export type TGetTeamMemberByIdResponse = TApiResponse<{}>;
 
-export type TGetAllTeamMembers = {
-  search: string;
-  sort: Array<[string]>;
-  populate: Array<[string]>;
-  offSet: number;
-  limit: number;
-  page: number;
-  role: string;
-  status: string;
-};
+export type TGetAllTeamMembersResponse = TApiTeamsResponse<TTeamMembers>;
