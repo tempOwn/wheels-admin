@@ -33,7 +33,7 @@ const formSchema = z
     phoneNumber: z
       .string()
       .min(11, { message: "Required" })
-      .max(11, { message: "Required" }),
+      .max(14, { message: "Required" }),
     role: z.enum([
       "admin",
       "super_admin",
@@ -49,11 +49,12 @@ const formSchema = z
       .max(11, { message: "Required" }),
   })
   .superRefine((data, ctx) => {
-    if (!/^\d{11}$/.test(data.phoneNumber)) {
+    if (!/^\+\d{1,3}\d{10}$/.test(data.phoneNumber)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Invalid phone number",
-        path: ["phone"],
+        message:
+          'Phone number must contain an international code starting with "+"',
+        path: ["phoneNumber"],
       });
     }
 
@@ -73,13 +74,13 @@ export default function TeamMemberForm({
 }: TeamMemberFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // TODO - Finish this alongside the api integration
+
     defaultValues: {
       firstName: member.firstName || "",
       lastName: member.lastName || "",
       email: member.email || "",
       address: member.address || "",
-      phoneNumber: member.phone || "",
+      phoneNumber: member.phoneNumber || "",
       nin: member.nin || "",
       role: member.role || "",
       gender: member.gender || "",

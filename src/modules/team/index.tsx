@@ -189,13 +189,11 @@ export default function Team() {
         .unwrap()
         .then((response) => {
           const teamData: TTeamMembers = response.data;
-          console.log(response);
 
           dispatch(getAllTeamMembers({ teamMembers: teamData }));
         });
     } catch (err) {
       handleApiErrors(err);
-      console.log(err);
     }
   }
   useEffect(() => {
