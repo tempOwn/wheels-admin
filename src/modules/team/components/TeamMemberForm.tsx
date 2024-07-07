@@ -58,7 +58,7 @@ const formSchema = z
       });
     }
 
-    if (!/^\d{11}$/.test(data.nin)) {
+    if (!/^\d{14}$/.test(data.nin)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Invalid NIN",

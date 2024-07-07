@@ -12,7 +12,7 @@ export const store = configureStore({
     [teamApi.reducerPath]: teamApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware),
+    getDefaultMiddleware().concat(authApi.middleware, teamApi.middleware),
 });
 export default store;
 export type AppDispatch = typeof store.dispatch;

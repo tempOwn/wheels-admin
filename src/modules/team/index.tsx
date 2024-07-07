@@ -183,18 +183,28 @@ export default function Team() {
   const [getMembers, isLoading] = useGetAllTeamMembersMutation();
   const dispatch = useAppDispatch();
 
-  async function getAllMembers() {
-    try {
-      await getMembers("")
-        .unwrap()
-        .then((response) => {
-          const teamData: TTeamMembers = response.data;
-
-          dispatch(getAllTeamMembers({ teamMembers: teamData }));
-        });
-    } catch (err) {
-      handleApiErrors(err);
+  const handleSearch = (e: any) => {
+    let search = e.target.value;
+    searchTeamMembers(search);
+  };
+  async function searchTeamMembers(query: string) {
+    const response = await getMembers(query).unwrap();
+    if (response.data) {
+      const searched: TTeamMembers = response.data;
+      console.log("search", searched);
+      dispatch(getAllTeamMembers({ teamMembers: searched }));
+    } else {
+      console.error("No data found");
     }
+  }
+  async function getAllMembers() {
+    await getMembers("")
+      .unwrap()
+      .then((response) => {
+        const teamData: TTeamMembers = response.data;
+
+        dispatch(getAllTeamMembers({ teamMembers: teamData }));
+      });
   }
   useEffect(() => {
     getAllMembers();
@@ -272,6 +282,7 @@ export default function Team() {
               <input
                 type="text"
                 placeholder="Search"
+                onChange={handleSearch}
                 className="h-[42px] w-full rounded-sm border border-wheels-grey-4 pl-10 pr-3 text-sm text-wheels-primary outline-none focus:border-wheels-primary"
               />
             </div>

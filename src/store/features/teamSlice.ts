@@ -18,12 +18,6 @@ export const teamSlice = createSlice({
   name: "team",
   initialState,
   reducers: {
-    getTeamMemberById: (
-      state,
-      { payload: { id } }: PayloadAction<{ id: string }>,
-    ) => {
-      state.id = id;
-    },
     getAllTeamMembers: (
       state,
       {
@@ -38,4 +32,4 @@ export const teamSlice = createSlice({
 });
 
 export default teamSlice.reducer;
-export const { getTeamMemberById, getAllTeamMembers } = teamSlice.actions;
+export const { getAllTeamMembers } = teamSlice.actions;

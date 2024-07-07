@@ -5,16 +5,16 @@ import {
   TAddTeamMemberResponse,
   TGetAllTeamMembersResponse,
 } from "../types/team";
-import { getAllTeamMembers } from "../features/teamSlice";
 
 export const teamApi = createApi({
   reducerPath: "teamApi",
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
     getAllTeamMembers: builder.mutation<TGetAllTeamMembersResponse, any>({
-      query: () => ({
+      query: (search) => ({
         url: "/admin-teams",
         method: "GET",
+        params: { search },
       }),
     }),
     addTeamMember: builder.mutation<TAddTeamMemberResponse, TAddTeamMemberDto>({
