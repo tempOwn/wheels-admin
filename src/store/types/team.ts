@@ -1,5 +1,11 @@
-export interface TApiTeamsResponse<T> {
-  data: T;
+export interface TGetAllTeamMembersResponse {
+  data: TTeamMembers;
+  message: string;
+  statusCode: number;
+  success: boolean;
+}
+export type TTeamMembers = {
+  docs: TTeamMember[];
   hasNextPage: boolean;
   hasPrevPage: boolean;
   limit: number;
@@ -10,12 +16,6 @@ export interface TApiTeamsResponse<T> {
   prevPage: number | null;
   totalDocs: number;
   totalPages: number;
-  message: string;
-  statusCode: number;
-  success: boolean;
-}
-export type TTeamMembers = {
-  docs: TTeamMember[];
 };
 export type TAddTeamMemberDto = {
   firstName: string;
@@ -61,5 +61,3 @@ export type TTeamMember = {
   fullName: string;
   id: string;
 };
-
-export type TGetAllTeamMembersResponse = TApiTeamsResponse<TTeamMembers>;

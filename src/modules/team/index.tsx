@@ -182,7 +182,30 @@ export default function Team() {
 
   const [getMembers, isLoading] = useGetAllTeamMembersMutation();
   const dispatch = useAppDispatch();
-
+  type TPaginationData = {
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+    limit: number;
+    nextPage: number | null;
+    offset: number;
+    page: number;
+    pagingCounter: number;
+    prevPage: number | null;
+    totalDocs: number;
+    totalPages: number;
+  };
+  const [paginationData, setPaginationData] = useState<TPaginationData>({
+    hasNextPage: false,
+    hasPrevPage: false,
+    limit: 10,
+    nextPage: null,
+    offset: 0,
+    page: 1,
+    pagingCounter: 1,
+    prevPage: null,
+    totalDocs: 16,
+    totalPages: 1,
+  });
   const handleSearch = (e: any) => {
     let search = e.target.value;
     searchTeamMembers(search);
@@ -190,6 +213,8 @@ export default function Team() {
   async function searchTeamMembers(query: string) {
     const response = await getMembers(query).unwrap();
     if (response.data) {
+      const { data, ...pagination } = response.data;
+      setPaginationData(pagination);
       const searched: TTeamMembers = response.data;
       console.log("search", searched);
       dispatch(getAllTeamMembers({ teamMembers: searched }));
@@ -201,6 +226,10 @@ export default function Team() {
     await getMembers("")
       .unwrap()
       .then((response) => {
+        console.log(response);
+        const { data, ...pagination } = response.data;
+        setPaginationData(paginationData);
+        console.log(paginationData);
         const teamData: TTeamMembers = response.data;
 
         dispatch(getAllTeamMembers({ teamMembers: teamData }));
@@ -352,9 +381,9 @@ export default function Team() {
 
         <Pagination
           initialPage={data.page ? data.page - 1 : 0}
-          pageCount={10} // TODO - replace with actual data from api
-          totalDataLength={200} // TODO - replace with actual data from api
-          currentRange={{ start: 1, end: 10 }} // TODO - replace with actual data from api
+          pageCount={paginationData.totalPages} // TODO - replace with actual data from api
+          totalDataLength={paginationData.totalDocs} // TODO - replace with actual data from api
+          currentRange={{ start: 1, end: paginationData.totalPages }} // TODO - replace with actual data from api
           onPageChange={(page) => {
             handleDataChange("page", page + 1);
           }}
