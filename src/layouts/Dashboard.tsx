@@ -32,7 +32,7 @@ const sidebarLinks = [
   {
     label: "Ambassadors",
     icon: <UserIcon />,
-    href: "/",
+    href: "/ambassadors",
   },
   {
     label: "Customers",
@@ -184,7 +184,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </div>
 
-        <main className="bg-[#F1F5F8]">{children}</main>
+        <main className="min-h-[calc(100vh-75px)] bg-[#F1F5F8]">
+          {children}
+        </main>
       </div>
     </div>
   );
