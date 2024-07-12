@@ -291,7 +291,7 @@ export default function Team() {
     setData2({ ...data2, [key]: value });
   }
 
-  function handleExportAssets() {
+  function handleExportMembers() {
     handleApiSuccessResponse({
       message: "Data exported successfully",
     });
@@ -422,7 +422,7 @@ export default function Team() {
             </DropdownMenu>
 
             <Button
-              onClick={handleExportAssets}
+              onClick={handleExportMembers}
               variant="ghost"
               className="flex items-center space-x-2.5 rounded-lg border border-wheels-grey-4 px-4 py-2.5">
               <SheetIcon />
