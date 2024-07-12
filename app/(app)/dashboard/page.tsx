@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Dashboard from "@/src/modules/dashboard";
+import Customers from "@/src/modules/customers";
 
 export const metadata: Metadata = {
-  title: "Dashboard",
+  title: "Customers",
 };
 
 export default function Page() {
-  return <Dashboard />;
+  return <Customers />;
 }

@@ -1,4 +1,4 @@
-import type { TAmbassador } from "@/src/store/types/ambassadors";
+import type { TCustomer } from "@/src/store/types/customers";
 
 export type TData = {
   view: "list" | "grid";
@@ -8,6 +8,6 @@ export type TData = {
 export type TData2 = {
   openSheet: boolean;
   sheetType: "add" | "edit" | "view";
-  rowSelection: TAmbassador;
-  ambassador: TAmbassador;
+  rowSelection: TCustomer;
+  customer: TCustomer;
 };

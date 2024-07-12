@@ -1,4 +1,4 @@
-export default function DeliveryIcon() {
+export default function DeliveryVanIcon() {
   return (
     <svg
       width="14"
