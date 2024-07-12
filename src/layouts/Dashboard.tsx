@@ -37,7 +37,7 @@ const sidebarLinks = [
   {
     label: "Customers",
     icon: <UserWithCheckMarkIcon />,
-    href: "/",
+    href: "/customers",
   },
   {
     label: "Assets",

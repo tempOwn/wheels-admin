@@ -9,6 +9,7 @@ type UserCardProps = {
   name: string;
   role?: string;
   address?: string;
+  phoneNumber?: string;
   dateCreated: string;
 };
 
@@ -18,6 +19,7 @@ export default function UserCard({
   name,
   role,
   address,
+  phoneNumber,
   dateCreated,
 }: UserCardProps) {
   return (
@@ -36,6 +38,12 @@ export default function UserCard({
 
         {id && (
           <p className="mb-4 mt-1.5 text-13 text-[rgba(72,72,72,1)]">{id}</p>
+        )}
+
+        {phoneNumber && (
+          <p className="mb-4 mt-1.5 text-13 text-[rgba(72,72,72,1)]">
+            {phoneNumber}
+          </p>
         )}
 
         {address && (

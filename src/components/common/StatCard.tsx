@@ -25,7 +25,7 @@ export default function StatCard({
         {icon}
       </div>
 
-      <p className="mb-1 mt-5 text-lg font-bold text-wheels-primary sm:text-xl md:text-2xl lg:mt-8 xl:text-3xl">
+      <p className="mb-1 mt-5 text-lg font-bold text-wheels-primary sm:text-xl md:text-2xl lg:mt-8">
         {value}
       </p>
       <p className="text-xs text-black lg:text-sm">{description}</p>

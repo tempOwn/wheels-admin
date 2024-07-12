@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { parseAsJson, useQueryState } from "nuqs";
 import { format } from "date-fns";
+import { handleApiSuccessResponse } from "@/src/store/api/helper";
 import { getIntials } from "@/src/lib/utils";
 import StatCard from "@/src/components/common/StatCard";
 import UserIcon from "@/src/components/icons/UserIcon";
@@ -17,9 +18,8 @@ import ListIcon from "@/src/components/icons/ListIcon";
 import GridIcon from "@/src/components/icons/GridIcon";
 import UserCard from "@/src/components/common/UserCard";
 import Sheet from "@/src/components/core/sheet";
-import AmbassadorDetails from "./components/AmbassadorDetails";
+import AmbassadorProfile from "./components/AmbassadorProfile";
 import AmbassadorForm from "./components/AmbassadorForm";
-import { handleApiSuccessResponse } from "@/src/store/api/helper";
 import CapsuleIcon from "@/src/components/icons/CapsuleIcon";
 import type { TData, TData2 } from "./types";
 
@@ -511,7 +511,7 @@ export default function Ambassadors() {
           />
         )}
         {data2.sheetType === "view" && (
-          <AmbassadorDetails ambassador={data2.ambassador} />
+          <AmbassadorProfile ambassador={data2.ambassador} />
         )}
       </Sheet>
     </>
