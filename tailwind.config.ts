@@ -22,6 +22,7 @@ const config = {
       },
       boxShadow: {
         "shadow-1": "0px 9px 24px 0px #0000000D",
+        card: "0px 1px 10px 0px #0000001A",
       },
       colors: {
         "wheels-error": "var(--wheels-error)",

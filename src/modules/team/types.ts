@@ -15,7 +15,7 @@ export type TMember = {
   name: string;
   role: string;
   id: string;
-  dateCreated: Date;
+  dateCreated: string;
   status: "active" | "inactive";
   phone: string;
   email: string;
