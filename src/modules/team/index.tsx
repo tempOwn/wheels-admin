@@ -20,10 +20,10 @@ import StatusTag from "../assets/components/StatusTag";
 import Sheet from "@/src/components/core/sheet";
 import TeamMemberForm from "./components/TeamMemberForm";
 import { Button } from "@/src/components/core/button";
-import TeamMemberDetails from "./components/TeamMemberDetails";
+import TeamMemberProfile from "./components/TeamMemberProfile";
 import Pagination from "@/src/components/common/Pagination";
-import type { TMember, TData, TData2 } from "./types";
 import UserCard from "@/src/components/common/UserCard";
+import type { TMember, TData, TData2 } from "./types";
 
 const backgroundColors = ["#FF9797", "#E3B439", "#32BA50", "#97AEFF"];
 const members: TMember[] = [
@@ -483,7 +483,7 @@ export default function Team() {
           />
         )}
         {data2.sheetType === "view" && (
-          <TeamMemberDetails member={data2.member} />
+          <TeamMemberProfile member={data2.member} />
         )}
       </Sheet>
     </>
