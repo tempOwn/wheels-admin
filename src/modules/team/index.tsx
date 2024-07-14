@@ -453,7 +453,14 @@ export default function Team() {
           ) : (
             <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
               {members.map((member, index) => (
-                <UserCard {...member} key={index} />
+                <UserCard
+                  dateCreated={member.dateCreated}
+                  name={member.name}
+                  status={member.status}
+                  id={member.id}
+                  role={member.role}
+                  key={index}
+                />
               ))}
             </div>
           )}

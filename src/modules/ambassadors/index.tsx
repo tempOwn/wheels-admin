@@ -475,9 +475,9 @@ export default function Ambassadors() {
                 {ambassadors.map((ambassador, index) => (
                   <UserCard
                     key={index}
-                    address={ambassador.address}
                     status={ambassador.status}
                     name={ambassador.fullName}
+                    phone={ambassador.phoneNumber}
                     dateCreated={ambassador.createdAt}
                   />
                 ))}

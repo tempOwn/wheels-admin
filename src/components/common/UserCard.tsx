@@ -10,6 +10,7 @@ type UserCardProps = {
   role?: string;
   address?: string;
   dateCreated: string;
+  phone?: string;
 };
 
 export default function UserCard({
@@ -19,6 +20,7 @@ export default function UserCard({
   role,
   address,
   dateCreated,
+  phone,
 }: UserCardProps) {
   return (
     <div className="rounded-lg border border-[rgba(204,212,216,1)] p-2 px-3">
@@ -28,21 +30,23 @@ export default function UserCard({
 
       <div>
         <p className="mb-1 text-sm font-bold capitalize lg:text-base">{name}</p>
-        {role && (
-          <p className="text-13 font-medium text-[rgba(39,39,39,0.5)]">
-            {role}
-          </p>
-        )}
 
-        {id && (
-          <p className="mb-4 mt-1.5 text-13 text-[rgba(72,72,72,1)]">{id}</p>
-        )}
-
-        {address && (
-          <p className="mb-4 mt-1.5 text-13 text-[rgba(72,72,72,1)]">
-            {address}
-          </p>
-        )}
+        <div className="mb-4">
+          {[role, id, address, phone].map((item, index) => {
+            if (item) {
+              return (
+                <p
+                  key={index}
+                  style={{
+                    marginTop: index === 0 ? 0 : 5,
+                  }}
+                  className="text-13 font-medium text-[rgba(39,39,39,0.5)]">
+                  {item}
+                </p>
+              );
+            }
+          })}
+        </div>
 
         <div className="flex items-center justify-between space-x-1.5 border-t-[0.5px] border-t-black/20 pt-2">
           <div className="flex items-center space-x-1">
