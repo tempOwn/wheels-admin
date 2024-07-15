@@ -7,10 +7,9 @@ type TeamMemberDetailsProps = {
   member: Record<string, any>;
 };
 
-export default function TeamMemberDetails({
+export default function TeamMemberProfile({
   member: { name, role, status, phone, email, address },
 }: TeamMemberDetailsProps) {
-  console.log(name, role, status, phone, email, address);
   return (
     <div>
       <div>
@@ -30,7 +29,7 @@ export default function TeamMemberDetails({
                 <p className="text-base font-medium capitalize text-wheels-primary lg:text-lg">
                   {name}
                 </p>
-                <div className="flex items-center space-x-2 rounded-2xl bg-wheels-grey px-2 py-1 text-white">
+                <div className="inline-flex items-center space-x-2 rounded-2xl bg-wheels-grey px-2 py-1 text-white">
                   <div className="h-2 w-2 rounded-full bg-white" />
                   <span className="text-xs">{role}</span>
                 </div>

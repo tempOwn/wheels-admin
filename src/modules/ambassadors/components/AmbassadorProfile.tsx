@@ -1,18 +1,17 @@
-import Pagination from "@/src/components/common/Pagination";
 import StatCard from "@/src/components/common/StatCard";
 import StatusTag from "@/src/components/common/StatusTag";
 import ScrollArea from "@/src/components/core/scroll-area";
 import TextInput from "@/src/components/core/text-input";
+import UserIcon from "@/src/components/icons/UserIcon";
+import Pagination from "@/src/components/common/Pagination";
 import CapsulesIcon from "@/src/components/icons/CapsulesIcon";
 import ClockIcon from "@/src/components/icons/ClockIcon";
-import DeliveryVanIcon from "@/src/components/icons/DeliveryVanIcon";
-import EmissionIcon from "@/src/components/icons/EmissionIcon";
-import UserIcon from "@/src/components/icons/UserIcon";
+import ArrowRightSkewedIcon from "@/src/components/icons/ArrowRightSkewedIcon";
 import Activities, { TActivity } from "@/src/components/common/Activities";
-import { TCustomer } from "@/src/store/types/customers";
+import type { TAmbassador } from "@/src/store/types/ambassadors";
 
-type CustomerProfileProps = {
-  customer: TCustomer;
+type TeamMemberDetailsProps = {
+  ambassador: TAmbassador;
 };
 
 const activities: TActivity[] = [
@@ -48,14 +47,14 @@ const activities: TActivity[] = [
   },
 ];
 
-export default function CustomerProfile({
-  customer: { fullName, status, phoneNumber, email },
-}: CustomerProfileProps) {
+export default function AmbassadorProfile({
+  ambassador: { fullName, status, phoneNumber, email },
+}: TeamMemberDetailsProps) {
   return (
     <div>
       <div>
         <h2 className="border-b border-[rgba(207,207,207,1)] px-5 pb-2 text-lg font-medium text-wheels-primary lg:text-xl">
-          Customer Profile
+          Ambassador Profile
         </h2>
       </div>
 
@@ -81,7 +80,7 @@ export default function CustomerProfile({
             </div>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-2">
               <StatCard
-                icon={<DeliveryVanIcon />}
+                icon={<ArrowRightSkewedIcon className="text-white" />}
                 iconClass="bg-[#10B981]"
                 value={24}
                 description="Total Rentals"
@@ -90,55 +89,34 @@ export default function CustomerProfile({
               <StatCard
                 icon={<CapsulesIcon />}
                 iconClass="bg-wheels-primary"
-                value="EnergyBox"
+                value="Capsule"
                 description="Top System Rented"
               />
 
               <StatCard
-                icon={<EmissionIcon />}
-                iconClass="bg-wheels-grey"
-                value="120 KgCO2"
-                description="Emission Saved"
-              />
-
-              <StatCard
-                icon={<ClockIcon />}
-                iconClass="bg-[#0070B2]"
-                value="6"
-                description="Late Returns"
-              />
-
-              <StatCard
-                icon={<ClockIcon />}
-                iconClass="bg-[#F59E0B]"
-                value="39"
-                description="Early Returns"
-              />
-
-              <StatCard
                 icon={<ClockIcon />}
                 iconClass="bg-wheels-grey"
-                value="4"
-                description="Incident Reported"
+                value="24 min"
+                description="Avg. Rental Time"
               />
             </div>
             <div className="space-y-3 rounded-sm p-2 shadow-card">
               <div className="flex items-center space-x-2">
-                <div className="w-[40%]">
-                  <TextInput defaultValue={phoneNumber} label="Phone Number" />
-                </div>
-                <div className="w-[60%]">
-                  <TextInput defaultValue={email} label="Email Address" />
-                </div>
+                <TextInput defaultValue={phoneNumber} label="Phone Number" />
+                <TextInput defaultValue={email} label="Email Address" />
               </div>
               <TextInput
                 defaultValue="20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos"
-                label="Home Address"
+                label="Residential Address"
+              />
+              <TextInput
+                defaultValue="20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos"
+                label="Store Address"
               />
             </div>
           </div>
 
-          <Activities activities={activities} type="Customer" />
+          <Activities activities={activities} type="Ambassador" />
 
           <Pagination
             initialPage={1}

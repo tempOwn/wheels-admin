@@ -1,243 +1,236 @@
 "use client";
 import { useState } from "react";
-import { format } from "date-fns";
 import { parseAsJson, useQueryState } from "nuqs";
+import { format } from "date-fns";
+import { handleApiSuccessResponse } from "@/src/store/api/helper";
 import { getIntials } from "@/src/lib/utils";
-import Pagination from "@/src/components/common/Pagination";
 import StatCard from "@/src/components/common/StatCard";
-import CapsuleIcon from "@/src/components/icons/CapsuleIcon";
-import MagnifyingGlassIcon from "@/src/components/icons/MagnifyingGlassIcon";
 import UserIcon from "@/src/components/icons/UserIcon";
+import DataTable from "@/src/components/core/data-table";
+import { ColumnDef } from "@tanstack/react-table";
+import TableHead from "@/src/components/core/table-head";
+import { Button } from "@/src/components/core/button";
+import Pagination from "@/src/components/common/Pagination";
+import SheetIcon from "@/src/components/icons/SheetIcon";
+import PlusIcon from "@/src/components/icons/PlusIcon";
+import MagnifyingGlassIcon from "@/src/components/icons/MagnifyingGlassIcon";
 import ListIcon from "@/src/components/icons/ListIcon";
 import GridIcon from "@/src/components/icons/GridIcon";
-import { Button } from "@/src/components/core/button";
-import SheetIcon from "@/src/components/icons/SheetIcon";
-import { handleApiSuccessResponse } from "@/src/store/api/helper";
-import DataTable from "@/src/components/core/data-table";
 import UserCard from "@/src/components/common/UserCard";
-import PlusIcon from "@/src/components/icons/PlusIcon";
-import TableHead from "@/src/components/core/table-head";
-import { ColumnDef } from "@tanstack/react-table";
-import StatusTag from "@/src/components/common/StatusTag";
-import type { TData, TData2 } from "./types";
 import Sheet from "@/src/components/core/sheet";
-import CustomerForm from "./components/CustomerForm";
-import CustomerProfile from "./components/CustomerProfile";
+import AmbassadorProfile from "./components/AmbassadorProfile";
+import AmbassadorForm from "./components/AmbassadorForm";
+import CapsuleIcon from "@/src/components/icons/CapsuleIcon";
+import type { TData, TData2 } from "./types";
 
-const customers: TData2["customer"][] = [
+const ambassadors: TData2["ambassador"][] = [
   {
-    _id: "6662ea4f8033d085087e0ebf",
-    firstName: "kslakals",
-    email: "customer3@gmail.com",
-    lastName: "laslakslakslas",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "lklkwlwlkwlkwlqkw",
+    _id: "663226c5ad509bbd8167a813",
+    firstName: "kelvin",
+    lastName: "oigiangbe",
+    role: "ambassador",
+    email: "kelvinstar49@gmail.com",
+    address: "string",
     status: "active",
-    phoneNumber: "+2347016040891",
-    gender: "Male",
-    onBoardedBy: "6655a7a800dccdd77a6b77ec",
-    passportPhotograph: "6662ea468033d085087e0ebc",
-    idCard: "6662ea0b8033d085087e0eb6",
-    addressProof: "6662ea168033d085087e0eba",
-    createdAt: "2024-06-07T11:09:03.635Z",
-    updatedAt: "2024-06-07T11:09:03.635Z",
-    userUID: "UNK795956",
-    fullName: "kslakals laslakslakslas",
-    id: "6662ea4f8033d085087e0ebf",
+    phoneNumber: "+2347033445286",
+    gender: "string",
+    createdAt: "2024-05-01T11:25:57.425Z",
+    updatedAt: "2024-06-07T16:16:33.558Z",
+    userUID: "AMD306423",
+    phoneOrEmailVerified: true,
+    fullName: "kelvin oigiangbe",
+    id: "663226c5ad509bbd8167a813",
   },
   {
-    _id: "66633411f8b9f248c53ad34e",
-    firstName: "lasu",
-    email: "customer3@gmail.com",
-    lastName: "lasu",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "jsakajskajskjasjaksj",
+    _id: "6655a7a800dccdd77a6b77ec",
+    firstName: "taiwo",
+    email: "taiwokenny45@gmail.com",
+    lastName: "taiwo",
+    phoneOrEmailVerified: true,
+    role: "ambassador",
+    address: "string",
     status: "active",
-    phoneNumber: "+2347016848584",
-    gender: "Male",
-    onBoardedBy: "66633167f8b9f248c53ad328",
-    passportPhotograph: "666333bbf8b9f248c53ad34b",
-    idCard: "666333a3f8b9f248c53ad347",
-    addressProof: "666333abf8b9f248c53ad349",
-    createdAt: "2024-06-07T16:23:45.280Z",
-    updatedAt: "2024-06-07T16:23:45.280Z",
-    userUID: "UNK322238",
-    fullName: "lasu lasu",
-    id: "66633411f8b9f248c53ad34e",
+    phoneNumber: "+2349161639544",
+    gender: "male",
+    createdAt: "2024-05-28T09:45:12.227Z",
+    updatedAt: "2024-06-17T13:44:20.885Z",
+    userUID: "AMD699057",
+    fullName: "taiwo taiwo",
+    id: "6655a7a800dccdd77a6b77ec",
   },
   {
-    _id: "66707ae46fd22bdcf05fd3f0",
-    firstName: "daniella",
-    email: "daniellaoti99@gmail.com",
-    lastName: "oti",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "17samuel street",
-    status: "inactive",
-    phoneNumber: "+2349043844441",
-    gender: "Female",
-    onBoardedBy: "6655a7a800dccdd77a6b77ec",
-    passportPhotograph: "66707ad76fd22bdcf05fd3ed",
-    idCard: "66707aa76fd22bdcf05fd3e9",
-    addressProof: "66707ac86fd22bdcf05fd3eb",
-    createdAt: "2024-06-17T18:05:24.853Z",
-    updatedAt: "2024-06-17T18:05:24.853Z",
-    userUID: "UNK158645",
-    fullName: "daniella oti",
-    id: "66707ae46fd22bdcf05fd3f0",
-  },
-  {
-    _id: "667da37c2a75377992ff5b40",
-    firstName: "vanessa",
-    email: "daniellaoti12@gmail.com",
-    lastName: "johnson",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "14 daniella street",
-    status: "active",
-    phoneNumber: "+2347043842150",
-    gender: "Female",
-    onBoardedBy: "6655a7a800dccdd77a6b77ec",
-    passportPhotograph: "667da3202a75377992ff5b39",
-    idCard: "667da3082a75377992ff5b35",
-    addressProof: "667da30f2a75377992ff5b37",
-    createdAt: "2024-06-27T17:38:04.990Z",
-    updatedAt: "2024-06-27T17:38:04.990Z",
-    userUID: "UNK83827",
-    fullName: "vanessa johnson",
-    id: "667da37c2a75377992ff5b40",
-  },
-  {
-    _id: "668fa532ac0948458f0fd7f1",
+    _id: "6659c1a28033d085087e0e5a",
     firstName: "aliu",
-    email: "aliuozi247+custome1@gmail.com",
+    email: "aliuom1996@gmail.com",
     lastName: "omeiza",
     phoneOrEmailVerified: false,
-    role: "customer",
-    address: "veslora estate",
+    role: "ambassador",
+    address: "lagos",
     status: "active",
     phoneNumber: "+2348183423095",
-    gender: "Male",
-    onBoardedBy: "668fa06aac0948458f0fd7a9",
-    passportPhotograph: "668fa50eac0948458f0fd7ee",
-    idCard: "668fa419ac0948458f0fd7ea",
-    addressProof: "668fa4ebac0948458f0fd7ec",
-    createdAt: "2024-07-11T09:26:10.320Z",
-    updatedAt: "2024-07-11T09:26:10.320Z",
-    userUID: "UNK338437",
+    gender: "male",
+    createdAt: "2024-05-31T12:25:06.385Z",
+    updatedAt: "2024-05-31T12:25:06.385Z",
+    userUID: "AMD343733",
     fullName: "aliu omeiza",
-    id: "668fa532ac0948458f0fd7f1",
+    id: "6659c1a28033d085087e0e5a",
   },
   {
-    _id: "6662ea4f8033d085087e0ebf",
-    firstName: "kslakals",
-    email: "customer3@gmail.com",
-    lastName: "laslakslakslas",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "lklkwlwlkwlkwlqkw",
+    _id: "6659c1dc8033d085087e0e5e",
+    firstName: "damilola",
+    email: "damilola.idowu@reeddi.com",
+    lastName: "idowu",
+    phoneOrEmailVerified: true,
+    role: "ambassador",
+    address: "lagos",
     status: "active",
-    phoneNumber: "+2347016040891",
-    gender: "Male",
-    onBoardedBy: "6655a7a800dccdd77a6b77ec",
-    passportPhotograph: "6662ea468033d085087e0ebc",
-    idCard: "6662ea0b8033d085087e0eb6",
-    addressProof: "6662ea168033d085087e0eba",
-    createdAt: "2024-06-07T11:09:03.635Z",
-    updatedAt: "2024-06-07T11:09:03.635Z",
-    userUID: "UNK795956",
-    fullName: "kslakals laslakslakslas",
-    id: "6662ea4f8033d085087e0ebf",
+    phoneNumber: "+2347026295146",
+    gender: "female",
+    createdAt: "2024-05-31T12:26:04.696Z",
+    updatedAt: "2024-05-31T12:39:43.809Z",
+    userUID: "AMD236188",
+    fullName: "damilola idowu",
+    id: "6659c1dc8033d085087e0e5e",
   },
   {
-    _id: "66633411f8b9f248c53ad34e",
-    firstName: "lasu",
-    email: "customer3@gmail.com",
-    lastName: "lasu",
+    _id: "66633167f8b9f248c53ad328",
+    firstName: "kelvin",
+    email: "oigiangbekelvin@gmail.com",
+    lastName: "oigiangbe",
     phoneOrEmailVerified: false,
-    role: "customer",
-    address: "jsakajskajskjasjaksj",
+    role: "ambassador",
+    address: "string",
     status: "active",
-    phoneNumber: "+2347016848584",
-    gender: "Male",
-    onBoardedBy: "66633167f8b9f248c53ad328",
-    passportPhotograph: "666333bbf8b9f248c53ad34b",
-    idCard: "666333a3f8b9f248c53ad347",
-    addressProof: "666333abf8b9f248c53ad349",
-    createdAt: "2024-06-07T16:23:45.280Z",
-    updatedAt: "2024-06-07T16:23:45.280Z",
-    userUID: "UNK322238",
-    fullName: "lasu lasu",
-    id: "66633411f8b9f248c53ad34e",
+    phoneNumber: "+2347033445286",
+    gender: "male",
+    createdAt: "2024-06-07T16:12:23.916Z",
+    updatedAt: "2024-06-07T16:17:05.990Z",
+    userUID: "AMD966121",
+    fullName: "kelvin oigiangbe",
+    id: "66633167f8b9f248c53ad328",
   },
   {
-    _id: "66707ae46fd22bdcf05fd3f0",
-    firstName: "daniella",
-    email: "daniellaoti99@gmail.com",
-    lastName: "oti",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "17samuel street",
-    status: "active",
-    phoneNumber: "+2349043844441",
-    gender: "Female",
-    onBoardedBy: "6655a7a800dccdd77a6b77ec",
-    passportPhotograph: "66707ad76fd22bdcf05fd3ed",
-    idCard: "66707aa76fd22bdcf05fd3e9",
-    addressProof: "66707ac86fd22bdcf05fd3eb",
-    createdAt: "2024-06-17T18:05:24.853Z",
-    updatedAt: "2024-06-17T18:05:24.853Z",
-    userUID: "UNK158645",
-    fullName: "daniella oti",
-    id: "66707ae46fd22bdcf05fd3f0",
-  },
-  {
-    _id: "667da37c2a75377992ff5b40",
-    firstName: "vanessa",
-    email: "daniellaoti12@gmail.com",
-    lastName: "johnson",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "14 daniella street",
-    status: "active",
-    phoneNumber: "+2347043842150",
-    gender: "Female",
-    onBoardedBy: "6655a7a800dccdd77a6b77ec",
-    passportPhotograph: "667da3202a75377992ff5b39",
-    idCard: "667da3082a75377992ff5b35",
-    addressProof: "667da30f2a75377992ff5b37",
-    createdAt: "2024-06-27T17:38:04.990Z",
-    updatedAt: "2024-06-27T17:38:04.990Z",
-    userUID: "UNK83827",
-    fullName: "vanessa johnson",
-    id: "667da37c2a75377992ff5b40",
-  },
-  {
-    _id: "668fa532ac0948458f0fd7f1",
+    _id: "668fa06aac0948458f0fd7a9",
     firstName: "aliu",
-    email: "aliuozi247+custome1@gmail.com",
+    email: "aliuozi247@gmail.com",
+    lastName: "aliu",
+    phoneOrEmailVerified: true,
+    role: "ambassador",
+    address: "string",
+    status: "active",
+    phoneNumber: "+2349013321284",
+    gender: "male",
+    createdAt: "2024-07-11T09:05:46.942Z",
+    updatedAt: "2024-07-11T09:17:29.482Z",
+    userUID: "AMD375813",
+    fullName: "aliu aliu",
+    id: "668fa06aac0948458f0fd7a9",
+  },
+  {
+    _id: "663226c5ad509bbd8167a813",
+    firstName: "kelvin",
+    lastName: "oigiangbe",
+    role: "ambassador",
+    email: "kelvinstar49@gmail.com",
+    address: "string",
+    status: "active",
+    phoneNumber: "+2347033445286",
+    gender: "string",
+    createdAt: "2024-05-01T11:25:57.425Z",
+    updatedAt: "2024-06-07T16:16:33.558Z",
+    userUID: "AMD306423",
+    phoneOrEmailVerified: true,
+    fullName: "kelvin oigiangbe",
+    id: "663226c5ad509bbd8167a813",
+  },
+  {
+    _id: "6655a7a800dccdd77a6b77ec",
+    firstName: "taiwo",
+    email: "taiwokenny45@gmail.com",
+    lastName: "taiwo",
+    phoneOrEmailVerified: true,
+    role: "ambassador",
+    address: "string",
+    status: "active",
+    phoneNumber: "+2349161639544",
+    gender: "male",
+    createdAt: "2024-05-28T09:45:12.227Z",
+    updatedAt: "2024-06-17T13:44:20.885Z",
+    userUID: "AMD699057",
+    fullName: "taiwo taiwo",
+    id: "6655a7a800dccdd77a6b77ec",
+  },
+  {
+    _id: "6659c1a28033d085087e0e5a",
+    firstName: "aliu",
+    email: "aliuom1996@gmail.com",
     lastName: "omeiza",
     phoneOrEmailVerified: false,
-    role: "customer",
-    address: "veslora estate",
+    role: "ambassador",
+    address: "lagos",
     status: "active",
     phoneNumber: "+2348183423095",
-    gender: "Male",
-    onBoardedBy: "668fa06aac0948458f0fd7a9",
-    passportPhotograph: "668fa50eac0948458f0fd7ee",
-    idCard: "668fa419ac0948458f0fd7ea",
-    addressProof: "668fa4ebac0948458f0fd7ec",
-    createdAt: "2024-07-11T09:26:10.320Z",
-    updatedAt: "2024-07-11T09:26:10.320Z",
-    userUID: "UNK338437",
+    gender: "male",
+    createdAt: "2024-05-31T12:25:06.385Z",
+    updatedAt: "2024-05-31T12:25:06.385Z",
+    userUID: "AMD343733",
     fullName: "aliu omeiza",
-    id: "668fa532ac0948458f0fd7f1",
+    id: "6659c1a28033d085087e0e5a",
+  },
+  {
+    _id: "6659c1dc8033d085087e0e5e",
+    firstName: "damilola",
+    email: "damilola.idowu@reeddi.com",
+    lastName: "idowu",
+    phoneOrEmailVerified: true,
+    role: "ambassador",
+    address: "lagos",
+    status: "active",
+    phoneNumber: "+2347026295146",
+    gender: "female",
+    createdAt: "2024-05-31T12:26:04.696Z",
+    updatedAt: "2024-05-31T12:39:43.809Z",
+    userUID: "AMD236188",
+    fullName: "damilola idowu",
+    id: "6659c1dc8033d085087e0e5e",
+  },
+  {
+    _id: "66633167f8b9f248c53ad328",
+    firstName: "kelvin",
+    email: "oigiangbekelvin@gmail.com",
+    lastName: "oigiangbe",
+    phoneOrEmailVerified: false,
+    role: "ambassador",
+    address: "string",
+    status: "active",
+    phoneNumber: "+2347033445286",
+    gender: "male",
+    createdAt: "2024-06-07T16:12:23.916Z",
+    updatedAt: "2024-06-07T16:17:05.990Z",
+    userUID: "AMD966121",
+    fullName: "kelvin oigiangbe",
+    id: "66633167f8b9f248c53ad328",
+  },
+  {
+    _id: "668fa06aac0948458f0fd7a9",
+    firstName: "aliu",
+    email: "aliuozi247@gmail.com",
+    lastName: "aliu",
+    phoneOrEmailVerified: true,
+    role: "ambassador",
+    address: "string",
+    status: "active",
+    phoneNumber: "+2349013321284",
+    gender: "male",
+    createdAt: "2024-07-11T09:05:46.942Z",
+    updatedAt: "2024-07-11T09:17:29.482Z",
+    userUID: "AMD375813",
+    fullName: "aliu aliu",
+    id: "668fa06aac0948458f0fd7a9",
   },
 ];
 
-export default function Customers() {
+export default function Ambassadors() {
   const [data, setData] = useQueryState<TData>(
     "data",
     parseAsJson<TData>().withDefault({
@@ -249,10 +242,10 @@ export default function Customers() {
     openSheet: false,
     rowSelection: {} as TData2["rowSelection"],
     sheetType: "add",
-    customer: {} as TData2["customer"],
+    ambassador: {} as TData2["ambassador"],
   });
 
-  const columns: ColumnDef<TData2["customer"]>[] = [
+  const columns: ColumnDef<TData2["ambassador"]>[] = [
     {
       accessorKey: "name",
       header: () => <TableHead name="Name" />,
@@ -274,10 +267,10 @@ export default function Customers() {
       },
     },
     {
-      accessorKey: "rentalsMade",
-      header: () => <TableHead name="Rentals Made" />,
+      accessorKey: "completedRentals",
+      header: () => <TableHead name="Completed Rentals" />,
       cell: ({ row }) => {
-        // TODO - Get rentals made
+        // TODO - Get completed rentals
 
         return <span className="text-sm text-[#434956]">20</span>;
       },
@@ -294,14 +287,12 @@ export default function Customers() {
       },
     },
     {
-      accessorKey: "status",
-      header: () => <TableHead name="Status" />,
-      cell: ({
-        row: {
-          original: { status },
-        },
-      }) => {
-        return <StatusTag status={status} />;
+      accessorKey: "customerOnboarded",
+      header: () => <TableHead name="Customer Onboarded" />,
+      cell: ({ row }) => {
+        // TODO - Get customer onboarded
+
+        return <span>12</span>;
       },
     },
     {
@@ -354,7 +345,7 @@ export default function Customers() {
     setData2({ ...data2, [key]: value });
   }
 
-  function handleExportCustomers() {
+  function handleExportAmbassadors() {
     handleApiSuccessResponse({
       message: "Data exported successfully",
     });
@@ -365,19 +356,19 @@ export default function Customers() {
   }
 
   function handleSheet(sheetType: TData2["sheetType"], id?: string) {
-    let customer = customers.find((amb) => amb.id === id);
-    console.log(customer);
+    let ambassador = ambassadors.find((amb) => amb.id === id);
+    console.log(ambassador);
 
-    if (sheetType === "edit" && !customer) {
+    if (sheetType === "edit" && !ambassador) {
       handleApiSuccessResponse({
-        message: "Customer not found",
+        message: "Ambassador not found",
       });
 
       return;
     }
 
-    if ((sheetType === "edit" || sheetType === "view") && customer) {
-      setData2({ ...data2, customer, openSheet: true, sheetType });
+    if ((sheetType === "edit" || sheetType === "view") && ambassador) {
+      setData2({ ...data2, ambassador, openSheet: true, sheetType });
       return;
     }
 
@@ -392,7 +383,7 @@ export default function Customers() {
             icon={<UserIcon className="text-white" />}
             iconClass="bg-[#10B981]"
             value={200}
-            description="Total Customers"
+            description="Total Ambassadors"
           />
           <StatCard
             icon={<CapsuleIcon />}
@@ -401,16 +392,16 @@ export default function Customers() {
             description="Total Rentals"
           />
           <StatCard
-            icon={<CapsuleIcon />}
+            icon={<UserIcon className="text-white" />}
             iconClass="bg-[#5654D1]"
             value={123}
-            description="Total Systems Returned"
+            description="Customers Onboarded"
           />
           <StatCard
             icon={<CapsuleIcon />}
             iconClass="bg-[#47A4E9]"
-            value={4}
-            description="Late Returns"
+            value="120 KgCO2"
+            description="Total Emission saved"
           />
         </div>
 
@@ -451,7 +442,7 @@ export default function Customers() {
 
             <div className="flex items-center sm:space-x-3 md:w-[55%] md:justify-end xl:w-[35%]">
               <Button
-                onClick={handleExportCustomers}
+                onClick={handleExportAmbassadors}
                 variant="ghost"
                 className="flex items-center space-x-2.5 rounded-lg border border-wheels-grey-4 px-4 py-2.5">
                 <SheetIcon />
@@ -472,22 +463,22 @@ export default function Customers() {
           <div className="mt-5">
             {data.view === "list" ? (
               <DataTable
-                data={customers}
+                data={ambassadors}
                 columns={columns}
                 rowSelection={data2.rowSelection}
-                setRowSelection={(value: TData2["customer"]) =>
+                setRowSelection={(value: TData2["ambassador"]) =>
                   handleData2Change("rowSelection", value)
                 }
               />
             ) : (
               <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                {customers.map((customer, index) => (
+                {ambassadors.map((ambassador, index) => (
                   <UserCard
                     key={index}
-                    phoneNumber={customer.phoneNumber}
-                    status={customer.status}
-                    name={customer.fullName}
-                    dateCreated={customer.createdAt}
+                    address={ambassador.address}
+                    status={ambassador.status}
+                    name={ambassador.fullName}
+                    dateCreated={ambassador.createdAt}
                   />
                 ))}
               </div>
@@ -513,10 +504,14 @@ export default function Customers() {
         className="w-full max-w-full px-0 pb-0 md:max-w-[520px]"
         showCloseButton>
         {(data2.sheetType === "add" || data2.sheetType === "edit") && (
-          <CustomerForm />
+          <AmbassadorForm
+            close={toggleSheet}
+            type={data2.sheetType}
+            ambassador={data2.ambassador}
+          />
         )}
         {data2.sheetType === "view" && (
-          <CustomerProfile customer={data2.customer} />
+          <AmbassadorProfile ambassador={data2.ambassador} />
         )}
       </Sheet>
     </>

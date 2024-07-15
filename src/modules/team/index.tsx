@@ -20,12 +20,12 @@ import DataTable from "@/src/components/core/data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import TableHead from "@/src/components/core/table-head";
 import StatusTag from "../assets/components/StatusTag";
-import MemberCard from "./components/MemberCard";
 import Sheet from "@/src/components/core/sheet";
 import TeamMemberForm from "./components/TeamMemberForm";
 import { Button } from "@/src/components/core/button";
-import TeamMemberDetails from "./components/TeamMemberDetails";
+import TeamMemberProfile from "./components/TeamMemberProfile";
 import Pagination from "@/src/components/common/Pagination";
+import UserCard from "@/src/components/common/UserCard";
 import type { TMember, TData, TData2 } from "./types";
 import { useGetAllTeamMembersMutation } from "@/src/store/api/team";
 import { useAppDispatch } from "@/src/store/hooks";
@@ -35,6 +35,159 @@ import { selectTeamMembers } from "@/src/store/selectors";
 import { useSelector } from "react-redux";
 
 const backgroundColors = ["#FF9797", "#E3B439", "#32BA50", "#97AEFF"];
+const members: TMember[] = [
+  {
+    name: "Daniel Oluwaseun",
+    role: "Super Admin",
+    id: "RFS-23409111",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "active",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "John Doe",
+    role: "Admin",
+    id: "RFS-23409112",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "inactive",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "Jane Matt",
+    role: "Field Staff",
+    id: "RFS-23409113",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "active",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "Doe John",
+    role: "Gateman",
+    id: "RFS-23409114",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "inactive",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "Babalola John",
+    role: "Charge Agent",
+    id: "RFS-23409115",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "active",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "Daniel Oluwaseun",
+    role: "Super Admin",
+    id: "RFS-23409116",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "active",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "John Doe",
+    role: "Admin",
+    id: "RFS-23409117",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "inactive",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "Jane Matt",
+    role: "Field Staff",
+    id: "RFS-23409118",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "active",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "Doe John",
+    role: "Gateman",
+    id: "RFS-23409119",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "inactive",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "Babalola John",
+    role: "Charge Agent",
+    id: "RFS-23409110",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "active",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "Daniel Oluwaseun",
+    role: "Super Admin",
+    id: "RFS-23409199",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "active",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "John Doe",
+    role: "Admin",
+    id: "RFS-23409188",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "inactive",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "Jane Matt",
+    role: "Field Staff",
+    id: "RFS-23409177",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "active",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "Doe John",
+    role: "Gateman",
+    id: "RFS-23409166",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "inactive",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+  {
+    name: "Babalola John",
+    role: "Charge Agent",
+    id: "RFS-23409155",
+    dateCreated: "2024-05-01T11:25:57.425Z",
+    status: "active",
+    phone: "09011223344",
+    email: "danielolu@gmail.com",
+    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
+  },
+];
+
 export default function Team() {
   const teamMembers = useSelector(selectTeamMembers);
   const members = teamMembers ? teamMembers.docs : [];
@@ -151,7 +304,7 @@ export default function Team() {
     setData2({ ...data2, [key]: value });
   }
 
-  function handleExportAssets() {
+  function handleExportMembers() {
     handleApiSuccessResponse({
       message: "Data exported successfully",
     });
@@ -342,7 +495,7 @@ export default function Team() {
             </DropdownMenu>
 
             <Button
-              onClick={handleExportAssets}
+              onClick={handleExportMembers}
               variant="ghost"
               className="flex items-center space-x-2.5 rounded-lg border border-wheels-grey-4 px-4 py-2.5">
               <SheetIcon />
@@ -373,7 +526,7 @@ export default function Team() {
           ) : (
             <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
               {members.map((member, index) => (
-                <MemberCard key={index} {...member} />
+                <UserCard {...member} key={index} />
               ))}
             </div>
           )}
@@ -403,7 +556,7 @@ export default function Team() {
           />
         )}
         {data2.sheetType === "view" && (
-          <TeamMemberDetails member={data2.member} />
+          <TeamMemberProfile member={data2.member} />
         )}
       </Sheet>
     </>
