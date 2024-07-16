@@ -17,3 +17,9 @@ export type TAmbassador = {
   fullName: string;
   id: string;
 };
+
+export type TAmbassadorsStatsResponse = TApiResponse<{
+  ambasssadorTotal: number;
+  rentalTotal: number;
+  customerTotal: number;
+}>;
