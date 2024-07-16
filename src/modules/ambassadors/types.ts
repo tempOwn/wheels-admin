@@ -1,8 +1,10 @@
-import { TAmbassador } from "@/src/store/types/ambassadors";
+import type { TViewType } from "@/src/components/common/ViewType";
+import type { TAmbassador } from "@/src/store/types/ambassadors";
 
 export type TData = {
-  view: "list" | "grid";
+  view: TViewType;
   page?: number;
+  search?: string;
 };
 
 export type TData2 = {
@@ -10,4 +12,5 @@ export type TData2 = {
   sheetType: "add" | "edit" | "view";
   rowSelection: TAmbassador;
   ambassador: TAmbassador;
+  searchValue: string;
 };

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { parseAsJson, useQueryState } from "nuqs";
-import { format } from "date-fns";
+import { format } from "date-fns/format";
 import Image from "next/image";
 import GridIcon from "@/src/components/icons/GridIcon";
 import { getIntials } from "@/src/lib/utils";

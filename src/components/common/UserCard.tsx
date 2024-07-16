@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format } from "date-fns/format";
 import { getIntials } from "@/src/lib/utils";
 import StatusTag from "@/src/components/common/StatusTag";
 import CalendarIcon from "@/src/components/icons/CalendarIcon";

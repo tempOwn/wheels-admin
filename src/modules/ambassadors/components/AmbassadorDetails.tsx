@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format } from "date-fns/format";
 import StatCard from "@/src/components/common/StatCard";
 import StatusTag from "@/src/components/common/StatusTag";
 import ScrollArea from "@/src/components/core/scroll-area";
