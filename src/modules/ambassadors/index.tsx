@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
 import { parseAsJson, useQueryState } from "nuqs";
-import { format } from "date-fns";
+import _debounce from "lodash/debounce";
+import { format } from "date-fns/format";
+import { useGetAmbassadorsStatsQuery } from "@/src/store/api/ambassadors";
 import { getIntials } from "@/src/lib/utils";
 import StatCard from "@/src/components/common/StatCard";
 import UserIcon from "@/src/components/icons/UserIcon";
@@ -12,15 +14,14 @@ import { Button } from "@/src/components/core/button";
 import Pagination from "@/src/components/common/Pagination";
 import SheetIcon from "@/src/components/icons/SheetIcon";
 import PlusIcon from "@/src/components/icons/PlusIcon";
-import MagnifyingGlassIcon from "@/src/components/icons/MagnifyingGlassIcon";
-import ListIcon from "@/src/components/icons/ListIcon";
-import GridIcon from "@/src/components/icons/GridIcon";
 import UserCard from "@/src/components/common/UserCard";
 import Sheet from "@/src/components/core/sheet";
 import AmbassadorDetails from "./components/AmbassadorDetails";
 import AmbassadorForm from "./components/AmbassadorForm";
 import { handleApiSuccessResponse } from "@/src/store/api/helper";
+import SearchInput from "@/src/components/common/SearchInput";
 import CapsuleIcon from "@/src/components/icons/CapsuleIcon";
+import ViewType from "@/src/components/common/ViewType";
 import type { TData, TData2 } from "./types";
 
 const ambassadors: TData2["ambassador"][] = [
@@ -232,7 +233,7 @@ const ambassadors: TData2["ambassador"][] = [
 
 export default function Ambassadors() {
   const [data, setData] = useQueryState<TData>(
-    "data",
+    "params",
     parseAsJson<TData>().withDefault({
       view: "list",
     }),
@@ -243,7 +244,10 @@ export default function Ambassadors() {
     rowSelection: {} as TData2["rowSelection"],
     sheetType: "add",
     ambassador: {} as TData2["ambassador"],
+    searchValue: "",
   });
+
+  const { data: stats } = useGetAmbassadorsStatsQuery();
 
   const columns: ColumnDef<TData2["ambassador"]>[] = [
     {
@@ -378,66 +382,41 @@ export default function Ambassadors() {
   return (
     <>
       <section className="p-5">
-        <div className="mb-8 grid grid-cols-1 gap-y-5 sm:grid-cols-2 sm:gap-x-5 lg:grid-cols-4">
+        <div className="mb-8 grid grid-cols-1 gap-y-5 sm:grid-cols-2 sm:gap-x-5 lg:grid-cols-3">
           <StatCard
             icon={<UserIcon className="text-white" />}
             iconClass="bg-[#10B981]"
-            value={200}
+            value={stats?.ambasssadorTotal || 0}
             description="Total Ambassadors"
           />
           <StatCard
             icon={<CapsuleIcon />}
             iconClass="bg-[#F59E0B]"
-            value={548}
+            value={stats?.rentalTotal || 0}
             description="Total Rentals"
           />
           <StatCard
             icon={<UserIcon className="text-white" />}
             iconClass="bg-[#5654D1]"
-            value={123}
+            value={stats?.customerTotal || 0}
             description="Customers Onboarded"
-          />
-          <StatCard
-            icon={<CapsuleIcon />}
-            iconClass="bg-[#47A4E9]"
-            value="120 KgCO2"
-            description="Total Emission saved"
           />
         </div>
 
         <div className="rounded-md bg-white py-5">
           <div className="flex flex-col space-y-5 px-5 md:flex-row md:items-center md:justify-between md:space-x-3 md:space-y-0">
             <div className="flex w-full sm:space-x-5 md:w-[44%] md:items-center xl:w-[65%]">
-              <div className="hidden items-center sm:flex">
-                {[
-                  {
-                    icon: <ListIcon />,
-                    value: "list",
-                  },
-                  {
-                    icon: <GridIcon />,
-                    value: "grid",
-                  },
-                ].map(({ icon, value }, index) => (
-                  <button
-                    key={index}
-                    onClick={() =>
-                      handleDataChange("view", value as TData["view"])
-                    }
-                    className={`p-2 ${index === 0 ? "rounded-bl-sm rounded-tl-sm" : "rounded-br-sm rounded-tr-sm"} ${data.view === value ? "bg-wheels-primary text-white" : "bg-wheels-grey-2 text-wheels-grey-3"}`}>
-                    {icon}
-                  </button>
-                ))}
-              </div>
+              <ViewType
+                handleDataChange={(key, value) =>
+                  handleDataChange(key as keyof TData, value)
+                }
+              />
 
-              <div className="relative w-full">
-                <MagnifyingGlassIcon className="absolute left-4 top-3" />
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="h-[42px] w-full rounded-sm border border-wheels-grey-4 pl-10 pr-3 text-sm text-wheels-primary outline-none focus:border-wheels-primary"
-                />
-              </div>
+              <SearchInput
+                onChange={(searchValue) =>
+                  handleDataChange("search", searchValue)
+                }
+              />
             </div>
 
             <div className="flex items-center sm:space-x-3 md:w-[55%] md:justify-end xl:w-[35%]">
