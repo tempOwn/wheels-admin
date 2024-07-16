@@ -1,20 +1,5 @@
 import { TApiResponse } from "./generic";
 
-export type getAllCustomersResponse = TApiResponse<TCustomers>;
-
-export type TCustomers = {
-  docs: TCustomers[];
-  hasNextPage: boolean;
-  hasPrevPage: boolean;
-  limit: number;
-  nextPage: number | null;
-  offset: number;
-  page: number;
-  pagingCounter: number;
-  prevPage: number | null;
-  totalDocs: number;
-  totalPages: number;
-};
 export type TCustomer = {
   _id: string;
   firstName: string;
