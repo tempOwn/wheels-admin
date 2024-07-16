@@ -30,7 +30,7 @@ export default function SearchInput({
     <div className={cn("relative w-full", className)}>
       <MagnifyingGlassIcon className="absolute left-4 top-3" />
       <input
-        type="text"
+        type="search"
         placeholder={placeholder}
         value={searchValue}
         onChange={handleInputChange}

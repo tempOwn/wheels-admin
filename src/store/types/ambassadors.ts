@@ -1,4 +1,4 @@
-import { TApiResponse } from "./generic";
+import { TApiDataResponse, TApiResponse } from "./generic";
 
 export type TAmbassador = {
   _id: string;
@@ -23,3 +23,15 @@ export type TAmbassadorsStatsResponse = TApiResponse<{
   rentalTotal: number;
   customerTotal: number;
 }>;
+
+export type TAmbassadorsListDto = {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sort?: string;
+  populate?: string;
+};
+
+export type TAmbassadorsListResponse = TApiResponse<
+  TApiDataResponse<TAmbassador[]>
+>;

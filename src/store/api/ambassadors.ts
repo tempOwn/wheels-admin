@@ -1,6 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithReauth } from "./helper";
-import type { TAmbassadorsStatsResponse } from "../types/ambassadors";
+import type {
+  TAmbassadorsListDto,
+  TAmbassadorsListResponse,
+  TAmbassadorsStatsResponse,
+} from "../types/ambassadors";
 
 export const ambassadorsApi = createApi({
   reducerPath: "ambassadorsApi",
@@ -16,7 +20,19 @@ export const ambassadorsApi = createApi({
           response.data,
       },
     ),
+    getAmbassadors: builder.query<
+      TAmbassadorsListResponse["data"],
+      TAmbassadorsListDto
+    >({
+      query: (params) => ({
+        url: "/admin-ambassador/get-all-ambassador",
+        method: "GET",
+        params,
+      }),
+      transformResponse: (response: TAmbassadorsListResponse) => response.data,
+    }),
   }),
 });
 
-export const { useGetAmbassadorsStatsQuery } = ambassadorsApi;
+export const { useGetAmbassadorsStatsQuery, useGetAmbassadorsQuery } =
+  ambassadorsApi;

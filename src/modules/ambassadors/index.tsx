@@ -3,7 +3,10 @@ import { useState } from "react";
 import { parseAsJson, useQueryState } from "nuqs";
 import _debounce from "lodash/debounce";
 import { format } from "date-fns/format";
-import { useGetAmbassadorsStatsQuery } from "@/src/store/api/ambassadors";
+import {
+  useGetAmbassadorsStatsQuery,
+  useGetAmbassadorsQuery,
+} from "@/src/store/api/ambassadors";
 import { getIntials } from "@/src/lib/utils";
 import StatCard from "@/src/components/common/StatCard";
 import UserIcon from "@/src/components/icons/UserIcon";
@@ -22,214 +25,9 @@ import { handleApiSuccessResponse } from "@/src/store/api/helper";
 import SearchInput from "@/src/components/common/SearchInput";
 import CapsuleIcon from "@/src/components/icons/CapsuleIcon";
 import ViewType from "@/src/components/common/ViewType";
+import LoadingEllipsis from "@/src/components/core/loaders/LoadingEllipsis";
+import type { TAmbassador } from "@/src/store/types/ambassadors";
 import type { TData, TData2 } from "./types";
-
-const ambassadors: TData2["ambassador"][] = [
-  {
-    _id: "663226c5ad509bbd8167a813",
-    firstName: "kelvin",
-    lastName: "oigiangbe",
-    role: "ambassador",
-    email: "kelvinstar49@gmail.com",
-    address: "string",
-    status: "active",
-    phoneNumber: "+2347033445286",
-    gender: "string",
-    createdAt: "2024-05-01T11:25:57.425Z",
-    updatedAt: "2024-06-07T16:16:33.558Z",
-    userUID: "AMD306423",
-    phoneOrEmailVerified: true,
-    fullName: "kelvin oigiangbe",
-    id: "663226c5ad509bbd8167a813",
-  },
-  {
-    _id: "6655a7a800dccdd77a6b77ec",
-    firstName: "taiwo",
-    email: "taiwokenny45@gmail.com",
-    lastName: "taiwo",
-    phoneOrEmailVerified: true,
-    role: "ambassador",
-    address: "string",
-    status: "active",
-    phoneNumber: "+2349161639544",
-    gender: "male",
-    createdAt: "2024-05-28T09:45:12.227Z",
-    updatedAt: "2024-06-17T13:44:20.885Z",
-    userUID: "AMD699057",
-    fullName: "taiwo taiwo",
-    id: "6655a7a800dccdd77a6b77ec",
-  },
-  {
-    _id: "6659c1a28033d085087e0e5a",
-    firstName: "aliu",
-    email: "aliuom1996@gmail.com",
-    lastName: "omeiza",
-    phoneOrEmailVerified: false,
-    role: "ambassador",
-    address: "lagos",
-    status: "active",
-    phoneNumber: "+2348183423095",
-    gender: "male",
-    createdAt: "2024-05-31T12:25:06.385Z",
-    updatedAt: "2024-05-31T12:25:06.385Z",
-    userUID: "AMD343733",
-    fullName: "aliu omeiza",
-    id: "6659c1a28033d085087e0e5a",
-  },
-  {
-    _id: "6659c1dc8033d085087e0e5e",
-    firstName: "damilola",
-    email: "damilola.idowu@reeddi.com",
-    lastName: "idowu",
-    phoneOrEmailVerified: true,
-    role: "ambassador",
-    address: "lagos",
-    status: "active",
-    phoneNumber: "+2347026295146",
-    gender: "female",
-    createdAt: "2024-05-31T12:26:04.696Z",
-    updatedAt: "2024-05-31T12:39:43.809Z",
-    userUID: "AMD236188",
-    fullName: "damilola idowu",
-    id: "6659c1dc8033d085087e0e5e",
-  },
-  {
-    _id: "66633167f8b9f248c53ad328",
-    firstName: "kelvin",
-    email: "oigiangbekelvin@gmail.com",
-    lastName: "oigiangbe",
-    phoneOrEmailVerified: false,
-    role: "ambassador",
-    address: "string",
-    status: "active",
-    phoneNumber: "+2347033445286",
-    gender: "male",
-    createdAt: "2024-06-07T16:12:23.916Z",
-    updatedAt: "2024-06-07T16:17:05.990Z",
-    userUID: "AMD966121",
-    fullName: "kelvin oigiangbe",
-    id: "66633167f8b9f248c53ad328",
-  },
-  {
-    _id: "668fa06aac0948458f0fd7a9",
-    firstName: "aliu",
-    email: "aliuozi247@gmail.com",
-    lastName: "aliu",
-    phoneOrEmailVerified: true,
-    role: "ambassador",
-    address: "string",
-    status: "active",
-    phoneNumber: "+2349013321284",
-    gender: "male",
-    createdAt: "2024-07-11T09:05:46.942Z",
-    updatedAt: "2024-07-11T09:17:29.482Z",
-    userUID: "AMD375813",
-    fullName: "aliu aliu",
-    id: "668fa06aac0948458f0fd7a9",
-  },
-  {
-    _id: "663226c5ad509bbd8167a813",
-    firstName: "kelvin",
-    lastName: "oigiangbe",
-    role: "ambassador",
-    email: "kelvinstar49@gmail.com",
-    address: "string",
-    status: "active",
-    phoneNumber: "+2347033445286",
-    gender: "string",
-    createdAt: "2024-05-01T11:25:57.425Z",
-    updatedAt: "2024-06-07T16:16:33.558Z",
-    userUID: "AMD306423",
-    phoneOrEmailVerified: true,
-    fullName: "kelvin oigiangbe",
-    id: "663226c5ad509bbd8167a813",
-  },
-  {
-    _id: "6655a7a800dccdd77a6b77ec",
-    firstName: "taiwo",
-    email: "taiwokenny45@gmail.com",
-    lastName: "taiwo",
-    phoneOrEmailVerified: true,
-    role: "ambassador",
-    address: "string",
-    status: "active",
-    phoneNumber: "+2349161639544",
-    gender: "male",
-    createdAt: "2024-05-28T09:45:12.227Z",
-    updatedAt: "2024-06-17T13:44:20.885Z",
-    userUID: "AMD699057",
-    fullName: "taiwo taiwo",
-    id: "6655a7a800dccdd77a6b77ec",
-  },
-  {
-    _id: "6659c1a28033d085087e0e5a",
-    firstName: "aliu",
-    email: "aliuom1996@gmail.com",
-    lastName: "omeiza",
-    phoneOrEmailVerified: false,
-    role: "ambassador",
-    address: "lagos",
-    status: "active",
-    phoneNumber: "+2348183423095",
-    gender: "male",
-    createdAt: "2024-05-31T12:25:06.385Z",
-    updatedAt: "2024-05-31T12:25:06.385Z",
-    userUID: "AMD343733",
-    fullName: "aliu omeiza",
-    id: "6659c1a28033d085087e0e5a",
-  },
-  {
-    _id: "6659c1dc8033d085087e0e5e",
-    firstName: "damilola",
-    email: "damilola.idowu@reeddi.com",
-    lastName: "idowu",
-    phoneOrEmailVerified: true,
-    role: "ambassador",
-    address: "lagos",
-    status: "active",
-    phoneNumber: "+2347026295146",
-    gender: "female",
-    createdAt: "2024-05-31T12:26:04.696Z",
-    updatedAt: "2024-05-31T12:39:43.809Z",
-    userUID: "AMD236188",
-    fullName: "damilola idowu",
-    id: "6659c1dc8033d085087e0e5e",
-  },
-  {
-    _id: "66633167f8b9f248c53ad328",
-    firstName: "kelvin",
-    email: "oigiangbekelvin@gmail.com",
-    lastName: "oigiangbe",
-    phoneOrEmailVerified: false,
-    role: "ambassador",
-    address: "string",
-    status: "active",
-    phoneNumber: "+2347033445286",
-    gender: "male",
-    createdAt: "2024-06-07T16:12:23.916Z",
-    updatedAt: "2024-06-07T16:17:05.990Z",
-    userUID: "AMD966121",
-    fullName: "kelvin oigiangbe",
-    id: "66633167f8b9f248c53ad328",
-  },
-  {
-    _id: "668fa06aac0948458f0fd7a9",
-    firstName: "aliu",
-    email: "aliuozi247@gmail.com",
-    lastName: "aliu",
-    phoneOrEmailVerified: true,
-    role: "ambassador",
-    address: "string",
-    status: "active",
-    phoneNumber: "+2349013321284",
-    gender: "male",
-    createdAt: "2024-07-11T09:05:46.942Z",
-    updatedAt: "2024-07-11T09:17:29.482Z",
-    userUID: "AMD375813",
-    fullName: "aliu aliu",
-    id: "668fa06aac0948458f0fd7a9",
-  },
-];
 
 export default function Ambassadors() {
   const [data, setData] = useQueryState<TData>(
@@ -248,8 +46,12 @@ export default function Ambassadors() {
   });
 
   const { data: stats } = useGetAmbassadorsStatsQuery();
+  const { data: ambassadorsData, isLoading } = useGetAmbassadorsQuery({
+    page: data.page,
+    search: data.search,
+  });
 
-  const columns: ColumnDef<TData2["ambassador"]>[] = [
+  const columns: ColumnDef<TAmbassador>[] = [
     {
       accessorKey: "name",
       header: () => <TableHead name="Name" />,
@@ -301,7 +103,7 @@ export default function Ambassadors() {
     },
     {
       accessorKey: "createdAt",
-      header: () => <TableHead name="Customer Onboarded" />,
+      header: () => <TableHead name="Date Created" />,
       cell: ({
         row: {
           original: { createdAt },
@@ -360,7 +162,7 @@ export default function Ambassadors() {
   }
 
   function handleSheet(sheetType: TData2["sheetType"], id?: string) {
-    let ambassador = ambassadors.find((amb) => amb.id === id);
+    let ambassador = ambassadorsData?.docs.find((amb) => amb.id === id);
     console.log(ambassador);
 
     if (sheetType === "edit" && !ambassador) {
@@ -439,41 +241,50 @@ export default function Ambassadors() {
             </div>
           </div>
 
-          <div className="mt-5">
-            {data.view === "list" ? (
-              <DataTable
-                data={ambassadors}
-                columns={columns}
-                rowSelection={data2.rowSelection}
-                setRowSelection={(value: TData2["ambassador"]) =>
-                  handleData2Change("rowSelection", value)
-                }
-              />
-            ) : (
-              <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                {ambassadors.map((ambassador, index) => (
-                  <UserCard
-                    key={index}
-                    status={ambassador.status}
-                    name={ambassador.fullName}
-                    phone={ambassador.phoneNumber}
-                    dateCreated={ambassador.createdAt}
+          {isLoading ? (
+            <LoadingEllipsis
+              withText
+              customText="Fetching Ambassadors"
+              className="h-[50vh] lg:text-base"
+            />
+          ) : (
+            <>
+              <div className="mt-5">
+                {data.view === "list" ? (
+                  <DataTable
+                    data={ambassadorsData?.docs || []}
+                    columns={columns}
+                    rowSelection={data2.rowSelection}
+                    setRowSelection={(value: TData2["ambassador"]) =>
+                      handleData2Change("rowSelection", value)
+                    }
                   />
-                ))}
+                ) : (
+                  <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                    {ambassadorsData &&
+                      ambassadorsData.docs.map((ambassador, index) => (
+                        <UserCard
+                          key={index}
+                          status={ambassador.status}
+                          name={ambassador.fullName}
+                          phone={ambassador.phoneNumber}
+                          dateCreated={ambassador.createdAt}
+                        />
+                      ))}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          <Pagination
-            className="px-5"
-            initialPage={data.page ? data.page - 1 : 0}
-            pageCount={10} // TODO - replace with actual data from api
-            totalDataLength={200} // TODO - replace with actual data from api
-            currentRange={{ start: 1, end: 10 }} // TODO - replace with actual data from api
-            onPageChange={(page) => {
-              handleDataChange("page", page + 1);
-            }}
-          />
+              <Pagination
+                className="px-5"
+                initialPage={data.page ? data.page - 1 : 0}
+                pageCount={ambassadorsData?.totalPages || 0}
+                onPageChange={(page) => {
+                  handleDataChange("page", page + 1);
+                }}
+              />
+            </>
+          )}
         </div>
       </section>
 
