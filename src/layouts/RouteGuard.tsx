@@ -39,8 +39,6 @@ export default function RouteGuard({
     if (!currentUser && !publicPath.includes(path)) {
       setAuthorized(false);
       dispatch(removeCredentials());
-      console.log(currentUser);
-      console.log(!publicPath.includes(path));
       router.push("/");
     } else {
       setAuthorized(true);
