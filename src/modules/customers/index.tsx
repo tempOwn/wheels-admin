@@ -383,7 +383,6 @@ export default function Customers() {
 
     setData2({ ...data2, openSheet: true, sheetType });
   }
-
   return (
     <>
       <section className="p-5">
