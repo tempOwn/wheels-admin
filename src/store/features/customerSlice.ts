@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TCustomer } from "../types/customers";
-const initialState: { customers: null | TCustomer } = { customers: null };
+const initialState: { customers: null | TCustomer[] } = { customers: null };
 export const customerSlice = createSlice({
   name: "customer",
   initialState,
@@ -9,7 +9,7 @@ export const customerSlice = createSlice({
       state,
       {
         payload: { customers },
-      }: PayloadAction<{ customers: null | TCustomer }>,
+      }: PayloadAction<{ customers: null | TCustomer[] }>,
     ) => {
       state.customers = customers;
     },

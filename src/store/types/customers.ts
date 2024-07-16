@@ -3,7 +3,7 @@ import { TApiResponse } from "./generic";
 export type getAllCustomersResponse = TApiResponse<TCustomers>;
 
 export type TCustomers = {
-  docs: TCustomers[];
+  docs: TCustomer[];
   hasNextPage: boolean;
   hasPrevPage: boolean;
   limit: number;

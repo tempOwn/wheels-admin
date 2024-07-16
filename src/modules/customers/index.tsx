@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { parseAsJson, useQueryState } from "nuqs";
 import { getIntials } from "@/src/lib/utils";
@@ -12,7 +12,10 @@ import ListIcon from "@/src/components/icons/ListIcon";
 import GridIcon from "@/src/components/icons/GridIcon";
 import { Button } from "@/src/components/core/button";
 import SheetIcon from "@/src/components/icons/SheetIcon";
-import { handleApiSuccessResponse } from "@/src/store/api/helper";
+import {
+  handleApiErrors,
+  handleApiSuccessResponse,
+} from "@/src/store/api/helper";
 import DataTable from "@/src/components/core/data-table";
 import UserCard from "@/src/components/common/UserCard";
 import PlusIcon from "@/src/components/icons/PlusIcon";
@@ -23,221 +26,16 @@ import type { TData, TData2 } from "./types";
 import Sheet from "@/src/components/core/sheet";
 import CustomerForm from "./components/CustomerForm";
 import CustomerProfile from "./components/CustomerProfile";
-
-const customers: TData2["customer"][] = [
-  {
-    _id: "6662ea4f8033d085087e0ebf",
-    firstName: "kslakals",
-    email: "customer3@gmail.com",
-    lastName: "laslakslakslas",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "lklkwlwlkwlkwlqkw",
-    status: "active",
-    phoneNumber: "+2347016040891",
-    gender: "Male",
-    onBoardedBy: "6655a7a800dccdd77a6b77ec",
-    passportPhotograph: "6662ea468033d085087e0ebc",
-    idCard: "6662ea0b8033d085087e0eb6",
-    addressProof: "6662ea168033d085087e0eba",
-    createdAt: "2024-06-07T11:09:03.635Z",
-    updatedAt: "2024-06-07T11:09:03.635Z",
-    userUID: "UNK795956",
-    fullName: "kslakals laslakslakslas",
-    id: "6662ea4f8033d085087e0ebf",
-  },
-  {
-    _id: "66633411f8b9f248c53ad34e",
-    firstName: "lasu",
-    email: "customer3@gmail.com",
-    lastName: "lasu",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "jsakajskajskjasjaksj",
-    status: "active",
-    phoneNumber: "+2347016848584",
-    gender: "Male",
-    onBoardedBy: "66633167f8b9f248c53ad328",
-    passportPhotograph: "666333bbf8b9f248c53ad34b",
-    idCard: "666333a3f8b9f248c53ad347",
-    addressProof: "666333abf8b9f248c53ad349",
-    createdAt: "2024-06-07T16:23:45.280Z",
-    updatedAt: "2024-06-07T16:23:45.280Z",
-    userUID: "UNK322238",
-    fullName: "lasu lasu",
-    id: "66633411f8b9f248c53ad34e",
-  },
-  {
-    _id: "66707ae46fd22bdcf05fd3f0",
-    firstName: "daniella",
-    email: "daniellaoti99@gmail.com",
-    lastName: "oti",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "17samuel street",
-    status: "inactive",
-    phoneNumber: "+2349043844441",
-    gender: "Female",
-    onBoardedBy: "6655a7a800dccdd77a6b77ec",
-    passportPhotograph: "66707ad76fd22bdcf05fd3ed",
-    idCard: "66707aa76fd22bdcf05fd3e9",
-    addressProof: "66707ac86fd22bdcf05fd3eb",
-    createdAt: "2024-06-17T18:05:24.853Z",
-    updatedAt: "2024-06-17T18:05:24.853Z",
-    userUID: "UNK158645",
-    fullName: "daniella oti",
-    id: "66707ae46fd22bdcf05fd3f0",
-  },
-  {
-    _id: "667da37c2a75377992ff5b40",
-    firstName: "vanessa",
-    email: "daniellaoti12@gmail.com",
-    lastName: "johnson",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "14 daniella street",
-    status: "active",
-    phoneNumber: "+2347043842150",
-    gender: "Female",
-    onBoardedBy: "6655a7a800dccdd77a6b77ec",
-    passportPhotograph: "667da3202a75377992ff5b39",
-    idCard: "667da3082a75377992ff5b35",
-    addressProof: "667da30f2a75377992ff5b37",
-    createdAt: "2024-06-27T17:38:04.990Z",
-    updatedAt: "2024-06-27T17:38:04.990Z",
-    userUID: "UNK83827",
-    fullName: "vanessa johnson",
-    id: "667da37c2a75377992ff5b40",
-  },
-  {
-    _id: "668fa532ac0948458f0fd7f1",
-    firstName: "aliu",
-    email: "aliuozi247+custome1@gmail.com",
-    lastName: "omeiza",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "veslora estate",
-    status: "active",
-    phoneNumber: "+2348183423095",
-    gender: "Male",
-    onBoardedBy: "668fa06aac0948458f0fd7a9",
-    passportPhotograph: "668fa50eac0948458f0fd7ee",
-    idCard: "668fa419ac0948458f0fd7ea",
-    addressProof: "668fa4ebac0948458f0fd7ec",
-    createdAt: "2024-07-11T09:26:10.320Z",
-    updatedAt: "2024-07-11T09:26:10.320Z",
-    userUID: "UNK338437",
-    fullName: "aliu omeiza",
-    id: "668fa532ac0948458f0fd7f1",
-  },
-  {
-    _id: "6662ea4f8033d085087e0ebf",
-    firstName: "kslakals",
-    email: "customer3@gmail.com",
-    lastName: "laslakslakslas",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "lklkwlwlkwlkwlqkw",
-    status: "active",
-    phoneNumber: "+2347016040891",
-    gender: "Male",
-    onBoardedBy: "6655a7a800dccdd77a6b77ec",
-    passportPhotograph: "6662ea468033d085087e0ebc",
-    idCard: "6662ea0b8033d085087e0eb6",
-    addressProof: "6662ea168033d085087e0eba",
-    createdAt: "2024-06-07T11:09:03.635Z",
-    updatedAt: "2024-06-07T11:09:03.635Z",
-    userUID: "UNK795956",
-    fullName: "kslakals laslakslakslas",
-    id: "6662ea4f8033d085087e0ebf",
-  },
-  {
-    _id: "66633411f8b9f248c53ad34e",
-    firstName: "lasu",
-    email: "customer3@gmail.com",
-    lastName: "lasu",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "jsakajskajskjasjaksj",
-    status: "active",
-    phoneNumber: "+2347016848584",
-    gender: "Male",
-    onBoardedBy: "66633167f8b9f248c53ad328",
-    passportPhotograph: "666333bbf8b9f248c53ad34b",
-    idCard: "666333a3f8b9f248c53ad347",
-    addressProof: "666333abf8b9f248c53ad349",
-    createdAt: "2024-06-07T16:23:45.280Z",
-    updatedAt: "2024-06-07T16:23:45.280Z",
-    userUID: "UNK322238",
-    fullName: "lasu lasu",
-    id: "66633411f8b9f248c53ad34e",
-  },
-  {
-    _id: "66707ae46fd22bdcf05fd3f0",
-    firstName: "daniella",
-    email: "daniellaoti99@gmail.com",
-    lastName: "oti",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "17samuel street",
-    status: "active",
-    phoneNumber: "+2349043844441",
-    gender: "Female",
-    onBoardedBy: "6655a7a800dccdd77a6b77ec",
-    passportPhotograph: "66707ad76fd22bdcf05fd3ed",
-    idCard: "66707aa76fd22bdcf05fd3e9",
-    addressProof: "66707ac86fd22bdcf05fd3eb",
-    createdAt: "2024-06-17T18:05:24.853Z",
-    updatedAt: "2024-06-17T18:05:24.853Z",
-    userUID: "UNK158645",
-    fullName: "daniella oti",
-    id: "66707ae46fd22bdcf05fd3f0",
-  },
-  {
-    _id: "667da37c2a75377992ff5b40",
-    firstName: "vanessa",
-    email: "daniellaoti12@gmail.com",
-    lastName: "johnson",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "14 daniella street",
-    status: "active",
-    phoneNumber: "+2347043842150",
-    gender: "Female",
-    onBoardedBy: "6655a7a800dccdd77a6b77ec",
-    passportPhotograph: "667da3202a75377992ff5b39",
-    idCard: "667da3082a75377992ff5b35",
-    addressProof: "667da30f2a75377992ff5b37",
-    createdAt: "2024-06-27T17:38:04.990Z",
-    updatedAt: "2024-06-27T17:38:04.990Z",
-    userUID: "UNK83827",
-    fullName: "vanessa johnson",
-    id: "667da37c2a75377992ff5b40",
-  },
-  {
-    _id: "668fa532ac0948458f0fd7f1",
-    firstName: "aliu",
-    email: "aliuozi247+custome1@gmail.com",
-    lastName: "omeiza",
-    phoneOrEmailVerified: false,
-    role: "customer",
-    address: "veslora estate",
-    status: "active",
-    phoneNumber: "+2348183423095",
-    gender: "Male",
-    onBoardedBy: "668fa06aac0948458f0fd7a9",
-    passportPhotograph: "668fa50eac0948458f0fd7ee",
-    idCard: "668fa419ac0948458f0fd7ea",
-    addressProof: "668fa4ebac0948458f0fd7ec",
-    createdAt: "2024-07-11T09:26:10.320Z",
-    updatedAt: "2024-07-11T09:26:10.320Z",
-    userUID: "UNK338437",
-    fullName: "aliu omeiza",
-    id: "668fa532ac0948458f0fd7f1",
-  },
-];
+import { useGetAllCustomersMutation } from "@/src/store/api/customer";
+import { useAppDispatch } from "@/src/store/hooks";
+import { TCustomer } from "@/src/store/types/customers";
+import { getAllCustomers } from "@/src/store/features/customerSlice";
+import { useSelector } from "react-redux";
+import { selectCustomers } from "@/src/store/selectors";
 
 export default function Customers() {
+  const customersList = useSelector(selectCustomers);
+  const customers = customersList ? customersList : [];
   const [data, setData] = useQueryState<TData>(
     "data",
     parseAsJson<TData>().withDefault({
@@ -383,6 +181,24 @@ export default function Customers() {
 
     setData2({ ...data2, openSheet: true, sheetType });
   }
+  const [getCustomers, isLoading] = useGetAllCustomersMutation();
+  const dispatch = useAppDispatch();
+
+  async function fetchAllCustomers() {
+    await getCustomers("")
+      .unwrap()
+      .then((response) => {
+        console.log("customer: ", response);
+        const customers = response.data.docs;
+        dispatch(getAllCustomers({ customers }));
+      })
+      .catch((error) => {
+        handleApiErrors(error);
+      });
+  }
+  useEffect(() => {
+    fetchAllCustomers();
+  }, []);
   return (
     <>
       <section className="p-5">
