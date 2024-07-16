@@ -77,7 +77,10 @@ export default function Customers() {
       header: () => <TableHead name="Rentals Made" />,
       cell: ({ row }) => {
         // TODO - Get rentals made
-
+        // let total = 0
+        // for (let i = 0; i < customers.length; i++) {
+        //   total += customers[i].
+        // }
         return <span className="text-sm text-[#434956]">20</span>;
       },
     },
@@ -185,16 +188,24 @@ export default function Customers() {
 
   const [getCustomers, isLoading] = useGetAllCustomersMutation();
   const dispatch = useAppDispatch();
+  const [paginationData, setPaginationData] = useState({
+    totalDocs: 200,
+    totalPages: 10,
+    page: 1,
+  });
 
   const handleSearch = (e: any) => {
     let query = e.target.value;
-    searchCustomers(query);
+    searchCustomers(query, paginationData.page);
   };
-  async function searchCustomers(search: string) {
-    await getCustomers(search)
+  async function searchCustomers(search: string, page: number) {
+    await getCustomers({ search, page })
       .unwrap()
       .then((response) => {
         const searchResult = response.data.docs;
+        const { docs, ...pagination } = response.data;
+        setPaginationData(pagination);
+        console.log(pagination);
         dispatch(getAllCustomers({ customers: searchResult }));
       })
       .catch((error) => {
@@ -202,11 +213,15 @@ export default function Customers() {
       });
   }
 
-  async function fetchAllCustomers() {
-    await getCustomers("")
+  async function fetchAllCustomers(search: string, page: number) {
+    await getCustomers({ search, page })
       .unwrap()
       .then((response) => {
         const customers = response.data.docs;
+        const { docs, ...pagination } = response.data;
+        setPaginationData(pagination);
+        console.log(pagination);
+        console.log(response.data);
         dispatch(getAllCustomers({ customers }));
       })
       .catch((error) => {
@@ -214,7 +229,7 @@ export default function Customers() {
       });
   }
   useEffect(() => {
-    fetchAllCustomers();
+    fetchAllCustomers("", paginationData.page);
   }, []);
 
   return (
@@ -330,12 +345,15 @@ export default function Customers() {
 
           <Pagination
             className="px-5"
-            initialPage={data.page ? data.page - 1 : 0}
-            pageCount={10} // TODO - replace with actual data from api
-            totalDataLength={200} // TODO - replace with actual data from api
-            currentRange={{ start: 1, end: 10 }} // TODO - replace with actual data from api
+            initialPage={paginationData.page ? paginationData.page - 1 : 0}
+            pageCount={paginationData.totalPages} // TODO - replace with actual data from api
+            totalDataLength={paginationData.totalDocs} // TODO - replace with actual data from api
+            currentRange={{
+              start: paginationData.page,
+              end: paginationData.totalPages,
+            }} // TODO - replace with actual data from api
             onPageChange={(page) => {
-              handleDataChange("page", page + 1);
+              setPaginationData((prev) => ({ ...prev, page }));
             }}
           />
         </div>

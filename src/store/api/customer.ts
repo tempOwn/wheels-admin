@@ -7,10 +7,10 @@ export const customerApi = createApi({
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
     getAllCustomers: builder.mutation<getAllCustomersResponse, any>({
-      query: (search) => ({
+      query: ({ search, page }) => ({
         url: "/admin-customer/get-all-customers",
         method: "GET",
-        params: { search },
+        params: { search, page },
       }),
     }),
   }),
