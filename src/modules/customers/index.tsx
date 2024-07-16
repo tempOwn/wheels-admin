@@ -186,11 +186,26 @@ export default function Customers() {
   const [getCustomers, isLoading] = useGetAllCustomersMutation();
   const dispatch = useAppDispatch();
 
+  const handleSearch = (e: any) => {
+    let query = e.target.value;
+    searchCustomers(query);
+  };
+  async function searchCustomers(search: string) {
+    await getCustomers(search)
+      .unwrap()
+      .then((response) => {
+        const searchResult = response.data.docs;
+        dispatch(getAllCustomers({ customers: searchResult }));
+      })
+      .catch((error) => {
+        handleApiErrors(error);
+      });
+  }
+
   async function fetchAllCustomers() {
     await getCustomers("")
       .unwrap()
       .then((response) => {
-        console.log("customer: ", response);
         const customers = response.data.docs;
         dispatch(getAllCustomers({ customers }));
       })
@@ -262,6 +277,7 @@ export default function Customers() {
                 <input
                   type="text"
                   placeholder="Search"
+                  onChange={handleSearch}
                   className="h-[42px] w-full rounded-sm border border-wheels-grey-4 pl-10 pr-3 text-sm text-wheels-primary outline-none focus:border-wheels-primary"
                 />
               </div>
