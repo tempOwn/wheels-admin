@@ -1,21 +1,15 @@
 import { TApiDataResponse, TApiResponse } from "./generic";
 
 export type TAmbassador = {
-  _id: string;
+  createdAt: string;
+  customersOnboarded: number;
+  email: string;
   firstName: string;
   lastName: string;
-  role: string;
-  email: string;
-  address: string;
-  status: "active" | "inactive";
   phoneNumber: string;
-  gender: string;
-  createdAt: string;
+  rentalsCompleted: number;
   updatedAt: string;
-  userUID: string;
-  phoneOrEmailVerified: boolean;
-  fullName: string;
-  id: string;
+  _id: string;
 };
 
 export type TAmbassadorsStatsResponse = TApiResponse<{

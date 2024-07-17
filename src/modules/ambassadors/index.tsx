@@ -57,16 +57,16 @@ export default function Ambassadors() {
       header: () => <TableHead name="Name" />,
       cell: ({
         row: {
-          original: { fullName },
+          original: { firstName, lastName },
         },
       }) => {
         return (
           <div className="flex items-center space-x-2">
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#F1F5F8] uppercase text-wheels-primary">
-              {getIntials(fullName)}
+              {getIntials(firstName + " " + lastName)}
             </div>
             <span className="text-sm font-medium capitalize text-wheels-primary">
-              {fullName}
+              {firstName + " " + lastName}
             </span>
           </div>
         );
@@ -75,10 +75,14 @@ export default function Ambassadors() {
     {
       accessorKey: "completedRentals",
       header: () => <TableHead name="Completed Rentals" />,
-      cell: ({ row }) => {
-        // TODO - Get completed rentals
-
-        return <span className="text-sm text-[#434956]">20</span>;
+      cell: ({
+        row: {
+          original: { customersOnboarded, rentalsCompleted },
+        },
+      }) => {
+        return (
+          <span className="text-sm text-[#434956]">{rentalsCompleted}</span>
+        );
       },
     },
     {
@@ -95,10 +99,12 @@ export default function Ambassadors() {
     {
       accessorKey: "customerOnboarded",
       header: () => <TableHead name="Customer Onboarded" />,
-      cell: ({ row }) => {
-        // TODO - Get customer onboarded
-
-        return <span>12</span>;
+      cell: ({
+        row: {
+          original: { customersOnboarded },
+        },
+      }) => {
+        return <span>{customersOnboarded}</span>;
       },
     },
     {
@@ -117,20 +123,20 @@ export default function Ambassadors() {
       header: () => <TableHead name="Actions" />,
       cell: ({
         row: {
-          original: { id },
+          original: { _id },
         },
       }) => {
         return (
           <div className="flex items-center space-x-2">
             <Button
               variant="ghost"
-              onClick={handleSheet.bind(null, "view", id)}
+              onClick={handleSheet.bind(null, "view", _id)}
               className="h-auto p-0 text-wheels-primary hover:underline">
               View
             </Button>
             <Button
               variant="ghost"
-              onClick={handleSheet.bind(null, "edit", id)}
+              onClick={handleSheet.bind(null, "edit", _id)}
               className="h-auto p-0 text-wheels-primary hover:underline">
               Edit
             </Button>
@@ -162,7 +168,7 @@ export default function Ambassadors() {
   }
 
   function handleSheet(sheetType: TData2["sheetType"], id?: string) {
-    let ambassador = ambassadorsData?.docs.find((amb) => amb.id === id);
+    let ambassador = ambassadorsData?.docs.find((amb) => amb._id === id);
     console.log(ambassador);
 
     if (sheetType === "edit" && !ambassador) {
@@ -265,8 +271,10 @@ export default function Ambassadors() {
                       ambassadorsData.docs.map((ambassador, index) => (
                         <UserCard
                           key={index}
-                          status={ambassador.status}
-                          name={ambassador.fullName}
+                          status={"active"}
+                          name={
+                            ambassador.firstName + " " + ambassador.lastName
+                          }
                           phone={ambassador.phoneNumber}
                           dateCreated={ambassador.createdAt}
                         />
