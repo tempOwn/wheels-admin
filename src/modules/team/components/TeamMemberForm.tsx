@@ -15,6 +15,9 @@ import {
 import ScrollArea from "@/src/components/core/scroll-area";
 import TextInput from "@/src/components/core/text-input";
 import { Button } from "@/src/components/core/button";
+import { useAddTeamMemberMutation } from "@/src/store/api/team";
+import Select from "@/src/components/core/select";
+import { formatPhoneNumber } from "@/src/lib/utils";
 
 type TeamMemberFormProps = {
   type: "add" | "edit";
@@ -28,17 +31,26 @@ const formSchema = z
     lastName: z.string().min(5, { message: "Required" }),
     email: z.string().email({ message: "Invalid email" }),
     address: z.string().min(10, { message: "Required" }),
-    phone: z
+    phoneNumber: z
       .string()
       .min(11, { message: "Required" })
-      .max(11, { message: "Required" }),
+      .max(14, { message: "Required" }),
+    role: z.enum([
+      "admin",
+      "super_admin",
+      "charge_agent",
+      "ambassador",
+      "field_staff",
+      "customer",
+    ]),
+    gender: z.enum(["male", "female"]),
     nin: z
       .string()
-      .min(11, { message: "Required" })
-      .max(11, { message: "Required" }),
+      .min(11, { message: "Minimum of 11 characters" })
+      .max(11, { message: "Maximum of 11 characters" }),
   })
   .superRefine((data, ctx) => {
-    if (!/^\d{11}$/.test(data.phone)) {
+    if (!/^\d{11}$/.test(data.phoneNumber)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Invalid phone number",
@@ -49,8 +61,8 @@ const formSchema = z
     if (!/^\d{11}$/.test(data.nin)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Invalid NIN",
-        path: ["nin"],
+        message: "Invalid phone number",
+        path: ["phone"],
       });
     }
   });
@@ -62,21 +74,28 @@ export default function TeamMemberForm({
 }: TeamMemberFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // TODO - Finish this alongside the api integration
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      firstName: member.firstName || "",
+      lastName: member.lastName || "",
       email: member.email || "",
       address: member.address || "",
-      phone: member.phone || "",
-      nin: "",
+      phoneNumber: member.phoneNumber || "",
+      nin: member.nin || "",
+      role: member.role || "",
+      gender: member.gender || "",
     },
   });
-
+  const [addTeamMember, isLoading] = useAddTeamMemberMutation();
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-
-    // TODO - Call API
+    try {
+      const response = await addTeamMember({
+        ...values,
+        phoneNumber: formatPhoneNumber(values.phoneNumber),
+      }).unwrap();
+      handleApiSuccessResponse(response, close);
+    } catch (err) {
+      handleApiErrors(err);
+    }
   }
 
   return (
@@ -127,7 +146,7 @@ export default function TeamMemberForm({
 
             <FormField
               control={form.control}
-              name="phone"
+              name="phoneNumber"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -151,6 +170,52 @@ export default function TeamMemberForm({
                     <TextInput
                       placeholder="Enter NIN"
                       label="National Identification Number"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select
+                      placeholder="Select Role"
+                      label="Role"
+                      options={[
+                        { label: "Admin", value: "admin" },
+                        { label: "Super Admin", value: "super_admin" },
+                        { label: "Charge Agent", value: "charge_agent" },
+                        { label: "Ambassador", value: "ambassador" },
+                        { label: "Field Staff", value: "field_staff" },
+                        { label: "Customer", value: "customer" },
+                      ]}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="gender"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select
+                      placeholder="Select Gender"
+                      label="Gender"
+                      options={[
+                        { label: "Male", value: "male" },
+                        { label: "Female", value: "female" },
+                      ]}
                       {...field}
                     />
                   </FormControl>

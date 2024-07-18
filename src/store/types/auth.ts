@@ -16,6 +16,7 @@ export type TLoginResponse = TApiResponse<{
 
 export type TResetPasswordDto = {
   email: string;
+  newPassword: string;
 };
 
 export type TResetPasswordResponse = {

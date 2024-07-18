@@ -1,6 +1,7 @@
 "use client";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { cn } from "@/src/lib/utils";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { loginFormSchema } from "../formSchema";
@@ -13,9 +14,8 @@ import { setCredentials } from "@/src/store/features/authSlice";
 import { handleApiErrors } from "@/src/store/api/helper";
 import PasswordInput from "@/src/components/core/password-input";
 import { Button } from "@/src/components/core/button";
-import LoadingSpinner from "@/src/components/loaders/LoadingSpinner";
-import { cn } from "@/src/lib/utils";
-import { TLoginResponse } from "@/src/store/types/auth";
+import LoadingSpinner from "@/src/components/core/loaders/LoadingSpinner";
+import type { TLoginResponse } from "@/src/store/types/auth";
 
 export default function Login() {
   const [login, { isLoading }] = useLoginMutation();

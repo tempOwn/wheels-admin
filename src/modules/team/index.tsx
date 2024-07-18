@@ -3,10 +3,7 @@ import { useState } from "react";
 import { parseAsJson, useQueryState } from "nuqs";
 import { format } from "date-fns/format";
 import Image from "next/image";
-import GridIcon from "@/src/components/icons/GridIcon";
 import { getIntials } from "@/src/lib/utils";
-import ListIcon from "@/src/components/icons/ListIcon";
-import MagnifyingGlassIcon from "@/src/components/icons/MagnifyingGlassIcon";
 import UserIcon from "@/src/components/icons/UserIcon";
 import DropdownMenu from "@/src/components/core/dropdown-menu";
 import SheetIcon from "@/src/components/icons/SheetIcon";
@@ -23,167 +20,21 @@ import { Button } from "@/src/components/core/button";
 import TeamMemberProfile from "./components/TeamMemberProfile";
 import Pagination from "@/src/components/common/Pagination";
 import UserCard from "@/src/components/common/UserCard";
-import type { TMember, TData, TData2 } from "./types";
+import { useGetAllTeamMembersQuery } from "@/src/store/api/team";
+import ViewType from "@/src/components/common/ViewType";
+import SearchInput from "@/src/components/common/SearchInput";
+import LoadingEllipsis from "@/src/components/core/loaders/LoadingEllipsis";
+import type { TData, TData2 } from "./types";
+import type { TTeamMember } from "@/src/store/types/team";
 
 const backgroundColors = ["#FF9797", "#E3B439", "#32BA50", "#97AEFF"];
-const members: TMember[] = [
-  {
-    name: "Daniel Oluwaseun",
-    role: "Super Admin",
-    id: "RFS-23409111",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "John Doe",
-    role: "Admin",
-    id: "RFS-23409112",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "inactive",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Jane Matt",
-    role: "Field Staff",
-    id: "RFS-23409113",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Doe John",
-    role: "Gateman",
-    id: "RFS-23409114",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "inactive",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Babalola John",
-    role: "Charge Agent",
-    id: "RFS-23409115",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Daniel Oluwaseun",
-    role: "Super Admin",
-    id: "RFS-23409116",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "John Doe",
-    role: "Admin",
-    id: "RFS-23409117",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "inactive",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Jane Matt",
-    role: "Field Staff",
-    id: "RFS-23409118",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Doe John",
-    role: "Gateman",
-    id: "RFS-23409119",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "inactive",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Babalola John",
-    role: "Charge Agent",
-    id: "RFS-23409110",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Daniel Oluwaseun",
-    role: "Super Admin",
-    id: "RFS-23409199",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "John Doe",
-    role: "Admin",
-    id: "RFS-23409188",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "inactive",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Jane Matt",
-    role: "Field Staff",
-    id: "RFS-23409177",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Doe John",
-    role: "Gateman",
-    id: "RFS-23409166",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "inactive",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-  {
-    name: "Babalola John",
-    role: "Charge Agent",
-    id: "RFS-23409155",
-    dateCreated: "2024-05-01T11:25:57.425Z",
-    status: "active",
-    phone: "09011223344",
-    email: "danielolu@gmail.com",
-    address: "20 Rumuokoro Street, Rumuomasi, Ilupeju, Lagos",
-  },
-];
 
 export default function Team() {
   const [data, setData] = useQueryState<TData>(
     "data",
     parseAsJson<TData>().withDefault({
       view: "list",
+      search: "",
     }),
   );
 
@@ -195,20 +46,25 @@ export default function Team() {
     member: {},
   });
 
-  const columns: ColumnDef<TMember>[] = [
+  const { data: teamsData, isLoading } = useGetAllTeamMembersQuery({
+    page: data.page,
+    search: data.search,
+  });
+
+  const columns: ColumnDef<TTeamMember>[] = [
     {
       accessorKey: "name",
       header: () => <TableHead name="Name" />,
       cell: ({ row }) => {
-        const { name } = row.original;
+        const { firstName } = row.original;
 
         return (
           <div className="flex items-center space-x-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#F1F5F8] text-wheels-primary">
-              {getIntials(name)}
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#F1F5F8] uppercase text-wheels-primary">
+              {getIntials(firstName)}
             </div>
-            <span className="text-sm font-medium text-wheels-primary">
-              {name}
+            <span className="text-sm font-medium capitalize text-wheels-primary">
+              {firstName}
             </span>
           </div>
         );
@@ -236,11 +92,11 @@ export default function Team() {
       accessorKey: "dateCreated",
       header: () => <TableHead name="Created" />,
       cell: ({ row }) => {
-        const { dateCreated } = row.original;
+        const { createdAt } = row.original;
 
         return (
           <span className="text-sm text-wheels-primary">
-            {format(dateCreated, "MMM d, yyyy h:mma")}
+            {format(createdAt, "MMM d, yyyy h:mma")}
           </span>
         );
       },
@@ -302,7 +158,7 @@ export default function Team() {
   }
 
   function handleSheet(sheetType: TData2["sheetType"], id?: string) {
-    let member = members.find((member) => member.id === id);
+    let member = teamsData && teamsData.docs.find((member) => member.id === id);
 
     if (sheetType === "edit" && !member) {
       handleApiSuccessResponse({
@@ -342,59 +198,41 @@ export default function Team() {
 
             <div className="mt-5 inline-flex items-center space-x-1 rounded-sm bg-white p-1 text-xs font-medium uppercase text-wheels-grey">
               <UserIcon className="h-3 w-3" />
-              <span>CHARGE AGENT: 25</span>
+              <span>Team Members Count: {teamsData?.totalDocs}</span>
             </div>
           </div>
 
           <div className="hidden lg:flex lg:items-center">
-            {members.slice(0, 4).map(({ name }, index) => (
-              <div
-                key={index}
-                style={{
-                  backgroundColor: backgroundColors[index],
-                  marginLeft: index === 0 ? "0" : "-10px",
-                }}
-                className="flex h-10 w-10 items-center justify-center rounded-full">
-                <span className="text-base font-semibold text-white">
-                  {getIntials(name)}
-                </span>
-              </div>
-            ))}
+            {teamsData &&
+              teamsData.docs.slice(0, 4).map(({ fullName }, index) => (
+                <div
+                  key={index}
+                  style={{
+                    backgroundColor: backgroundColors[index],
+                    marginLeft: index === 0 ? "0" : "-10px",
+                  }}
+                  className="flex h-10 w-10 items-center justify-center rounded-full">
+                  <span className="text-base font-semibold uppercase text-white">
+                    {getIntials(fullName)}
+                  </span>
+                </div>
+              ))}
           </div>
         </div>
 
         <div className="flex flex-col space-y-5 md:flex-row md:items-center md:justify-between md:space-x-3 md:space-y-0">
           <div className="flex w-full sm:space-x-5 md:w-[44%] md:items-center xl:w-[65%]">
-            <div className="hidden items-center sm:flex">
-              {[
-                {
-                  icon: <ListIcon />,
-                  value: "list",
-                },
-                {
-                  icon: <GridIcon />,
-                  value: "grid",
-                },
-              ].map(({ icon, value }, index) => (
-                <button
-                  key={index}
-                  onClick={() =>
-                    handleDataChange("view", value as TData["view"])
-                  }
-                  className={`p-2 ${index === 0 ? "rounded-bl-sm rounded-tl-sm" : "rounded-br-sm rounded-tr-sm"} ${data.view === value ? "bg-wheels-primary text-white" : "bg-wheels-grey-2 text-wheels-grey-3"}`}>
-                  {icon}
-                </button>
-              ))}
-            </div>
+            <ViewType
+              handleDataChange={(key, value) =>
+                handleDataChange(key as keyof TData, value)
+              }
+            />
 
-            <div className="relative w-full">
-              <MagnifyingGlassIcon className="absolute left-4 top-3" />
-              <input
-                type="text"
-                placeholder="Search"
-                className="h-[42px] w-full rounded-sm border border-wheels-grey-4 pl-10 pr-3 text-sm text-wheels-primary outline-none focus:border-wheels-primary"
-              />
-            </div>
+            <SearchInput
+              onChange={(searchValue) =>
+                handleDataChange("search", searchValue)
+              }
+            />
           </div>
 
           <div className="flex items-center sm:space-x-3 md:w-[55%] md:justify-end xl:w-[35%]">
@@ -440,41 +278,53 @@ export default function Team() {
           </div>
         </div>
 
-        <div className="mt-10">
-          {data.view === "list" ? (
-            <DataTable
-              data={members}
-              columns={columns}
-              rowSelection={data2.rowSelection}
-              setRowSelection={(value: TMember) =>
-                handleData2Change("rowSelection", value)
-              }
-            />
-          ) : (
-            <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-              {members.map((member, index) => (
-                <UserCard
-                  dateCreated={member.dateCreated}
-                  name={member.name}
-                  status={member.status}
-                  id={member.id}
-                  role={member.role}
-                  key={index}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        {isLoading ? (
+          <LoadingEllipsis
+            withText
+            customText="Fetching Team Members"
+            className="h-[50vh] lg:text-base"
+          />
+        ) : (
+          <>
+            {teamsData && teamsData.docs.length > 0 && (
+              <>
+                <div className="mt-10">
+                  {data.view === "list" ? (
+                    <DataTable
+                      data={teamsData.docs}
+                      columns={columns}
+                      rowSelection={data2.rowSelection}
+                      setRowSelection={(value: TTeamMember) =>
+                        handleData2Change("rowSelection", value)
+                      }
+                    />
+                  ) : (
+                    <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                      {teamsData.docs.map((member, index) => (
+                        <UserCard
+                          dateCreated={member.createdAt}
+                          name={member.fullName}
+                          status={member.status}
+                          id={member.id}
+                          role={member.role}
+                          key={index}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-        <Pagination
-          initialPage={data.page ? data.page - 1 : 0}
-          pageCount={10} // TODO - replace with actual data from api
-          totalDataLength={200} // TODO - replace with actual data from api
-          currentRange={{ start: 1, end: 10 }} // TODO - replace with actual data from api
-          onPageChange={(page) => {
-            handleDataChange("page", page + 1);
-          }}
-        />
+                <Pagination
+                  initialPage={data.page ? data.page - 1 : 0}
+                  pageCount={teamsData?.totalPages}
+                  onPageChange={(page) => {
+                    handleDataChange("page", page + 1);
+                  }}
+                />
+              </>
+            )}
+          </>
+        )}
       </section>
 
       <Sheet
