@@ -10,18 +10,6 @@ import type {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query";
 
-export const handleApiErrors = (err: any, callback?: () => void) => {
-  if (err && err.data?.message) {
-    const errorMessage = err.data.message || "Unable to complete operation";
-    toast.error(errorMessage, callback && { onAutoClose: callback });
-  } else {
-    toast.error(
-      "Unable to complete operation",
-      callback && { onAutoClose: callback },
-    );
-  }
-};
-
 const publicUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const mutex = new Mutex();
 
@@ -67,6 +55,18 @@ export const baseQueryWithReauth: BaseQueryFn<
     }
   }
   return result;
+};
+
+export const handleApiErrors = (err: any, callback?: () => void) => {
+  if (err && err.data?.message) {
+    const errorMessage = err.data.message || "Unable to complete operation";
+    toast.error(errorMessage, callback && { onAutoClose: callback });
+  } else {
+    toast.error(
+      "Unable to complete operation",
+      callback && { onAutoClose: callback },
+    );
+  }
 };
 
 export const handleApiSuccessResponse = (

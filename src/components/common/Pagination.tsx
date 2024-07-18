@@ -7,8 +7,6 @@ import ChevronRightIcon from "../icons/ChevronRightIcon";
 type PaginationProps = {
   initialPage: number;
   pageCount: number;
-  currentRange: { start: number; end: number };
-  totalDataLength: number;
   onPageChange: (page: number) => void;
   className?: string;
 };
@@ -16,16 +14,11 @@ type PaginationProps = {
 export default function Pagination({
   initialPage = 0,
   pageCount,
-  currentRange: { start, end },
-  totalDataLength,
   onPageChange,
   className,
 }: PaginationProps) {
   return (
-    <div className={cn("mt-5 flex items-center justify-between", className)}>
-      <p className="text-sm text-[#B5B7C0]">
-        Showing data {start} to {end} of {totalDataLength} entries
-      </p>
+    <div className={cn("mt-5 flex items-center justify-end", className)}>
       <ReactPaginate
         pageCount={pageCount}
         initialPage={initialPage}
