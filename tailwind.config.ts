@@ -12,6 +12,9 @@ const config = {
   prefix: "",
   theme: {
     extend: {
+      gridColumn: {
+        "span-3": "1 / 3",
+      },
       screens: {
         xs: "420px",
         "3xl": "1600px",
