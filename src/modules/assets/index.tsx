@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useQueryState, parseAsJson } from "nuqs";
-import { format } from "date-fns";
+import { format } from "date-fns/format";
 import { handleApiSuccessResponse } from "@/src/store/api/helper";
 import { getAssetImage, getAssetType } from "@/src/lib/utils";
 import Image from "next/image";

@@ -1,3 +1,4 @@
+import { format } from "date-fns/format";
 import StatCard from "@/src/components/common/StatCard";
 import StatusTag from "@/src/components/common/StatusTag";
 import ScrollArea from "@/src/components/core/scroll-area";
@@ -48,7 +49,7 @@ const activities: TActivity[] = [
 ];
 
 export default function AmbassadorProfile({
-  ambassador: { fullName, status, phoneNumber, email },
+  ambassador: { phoneNumber, email, firstName, lastName },
 }: TeamMemberDetailsProps) {
   return (
     <div>
@@ -68,7 +69,7 @@ export default function AmbassadorProfile({
                 </div>
                 <div className="space-y-2">
                   <p className="text-base font-medium capitalize text-wheels-primary lg:text-lg">
-                    {fullName}
+                    {firstName + " " + lastName}
                   </p>
                   <div className="inline-flex items-center space-x-2 rounded-2xl bg-wheels-grey px-2 py-1 text-white">
                     <div className="h-2 w-2 rounded-full bg-white" />
@@ -76,7 +77,7 @@ export default function AmbassadorProfile({
                   </div>
                 </div>
               </div>
-              <StatusTag status={status} />
+              <StatusTag status="active" />
             </div>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-2">
               <StatCard
@@ -120,9 +121,7 @@ export default function AmbassadorProfile({
 
           <Pagination
             initialPage={1}
-            totalDataLength={100}
             pageCount={10}
-            currentRange={{ start: 1, end: 10 }}
             onPageChange={(page) => console.log(page)}
             className="flex-col space-x-0 space-y-2"
           />

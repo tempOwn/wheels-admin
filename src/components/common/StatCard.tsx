@@ -1,4 +1,5 @@
 import { cn } from "@/src/lib/utils";
+import LoadingEllipsis from "../core/loaders/LoadingEllipsis";
 
 type StatCardProps = {
   icon: React.ReactNode;
@@ -25,9 +26,9 @@ export default function StatCard({
         {icon}
       </div>
 
-      <p className="mb-1 mt-5 text-lg font-bold text-wheels-primary sm:text-xl md:text-2xl lg:mt-8">
-        {value}
-      </p>
+      <div className="mb-1 mt-5 text-lg font-bold text-wheels-primary sm:text-xl md:text-2xl lg:mt-8 xl:text-3xl">
+        {value ? value : <LoadingEllipsis className="h-9 w-5" />}
+      </div>
       <p className="text-xs text-black lg:text-sm">{description}</p>
     </div>
   );

@@ -29,9 +29,17 @@ export default function Select({
 }: SelectProps) {
   return (
     <label className="block h-full w-full">
-      {label && <span className="mb-2 block text-sm text-black">{label}</span>}
+      {label && (
+        <span className="mb-2 block text-sm text-[rgba(85,112,126,1)]">
+          {label}
+        </span>
+      )}
       <SelectRoot value={value} onValueChange={onChange}>
-        <SelectTrigger className={cn("h-12 w-full text-sm", triggerClassName)}>
+        <SelectTrigger
+          className={cn("h-12 w-full text-sm", {
+            "text-wheels-grey": !value,
+            triggerClassName,
+          })}>
           <SelectValue placeholder={placeholder || "Select an option"} />
         </SelectTrigger>
         <SelectContent>

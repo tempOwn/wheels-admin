@@ -1,19 +1,31 @@
-import { TApiResponse } from "./generic";
+import { TApiDataResponse, TApiResponse } from "./generic";
 
 export type TAmbassador = {
-  _id: string;
+  createdAt: string;
+  customersOnboarded: number;
+  email: string;
   firstName: string;
   lastName: string;
-  role: string;
-  email: string;
-  address: string;
-  status: "active" | "inactive";
   phoneNumber: string;
-  gender: string;
-  createdAt: string;
+  rentalsCompleted: number;
   updatedAt: string;
-  userUID: string;
-  phoneOrEmailVerified: boolean;
-  fullName: string;
-  id: string;
+  _id: string;
 };
+
+export type TAmbassadorsStatsResponse = TApiResponse<{
+  ambasssadorTotal: number;
+  rentalTotal: number;
+  customerTotal: number;
+}>;
+
+export type TAmbassadorsListDto = {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sort?: string;
+  populate?: string;
+};
+
+export type TAmbassadorsListResponse = TApiResponse<
+  TApiDataResponse<TAmbassador[]>
+>;

@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { TLoginDto, TLoginResponse } from "../types/auth";
 import { baseQueryWithReauth } from "./helper";
+import { TLoginDto, TLoginResponse } from "../types/auth";
 
 export const authApi = createApi({
   reducerPath: "authApi",

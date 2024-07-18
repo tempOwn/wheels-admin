@@ -1,6 +1,6 @@
 "use client";
 import { useUserInfo } from "@/src/lib/userInfo";
-import { format } from "date-fns";
+import { format } from "date-fns/format";
 import CalendarIcon from "@/src/components/icons/CalendarIcon";
 import StatCard from "./components/StatCard";
 import PositiveGraphIcon from "@/src/components/icons/PositiveGraphIcon";

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { parseAsJson, useQueryState } from "nuqs";
-import { format } from "date-fns";
+import { format } from "date-fns/format";
 import Image from "next/image";
 import GridIcon from "@/src/components/icons/GridIcon";
 import { getIntials } from "@/src/lib/utils";
@@ -526,7 +526,14 @@ export default function Team() {
           ) : (
             <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
               {members.map((member, index) => (
-                <UserCard {...member} key={index} />
+                <UserCard
+                  dateCreated={member.dateCreated}
+                  name={member.name}
+                  status={member.status}
+                  id={member.id}
+                  role={member.role}
+                  key={index}
+                />
               ))}
             </div>
           )}
