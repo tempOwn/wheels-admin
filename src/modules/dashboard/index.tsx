@@ -1,5 +1,6 @@
 "use client";
-import { format } from "date-fns";
+import { useUserInfo } from "@/src/lib/userInfo";
+import { format } from "date-fns/format";
 import CalendarIcon from "@/src/components/icons/CalendarIcon";
 import StatCard from "./components/StatCard";
 import PositiveGraphIcon from "@/src/components/icons/PositiveGraphIcon";
@@ -50,12 +51,14 @@ const stats: StatsCardProps[] = [
 ];
 
 export default function Dashboard() {
+  const firstName = useUserInfo("firstName");
+
   return (
-    <div className="space-y-8">
+    <section className="space-y-8 p-5">
       <div className="space-y-5 sm:flex sm:items-end sm:justify-between sm:space-x-3 sm:space-y-0">
         <div>
           <h1 className="mb-2 text-xl font-medium sm:text-2xl lg:text-3xl">
-            Welcome back, Daniel 👋
+            Welcome back, {firstName} 👋
           </h1>
           <span className="text-sm">See detailed analytics</span>
         </div>
@@ -88,6 +91,6 @@ export default function Dashboard() {
           <TopSellingSystems />
         </div>
       </div>
-    </div>
+    </section>
   );
 }

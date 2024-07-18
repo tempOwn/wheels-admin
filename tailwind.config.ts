@@ -12,9 +12,20 @@ const config = {
   prefix: "",
   theme: {
     extend: {
+      gridColumn: {
+        "span-3": "1 / 3",
+      },
       screens: {
         xs: "420px",
         "3xl": "1600px",
+      },
+      backgroundImage: {
+        "gradient-blue":
+          "linear-gradient(81.8deg, #8BC6EC -46.73%, #EEEFFE 12.12%)",
+      },
+      boxShadow: {
+        "shadow-1": "0px 9px 24px 0px #0000000D",
+        card: "0px 1px 10px 0px #0000001A",
       },
       colors: {
         "wheels-error": "var(--wheels-error)",

@@ -2,6 +2,20 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import type { TAsset } from "@/src/modules/assets/types";
 
+export function mergeRefs<T = any>(
+  refs: Array<React.MutableRefObject<T> | React.LegacyRef<T>>,
+): React.RefCallback<T> {
+  return (value) => {
+    refs.forEach((ref) => {
+      if (typeof ref === "function") {
+        ref(value);
+      } else if (ref != null) {
+        (ref as React.MutableRefObject<T | null>).current = value;
+      }
+    });
+  };
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -34,4 +48,22 @@ export function getAssetType(type: TAsset["type"]) {
     case "van":
       return "Van";
   }
+}
+
+export function getIntials(name: string) {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("");
+}
+
+export function formatPhoneNumber(phoneNumber: string) {
+  return phoneNumber.startsWith("0") || phoneNumber.includes("234")
+    ? (!phoneNumber.includes("+") ? "+" : "") +
+        (phoneNumber?.startsWith("2340")
+          ? phoneNumber?.replace("2340", "234")
+          : phoneNumber?.startsWith("0")
+            ? phoneNumber?.replace("0", "234")
+            : phoneNumber)
+    : phoneNumber;
 }
