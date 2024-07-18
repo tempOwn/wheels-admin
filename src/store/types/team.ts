@@ -4,6 +4,7 @@ export interface TGetAllTeamMembersResponse {
   statusCode: number;
   success: boolean;
 }
+
 export type TTeamMembers = {
   docs: TTeamMember[];
   hasNextPage: boolean;
@@ -17,6 +18,7 @@ export type TTeamMembers = {
   totalDocs: number;
   totalPages: number;
 };
+
 export type TAddTeamMemberDto = {
   firstName: string;
   lastName: string;
