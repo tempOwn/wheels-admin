@@ -19,7 +19,7 @@ import SheetIcon from "@/src/components/icons/SheetIcon";
 import PlusIcon from "@/src/components/icons/PlusIcon";
 import UserCard from "@/src/components/common/UserCard";
 import Sheet from "@/src/components/core/sheet";
-import AmbassadorDetails from "./components/AmbassadorDetails";
+import AmbassadorProfile from "./components/AmbassadorProfile";
 import AmbassadorForm from "./components/AmbassadorForm";
 import { handleApiSuccessResponse } from "@/src/store/api/helper";
 import SearchInput from "@/src/components/common/SearchInput";
@@ -77,7 +77,7 @@ export default function Ambassadors() {
       header: () => <TableHead name="Completed Rentals" />,
       cell: ({
         row: {
-          original: { customersOnboarded, rentalsCompleted },
+          original: { rentalsCompleted },
         },
       }) => {
         return (
@@ -309,7 +309,7 @@ export default function Ambassadors() {
           />
         )}
         {data2.sheetType === "view" && (
-          <AmbassadorDetails ambassador={data2.ambassador} />
+          <AmbassadorProfile ambassador={data2.ambassador} />
         )}
       </Sheet>
     </>

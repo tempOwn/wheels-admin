@@ -9,6 +9,7 @@ type UserCardProps = {
   name: string;
   role?: string;
   address?: string;
+  phoneNumber?: string;
   dateCreated: string;
   phone?: string;
 };
@@ -19,6 +20,7 @@ export default function UserCard({
   name,
   role,
   address,
+  phoneNumber,
   dateCreated,
   phone,
 }: UserCardProps) {

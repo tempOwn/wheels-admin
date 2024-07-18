@@ -7,7 +7,7 @@ type TeamMemberDetailsProps = {
   member: Record<string, any>;
 };
 
-export default function TeamMemberDetails({
+export default function TeamMemberProfile({
   member: { name, role, status, phone, email, address },
 }: TeamMemberDetailsProps) {
   return (

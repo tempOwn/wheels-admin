@@ -4,24 +4,15 @@ import StatusTag from "@/src/components/common/StatusTag";
 import ScrollArea from "@/src/components/core/scroll-area";
 import TextInput from "@/src/components/core/text-input";
 import UserIcon from "@/src/components/icons/UserIcon";
-import ReceivedIcon from "@/src/components/icons/activities/ReceivedIcon";
-import RetrievedIcon from "@/src/components/icons/activities/RetrievedIcon";
-import SentBackIcon from "@/src/components/icons/activities/SentBackIcon";
-import RentedOutIcon from "@/src/components/icons/activities/RentedOutIcon";
 import Pagination from "@/src/components/common/Pagination";
 import CapsulesIcon from "@/src/components/icons/CapsulesIcon";
 import ClockIcon from "@/src/components/icons/ClockIcon";
 import ArrowRightSkewedIcon from "@/src/components/icons/ArrowRightSkewedIcon";
+import Activities, { TActivity } from "@/src/components/common/Activities";
 import type { TAmbassador } from "@/src/store/types/ambassadors";
 
 type TeamMemberDetailsProps = {
   ambassador: TAmbassador;
-};
-
-type TActivity = {
-  type: "rented-out" | "retrieved" | "sent-back" | "received";
-  date: string;
-  title: string;
 };
 
 const activities: TActivity[] = [
@@ -57,8 +48,8 @@ const activities: TActivity[] = [
   },
 ];
 
-export default function AmbassadorDetails({
-  ambassador: { fullName, status, phoneNumber, email },
+export default function AmbassadorProfile({
+  ambassador: { phoneNumber, email, firstName, lastName },
 }: TeamMemberDetailsProps) {
   return (
     <div>
@@ -78,7 +69,7 @@ export default function AmbassadorDetails({
                 </div>
                 <div className="space-y-2">
                   <p className="text-base font-medium capitalize text-wheels-primary lg:text-lg">
-                    {fullName}
+                    {firstName + " " + lastName}
                   </p>
                   <div className="inline-flex items-center space-x-2 rounded-2xl bg-wheels-grey px-2 py-1 text-white">
                     <div className="h-2 w-2 rounded-full bg-white" />
@@ -86,7 +77,7 @@ export default function AmbassadorDetails({
                   </div>
                 </div>
               </div>
-              <StatusTag status={status} />
+              <StatusTag status="active" />
             </div>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-2">
               <StatCard
@@ -126,45 +117,11 @@ export default function AmbassadorDetails({
             </div>
           </div>
 
-          <div className="mt-8">
-            <p className="mb-4 text-sm font-medium text-black">
-              Ambassador&apos;s Activities
-            </p>
-
-            <div className="space-y-4">
-              {activities.map(({ type, date, title }, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between space-x-3 text-sm">
-                  <div className="flex items-center space-x-2">
-                    {
-                      {
-                        "rented-out": <RentedOutIcon />,
-                        retrieved: <RetrievedIcon />,
-                        "sent-back": <SentBackIcon />,
-                        received: <ReceivedIcon />,
-                      }[type]
-                    }
-                    <p className="font-medium text-black">{title}</p>
-                  </div>
-
-                  <span className="text-xs text-[#898A8D] lg:text-sm">
-                    {format(new Date(date), "do MMMM, yyyy")}
-                  </span>
-
-                  <span className="text-xs text-[#898A8D] lg:text-sm">
-                    {format(new Date(date), "hh:mm a")}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <Activities activities={activities} type="Ambassador" />
 
           <Pagination
             initialPage={1}
-            totalDataLength={100}
             pageCount={10}
-            currentRange={{ start: 1, end: 10 }}
             onPageChange={(page) => console.log(page)}
             className="flex-col space-x-0 space-y-2"
           />
