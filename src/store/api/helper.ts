@@ -59,7 +59,8 @@ export const baseQueryWithReauth: BaseQueryFn<
 
 export const handleApiErrors = (err: any, callback?: () => void) => {
   if (err && err.data?.message) {
-    const errorMessage = err.data.message || "Unable to complete operation";
+    const errorMessage =
+      err.data.message.message || "Unable to complete operation";
     toast.error(errorMessage, callback && { onAutoClose: callback });
   } else {
     toast.error(

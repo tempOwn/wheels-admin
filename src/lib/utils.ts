@@ -56,3 +56,14 @@ export function getIntials(name: string) {
     .map((n) => n[0])
     .join("");
 }
+
+export function formatPhoneNumber(phoneNumber: string) {
+  return phoneNumber.startsWith("0") || phoneNumber.includes("234")
+    ? (!phoneNumber.includes("+") ? "+" : "") +
+        (phoneNumber?.startsWith("2340")
+          ? phoneNumber?.replace("2340", "234")
+          : phoneNumber?.startsWith("0")
+            ? phoneNumber?.replace("0", "234")
+            : phoneNumber)
+    : phoneNumber;
+}

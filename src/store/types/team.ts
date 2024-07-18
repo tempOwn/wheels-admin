@@ -1,9 +1,23 @@
-export interface TGetAllTeamMembersResponse {
+export type TGetAllTeamMembersDto = {
+  search?: string;
+  page?: number;
+  role?:
+    | "admin"
+    | "super_admin"
+    | "charge_agent"
+    | "ambassador"
+    | "field_staff"
+    | "customer";
+  status?: "active" | "inactive";
+  sort?: string;
+};
+
+export type TGetAllTeamMembersResponse = {
   data: TTeamMembers;
   message: string;
   statusCode: number;
   success: boolean;
-}
+};
 
 export type TTeamMembers = {
   docs: TTeamMember[];
@@ -47,13 +61,7 @@ export type TTeamMember = {
   role: string;
   email: string;
   address: string;
-  status:
-    | "active"
-    | "inactive"
-    | "rented-out"
-    | "returned"
-    | "available"
-    | "faulty";
+  status: "active" | "inactive";
   phoneNumber: string;
   gender: string;
   createdAt: string;

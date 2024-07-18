@@ -17,6 +17,7 @@ import TextInput from "@/src/components/core/text-input";
 import { Button } from "@/src/components/core/button";
 import { useAddTeamMemberMutation } from "@/src/store/api/team";
 import Select from "@/src/components/core/select";
+import { formatPhoneNumber } from "@/src/lib/utils";
 
 type TeamMemberFormProps = {
   type: "add" | "edit";
@@ -45,24 +46,23 @@ const formSchema = z
     gender: z.enum(["male", "female"]),
     nin: z
       .string()
-      .min(11, { message: "Required" })
-      .max(11, { message: "Required" }),
+      .min(11, { message: "Minimum of 11 characters" })
+      .max(11, { message: "Maximum of 11 characters" }),
   })
   .superRefine((data, ctx) => {
-    if (!/^\+\d{1,3}\d{10}$/.test(data.phoneNumber)) {
+    if (!/^\d{11}$/.test(data.phoneNumber)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message:
-          'Phone number must contain an international code starting with "+"',
-        path: ["phoneNumber"],
+        message: "Invalid phone number",
+        path: ["phone"],
       });
     }
 
-    if (!/^\d{14}$/.test(data.nin)) {
+    if (!/^\d{11}$/.test(data.nin)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Invalid NIN",
-        path: ["nin"],
+        message: "Invalid phone number",
+        path: ["phone"],
       });
     }
   });
@@ -74,7 +74,6 @@ export default function TeamMemberForm({
 }: TeamMemberFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-
     defaultValues: {
       firstName: member.firstName || "",
       lastName: member.lastName || "",
@@ -89,12 +88,13 @@ export default function TeamMemberForm({
   const [addTeamMember, isLoading] = useAddTeamMemberMutation();
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log(values);
-      const response = await addTeamMember(values).unwrap();
-      handleApiSuccessResponse(response);
+      const response = await addTeamMember({
+        ...values,
+        phoneNumber: formatPhoneNumber(values.phoneNumber),
+      }).unwrap();
+      handleApiSuccessResponse(response, close);
     } catch (err) {
       handleApiErrors(err);
-      console.log(err);
     }
   }
 
