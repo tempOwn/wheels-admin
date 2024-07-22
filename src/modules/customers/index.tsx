@@ -27,13 +27,7 @@ import Sheet from "@/src/components/core/sheet";
 import CustomerForm from "./components/CustomerForm";
 import CustomerProfile from "./components/CustomerProfile";
 import { useGetAllCustomersQuery } from "@/src/store/api/customer";
-import { useAppDispatch } from "@/src/store/hooks";
-import { TCustomers } from "@/src/store/types/customers";
-import { getAllCustomers } from "@/src/store/features/customerSlice";
-import { useSelector } from "react-redux";
-import { selectCustomers } from "@/src/store/selectors";
 import SearchInput from "@/src/components/common/SearchInput";
-import LoadingSpinner from "@/src/components/loaders/LoadingSpinner";
 import LoadingEllipsis from "@/src/components/loaders/LoadingEllipsis";
 
 export default function Customers() {
@@ -98,17 +92,9 @@ export default function Customers() {
         },
       }) => {
         // TODO - Get top system rented
-        let topSystem = "";
-        if (energy_box > big_energy && energy_box > capsule) {
-          topSystem = "Reeddi Energy Box";
-        } else if (big_energy > energy_box && big_energy > capsule) {
-          topSystem = "Reeddi Big Energy";
-        } else if (capsule > big_energy && capsule > energy_box) {
-          topSystem = "Reeddi Capsule";
-        } else if (capsule === 0 && big_energy === 0 && energy_box === 0) {
-          topSystem = "None";
-        }
-        return <span className="text-sm text-wheels-primary">{topSystem}</span>;
+        return (
+          <span className="text-sm text-wheels-primary">Reeddi Capsules</span>
+        );
       },
     },
     {
