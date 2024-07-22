@@ -1,8 +1,8 @@
 import { TApiResponse } from "./generic";
 
-export type TgetAllCustomersResponse = TApiResponse<TCustomers>;
+export type TGetAllCustomersResponse = TApiResponse<TCustomers>;
 
-export type TgetAllCustomersDto = {
+export type TGetAllCustomersDto = {
   search?: string;
   page?: number;
   sort?: string;

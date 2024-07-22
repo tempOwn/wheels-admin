@@ -2,21 +2,21 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithReauth } from "./helper";
 import {
   TCustomers,
-  TgetAllCustomersDto,
-  TgetAllCustomersResponse,
+  TGetAllCustomersDto,
+  TGetAllCustomersResponse,
 } from "../types/customers";
 
 export const customerApi = createApi({
   reducerPath: "customerApi",
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
-    getAllCustomers: builder.query<TCustomers, TgetAllCustomersDto>({
+    getAllCustomers: builder.query<TCustomers, TGetAllCustomersDto>({
       query: (params) => ({
         url: "/admin-customer/get-all-customers",
         method: "GET",
         params,
       }),
-      transformResponse: (response: TgetAllCustomersResponse) => response.data,
+      transformResponse: (response: TGetAllCustomersResponse) => response.data,
     }),
   }),
 });
