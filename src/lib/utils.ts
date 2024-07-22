@@ -51,8 +51,11 @@ export function getAssetType(type: TAsset["type"]) {
 }
 
 export function getIntials(name: string) {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("");
+  return (
+    name &&
+    name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+  );
 }

@@ -1,6 +1,12 @@
 import { TApiResponse } from "./generic";
 
-export type getAllCustomersResponse = TApiResponse<TCustomers>;
+export type TgetAllCustomersResponse = TApiResponse<TCustomers>;
+
+export type TgetAllCustomersDto = {
+  search?: string;
+  page?: number;
+  sort?: string;
+};
 
 export type TCustomers = {
   docs: TCustomer[];
@@ -21,19 +27,32 @@ export type TCustomer = {
   firstName: string;
   email: string;
   lastName: string;
-  phoneOrEmailVerified: boolean;
-  role: string;
-  address: string;
   status: "active" | "inactive";
   phoneNumber: string;
-  gender: string;
-  onBoardedBy: string;
-  passportPhotograph: string;
-  idCard: string;
-  addressProof: string;
   createdAt: string;
   updatedAt: string;
   userUID: string;
-  fullName: string;
-  id: string;
+  ambassador: [
+    {
+      _id: string;
+      firstName: string;
+      email: string;
+      lastName: string;
+      phoneOrEmailVerified: boolean;
+      role: string;
+      address: string;
+      status: string;
+      phoneNumber: string;
+      gender: string;
+      password: string;
+      createdAt: string;
+      updatedAt: string;
+      userUID: string;
+      __v: number;
+    },
+  ];
+  rentalsMade: number;
+  energy_box: number;
+  capsule: number;
+  big_energy: number;
 };

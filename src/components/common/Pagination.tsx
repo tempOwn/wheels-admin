@@ -29,7 +29,7 @@ export default function Pagination({
       <ReactPaginate
         pageCount={pageCount}
         initialPage={initialPage}
-        onPageChange={({ selected }) => onPageChange(selected + 1)}
+        onPageChange={({ selected }) => onPageChange(selected)}
         breakLabel="..."
         previousLabel={<ChevronLeftIcon />}
         previousLinkClassName="text-sm"

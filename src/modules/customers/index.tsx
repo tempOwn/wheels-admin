@@ -26,23 +26,29 @@ import type { TData, TData2 } from "./types";
 import Sheet from "@/src/components/core/sheet";
 import CustomerForm from "./components/CustomerForm";
 import CustomerProfile from "./components/CustomerProfile";
-import { useGetAllCustomersMutation } from "@/src/store/api/customer";
+import { useGetAllCustomersQuery } from "@/src/store/api/customer";
 import { useAppDispatch } from "@/src/store/hooks";
-import { TCustomer } from "@/src/store/types/customers";
+import { TCustomers } from "@/src/store/types/customers";
 import { getAllCustomers } from "@/src/store/features/customerSlice";
 import { useSelector } from "react-redux";
 import { selectCustomers } from "@/src/store/selectors";
+import SearchInput from "@/src/components/common/SearchInput";
+import LoadingSpinner from "@/src/components/loaders/LoadingSpinner";
+import LoadingEllipsis from "@/src/components/loaders/LoadingEllipsis";
 
 export default function Customers() {
-  const customersList = useSelector(selectCustomers);
-  const customers = customersList ? customersList : [];
-
   const [data, setData] = useQueryState<TData>(
     "data",
     parseAsJson<TData>().withDefault({
       view: "list",
+      search: "",
     }),
   );
+
+  const { data: customerData, isLoading } = useGetAllCustomersQuery({
+    page: data.page,
+    search: data.search,
+  });
 
   const [data2, setData2] = useState<TData2>({
     openSheet: false,
@@ -57,16 +63,16 @@ export default function Customers() {
       header: () => <TableHead name="Name" />,
       cell: ({
         row: {
-          original: { fullName },
+          original: { firstName, lastName },
         },
       }) => {
         return (
           <div className="flex items-center space-x-2">
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#F1F5F8] uppercase text-wheels-primary">
-              {getIntials(fullName)}
+              {getIntials(firstName + " " + lastName)}
             </div>
             <span className="text-sm font-medium capitalize text-wheels-primary">
-              {fullName}
+              {firstName + " " + lastName}
             </span>
           </div>
         );
@@ -75,24 +81,34 @@ export default function Customers() {
     {
       accessorKey: "rentalsMade",
       header: () => <TableHead name="Rentals Made" />,
-      cell: ({ row }) => {
-        // TODO - Get rentals made
-        // let total = 0
-        // for (let i = 0; i < customers.length; i++) {
-        //   total += customers[i].
-        // }
-        return <span className="text-sm text-[#434956]">20</span>;
+      cell: ({
+        row: {
+          original: { rentalsMade },
+        },
+      }) => {
+        return <span className="text-sm text-[#434956]">{rentalsMade}</span>;
       },
     },
     {
       accessorKey: "topSystemRented",
       header: () => <TableHead name="Top System Rented" />,
-      cell: ({ row }) => {
+      cell: ({
+        row: {
+          original: { energy_box, big_energy, capsule },
+        },
+      }) => {
         // TODO - Get top system rented
-
-        return (
-          <span className="text-sm text-wheels-primary">Reeddi Capsule</span>
-        );
+        let topSystem = "";
+        if (energy_box > big_energy && energy_box > capsule) {
+          topSystem = "Reeddi Energy Box";
+        } else if (big_energy > energy_box && big_energy > capsule) {
+          topSystem = "Reeddi Big Energy";
+        } else if (capsule > big_energy && capsule > energy_box) {
+          topSystem = "Reeddi Capsule";
+        } else if (capsule === 0 && big_energy === 0 && energy_box === 0) {
+          topSystem = "None";
+        }
+        return <span className="text-sm text-wheels-primary">{topSystem}</span>;
       },
     },
     {
@@ -122,20 +138,20 @@ export default function Customers() {
       header: () => <TableHead name="Actions" />,
       cell: ({
         row: {
-          original: { id },
+          original: { _id },
         },
       }) => {
         return (
           <div className="flex items-center space-x-2">
             <Button
               variant="ghost"
-              onClick={handleSheet.bind(null, "view", id)}
+              onClick={handleSheet.bind(null, "view", _id)}
               className="h-auto p-0 text-wheels-primary hover:underline">
               View
             </Button>
             <Button
               variant="ghost"
-              onClick={handleSheet.bind(null, "edit", id)}
+              onClick={handleSheet.bind(null, "edit", _id)}
               className="h-auto p-0 text-wheels-primary hover:underline">
               Edit
             </Button>
@@ -167,7 +183,8 @@ export default function Customers() {
   }
 
   function handleSheet(sheetType: TData2["sheetType"], id?: string) {
-    let customer = customers.find((amb) => amb.id === id);
+    let customer =
+      customerData && customerData.docs.find((amb) => amb._id === id);
     console.log(customer);
 
     if (sheetType === "edit" && !customer) {
@@ -185,52 +202,6 @@ export default function Customers() {
 
     setData2({ ...data2, openSheet: true, sheetType });
   }
-
-  const [getCustomers, isLoading] = useGetAllCustomersMutation();
-  const dispatch = useAppDispatch();
-  const [paginationData, setPaginationData] = useState({
-    totalDocs: 200,
-    totalPages: 10,
-    page: 1,
-  });
-
-  const handleSearch = (e: any) => {
-    let query = e.target.value;
-    searchCustomers(query, paginationData.page);
-  };
-  async function searchCustomers(search: string, page: number) {
-    await getCustomers({ search, page })
-      .unwrap()
-      .then((response) => {
-        const searchResult = response.data.docs;
-        const { docs, ...pagination } = response.data;
-        setPaginationData(pagination);
-        console.log(pagination);
-        dispatch(getAllCustomers({ customers: searchResult }));
-      })
-      .catch((error) => {
-        handleApiErrors(error);
-      });
-  }
-
-  async function fetchAllCustomers(search: string, page: number) {
-    await getCustomers({ search, page })
-      .unwrap()
-      .then((response) => {
-        const customers = response.data.docs;
-        const { docs, ...pagination } = response.data;
-        setPaginationData(pagination);
-        console.log(pagination);
-        console.log(response.data);
-        dispatch(getAllCustomers({ customers }));
-      })
-      .catch((error) => {
-        handleApiErrors(error);
-      });
-  }
-  useEffect(() => {
-    fetchAllCustomers("", paginationData.page);
-  }, []);
 
   return (
     <>
@@ -264,7 +235,7 @@ export default function Customers() {
 
         <div className="rounded-md bg-white py-5">
           <div className="flex flex-col space-y-5 px-5 md:flex-row md:items-center md:justify-between md:space-x-3 md:space-y-0">
-            <div className="flex w-full sm:space-x-5 md:w-[44%] md:items-center xl:w-[65%]">
+            <div className="mb-2 flex w-full sm:space-x-5 md:w-[44%] md:items-center xl:w-[65%]">
               <div className="hidden items-center sm:flex">
                 {[
                   {
@@ -287,15 +258,11 @@ export default function Customers() {
                 ))}
               </div>
 
-              <div className="relative w-full">
-                <MagnifyingGlassIcon className="absolute left-4 top-3" />
-                <input
-                  type="text"
-                  placeholder="Search"
-                  onChange={handleSearch}
-                  className="h-[42px] w-full rounded-sm border border-wheels-grey-4 pl-10 pr-3 text-sm text-wheels-primary outline-none focus:border-wheels-primary"
-                />
-              </div>
+              <SearchInput
+                onChange={(searchValue) =>
+                  handleDataChange("search", searchValue)
+                }
+              />
             </div>
 
             <div className="flex items-center sm:space-x-3 md:w-[55%] md:justify-end xl:w-[35%]">
@@ -317,45 +284,58 @@ export default function Customers() {
               </Button>
             </div>
           </div>
+          {isLoading ? (
+            <LoadingEllipsis
+              withText
+              customText="Loading Customers"
+              className="h-[50vh] lg:text-base"
+            />
+          ) : (
+            <>
+              {customerData && customerData.docs.length > 0 && (
+                <>
+                  <div className="mt- 5">
+                    {data.view === "list" ? (
+                      <DataTable
+                        data={customerData?.docs}
+                        columns={columns}
+                        rowSelection={data2.rowSelection}
+                        setRowSelection={(value: TData2["customer"]) =>
+                          handleData2Change("rowSelection", value)
+                        }
+                      />
+                    ) : (
+                      <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                        {customerData?.docs.map((customer, index) => (
+                          <UserCard
+                            key={index}
+                            phoneNumber={customer.phoneNumber}
+                            status={customer.status}
+                            name={`${customer.firstName} ${customer.lastName}`}
+                            dateCreated={customer.createdAt}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
 
-          <div className="mt-5">
-            {data.view === "list" ? (
-              <DataTable
-                data={customers}
-                columns={columns}
-                rowSelection={data2.rowSelection}
-                setRowSelection={(value: TData2["customer"]) =>
-                  handleData2Change("rowSelection", value)
-                }
-              />
-            ) : (
-              <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                {customers.map((customer, index) => (
-                  <UserCard
-                    key={index}
-                    phoneNumber={customer.phoneNumber}
-                    status={customer.status}
-                    name={customer.fullName}
-                    dateCreated={customer.createdAt}
+                  <Pagination
+                    className="px-5"
+                    initialPage={data.page ? data.page - 1 : 0}
+                    pageCount={customerData.totalPages} // TODO - replace with actual data from api
+                    totalDataLength={customerData.totalDocs} // TODO - replace with actual data from api
+                    currentRange={{
+                      start: customerData.page,
+                      end: customerData.totalPages,
+                    }} // TODO - replace with actual data from api
+                    onPageChange={(page) => {
+                      handleDataChange("page", page + 1);
+                    }}
                   />
-                ))}
-              </div>
-            )}
-          </div>
-
-          <Pagination
-            className="px-5"
-            initialPage={paginationData.page ? paginationData.page - 1 : 0}
-            pageCount={paginationData.totalPages} // TODO - replace with actual data from api
-            totalDataLength={paginationData.totalDocs} // TODO - replace with actual data from api
-            currentRange={{
-              start: paginationData.page,
-              end: paginationData.totalPages,
-            }} // TODO - replace with actual data from api
-            onPageChange={(page) => {
-              setPaginationData((prev) => ({ ...prev, page }));
-            }}
-          />
+                </>
+              )}
+            </>
+          )}
         </div>
       </section>
 
