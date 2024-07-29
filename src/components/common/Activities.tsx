@@ -3,16 +3,17 @@ import ReceivedIcon from "@/src/components/icons/activities/ReceivedIcon";
 import RetrievedIcon from "@/src/components/icons/activities/RetrievedIcon";
 import SentBackIcon from "@/src/components/icons/activities/SentBackIcon";
 import RentedOutIcon from "@/src/components/icons/activities/RentedOutIcon";
+import { TCustomerActivities } from "@/src/store/types/customers";
 
 export type TActivity = {
-  type: "rented-out" | "retrieved" | "sent-back" | "received";
+  type: "rented" | "retrieved" | "rejected" | "received";
   date: string;
   title: string;
 };
 
 type ActivitiesProps = {
   type: string;
-  activities: TActivity[];
+  activities: TCustomerActivities[];
 };
 
 export default function Activities({ activities, type }: ActivitiesProps) {
@@ -24,31 +25,38 @@ export default function Activities({ activities, type }: ActivitiesProps) {
         </p>
 
         <div className="space-y-4">
-          {activities.map(({ type, date, title }, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between space-x-3 text-sm">
-              <div className="flex items-center space-x-2">
-                {
+          {activities.map(({ action, rentalInfo, asset }, index) => {
+            let title = rentalInfo.assets.find((prod) => prod._id === asset);
+            return (
+              <div
+                key={index}
+                className="flex items-center justify-between space-x-3 text-sm">
+                <div className="flex items-center space-x-2">
                   {
-                    "rented-out": <RentedOutIcon />,
-                    retrieved: <RetrievedIcon />,
-                    "sent-back": <SentBackIcon />,
-                    received: <ReceivedIcon />,
-                  }[type]
-                }
-                <p className="font-medium text-black">{title}</p>
+                    {
+                      rented: <RentedOutIcon />,
+                      retrieved: <RetrievedIcon />,
+                      rejected: <SentBackIcon />,
+                      received: <ReceivedIcon />,
+                    }[action]
+                  }
+                  {title && (
+                    <p className="font-medium capitalize text-black">
+                      {title.serialNo + " " + action}
+                    </p>
+                  )}
+                </div>
+
+                <span className="text-xs text-[#898A8D] lg:text-sm">
+                  {format(new Date(rentalInfo.rentalDate), "do MMMM, yyyy")}
+                </span>
+
+                <span className="text-xs text-[#898A8D] lg:text-sm">
+                  {format(new Date(rentalInfo.rentalDate), "hh:mm a")}
+                </span>
               </div>
-
-              <span className="text-xs text-[#898A8D] lg:text-sm">
-                {format(new Date(date), "do MMMM, yyyy")}
-              </span>
-
-              <span className="text-xs text-[#898A8D] lg:text-sm">
-                {format(new Date(date), "hh:mm a")}
-              </span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

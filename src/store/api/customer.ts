@@ -1,11 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithReauth } from "./helper";
 import {
+  TCustomerActivities,
+  TCustomerActivitiesDto,
   TCustomers,
   TCustomerStats,
   TEditCustomersDto,
   TGetAllCustomersDto,
   TGetAllCustomersResponse,
+  TGetCustomerActivitiesResponse,
   TGetCustomerStatsResponse,
 } from "../types/customers";
 
@@ -13,7 +16,7 @@ export const customerApi = createApi({
   reducerPath: "customerApi",
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
-    getCustomersStats: builder.mutation<TCustomerStats, any>({
+    getCustomersStats: builder.query<TCustomerStats, void>({
       query: () => ({
         url: "admin-customer/get-customer-stats",
         method: "GET",
@@ -28,12 +31,17 @@ export const customerApi = createApi({
       }),
       transformResponse: (response: TGetAllCustomersResponse) => response.data,
     }),
-    getCustomerActivities: builder.query<TCustomerStats, any>({
-      query: () => ({
+    getCustomerActivities: builder.query<
+      TGetCustomerActivitiesResponse["data"],
+      TCustomerActivitiesDto
+    >({
+      query: (params) => ({
         url: "admin-customer/get-customer-activities",
         method: "GET",
+        params,
       }),
-      transformResponse: (response: TGetCustomerStatsResponse) => response.data,
+      transformResponse: (response: TGetCustomerActivitiesResponse) =>
+        response.data,
     }),
     getRental: builder.mutation<string, any>({
       query: (id) => ({
@@ -71,6 +79,6 @@ export const {
   useEditCustomerMutation,
   useGetCustomerActivitiesQuery,
   useGetCustomerByIdMutation,
-  useGetCustomersStatsMutation,
+  useGetCustomersStatsQuery,
   useGetRentalMutation,
 } = customerApi;

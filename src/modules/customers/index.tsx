@@ -1,21 +1,17 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { format } from "date-fns";
 import { parseAsJson, useQueryState } from "nuqs";
 import { getIntials } from "@/src/lib/utils";
 import Pagination from "@/src/components/common/Pagination";
 import StatCard from "@/src/components/common/StatCard";
 import CapsuleIcon from "@/src/components/icons/CapsuleIcon";
-import MagnifyingGlassIcon from "@/src/components/icons/MagnifyingGlassIcon";
 import UserIcon from "@/src/components/icons/UserIcon";
 import ListIcon from "@/src/components/icons/ListIcon";
 import GridIcon from "@/src/components/icons/GridIcon";
 import { Button } from "@/src/components/core/button";
 import SheetIcon from "@/src/components/icons/SheetIcon";
-import {
-  handleApiErrors,
-  handleApiSuccessResponse,
-} from "@/src/store/api/helper";
+import { handleApiSuccessResponse } from "@/src/store/api/helper";
 import DataTable from "@/src/components/core/data-table";
 import UserCard from "@/src/components/common/UserCard";
 import PlusIcon from "@/src/components/icons/PlusIcon";
@@ -26,7 +22,10 @@ import type { TData, TData2 } from "./types";
 import Sheet from "@/src/components/core/sheet";
 import CustomerForm from "./components/CustomerForm";
 import CustomerProfile from "./components/CustomerProfile";
-import { useGetAllCustomersQuery } from "@/src/store/api/customer";
+import {
+  useGetAllCustomersQuery,
+  useGetCustomersStatsQuery,
+} from "@/src/store/api/customer";
 import SearchInput from "@/src/components/common/SearchInput";
 import LoadingEllipsis from "@/src/components/loaders/LoadingEllipsis";
 
@@ -43,6 +42,8 @@ export default function Customers() {
     page: data.page,
     search: data.search,
   });
+
+  const { data: customerStats } = useGetCustomersStatsQuery();
 
   const [data2, setData2] = useState<TData2>({
     openSheet: false,
@@ -171,7 +172,6 @@ export default function Customers() {
   function handleSheet(sheetType: TData2["sheetType"], id?: string) {
     let customer =
       customerData && customerData.docs.find((amb) => amb._id === id);
-    console.log(customer);
 
     if (sheetType === "edit" && !customer) {
       handleApiSuccessResponse({
@@ -192,31 +192,31 @@ export default function Customers() {
   return (
     <>
       <section className="p-5">
-        <div className="mb-8 grid grid-cols-1 gap-y-5 sm:grid-cols-2 sm:gap-x-5 lg:grid-cols-4">
+        <div className="mb-8 grid grid-cols-1 gap-y-5 sm:grid-cols-2 sm:gap-x-5 lg:grid-cols-3">
           <StatCard
             icon={<UserIcon className="text-white" />}
             iconClass="bg-[#10B981]"
-            value={200}
+            value={customerStats?.customerTotal || 0}
             description="Total Customers"
           />
           <StatCard
             icon={<CapsuleIcon />}
             iconClass="bg-[#F59E0B]"
-            value={548}
+            value={customerStats?.rentalTotal || 0}
             description="Total Rentals"
           />
           <StatCard
             icon={<CapsuleIcon />}
             iconClass="bg-[#5654D1]"
-            value={123}
+            value={customerStats?.assetsReturnedTotal || 0}
             description="Total Systems Returned"
           />
-          <StatCard
+          {/* <StatCard
             icon={<CapsuleIcon />}
             iconClass="bg-[#47A4E9]"
-            value={4}
+            value={0}
             description="Late Returns"
-          />
+          /> */}
         </div>
 
         <div className="rounded-md bg-white py-5">

@@ -58,9 +58,9 @@ export type TCustomer = {
 };
 
 export type TCustomerStats = {
-  rentalTotal: 3;
-  customerTotal: 6;
-  assetsReturnedTotal: 0;
+  rentalTotal: number;
+  customerTotal: number;
+  assetsReturnedTotal: number;
 };
 
 export type TGetCustomerStatsResponse = TApiResponse<TCustomerStats>;
@@ -72,7 +72,25 @@ export type TCustomerActivitiesDto = {
   page?: number;
 };
 
-export type TCustomerActivities = {};
+export type TCustomerActivities = {
+  action: string;
+  asset: string;
+  rentalInfo: {
+    _id: string;
+    createdAt: string;
+    isReturned: boolean;
+    expectedReturnDate: string;
+    rentalDate: string;
+    rentalModel: string;
+    customerName: string;
+    customerPhoneNumber: string;
+    assets: { _id: string; assetType: string; serialNo: string }[];
+    updatedAt: string;
+    ambassador: string;
+    _v: number;
+  };
+  _id: string;
+};
 
 export type TGetCustomerActivitiesResponse = TApiResponse<{
   docs?: TCustomerActivities[];

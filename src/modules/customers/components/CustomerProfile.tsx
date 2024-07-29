@@ -10,47 +10,25 @@ import EmissionIcon from "@/src/components/icons/EmissionIcon";
 import UserIcon from "@/src/components/icons/UserIcon";
 import Activities, { TActivity } from "@/src/components/common/Activities";
 import { TCustomer } from "@/src/store/types/customers";
+import { useGetCustomerActivitiesQuery } from "@/src/store/api/customer";
+import LoadingEllipsis from "@/src/components/loaders/LoadingEllipsis";
+import { useState } from "react";
 
 type CustomerProfileProps = {
   customer: TCustomer;
 };
 
-const activities: TActivity[] = [
-  {
-    type: "rented-out",
-    date: "2024-05-01T11:25:57.425Z",
-    title: "RC-81240932 Rented out",
-  },
-  {
-    type: "retrieved",
-    title: "RC-81240932 retrieved",
-    date: "2024-05-01T11:25:57.425Z",
-  },
-  {
-    type: "sent-back",
-    title: "34 systems sent back to ...",
-    date: "2024-05-01T11:25:57.425Z",
-  },
-  {
-    type: "received",
-    title: "19 systems received from...",
-    date: "2024-05-01T11:25:57.425Z",
-  },
-  {
-    type: "retrieved",
-    title: "RC-81240932 retrieved",
-    date: "2024-05-01T11:25:57.425Z",
-  },
-  {
-    type: "rented-out",
-    date: "2024-05-01T11:25:57.425Z",
-    title: "RC-81240932 Rented out",
-  },
-];
-
 export default function CustomerProfile({
-  customer: { fullName, status, phoneNumber, email },
+  customer: { _id, firstName, lastName, status, phoneNumber, email },
 }: CustomerProfileProps) {
+  const [paginationData, usePaginationData] = useState({ page: 0 });
+  const { data: customerActivities, isLoading } = useGetCustomerActivitiesQuery(
+    {
+      id: _id,
+      page: paginationData.page,
+    },
+  );
+  console.log(customerActivities);
   return (
     <div>
       <div>
@@ -69,7 +47,7 @@ export default function CustomerProfile({
                 </div>
                 <div className="space-y-2">
                   <p className="text-base font-medium capitalize text-wheels-primary lg:text-lg">
-                    {fullName}
+                    {firstName + " " + lastName}
                   </p>
                   <div className="inline-flex items-center space-x-2 rounded-2xl bg-wheels-grey px-2 py-1 text-white">
                     <div className="h-2 w-2 rounded-full bg-white" />
@@ -137,17 +115,27 @@ export default function CustomerProfile({
               />
             </div>
           </div>
-
-          <Activities activities={activities} type="Customer" />
-
-          <Pagination
-            initialPage={1}
-            totalDataLength={100}
-            pageCount={10}
-            currentRange={{ start: 1, end: 10 }}
-            onPageChange={(page) => console.log(page)}
-            className="flex-col space-x-0 space-y-2"
-          />
+          {isLoading ? (
+            <>
+              <LoadingEllipsis withText customText="Loading Activities" />
+            </>
+          ) : customerActivities?.docs ? (
+            <Activities activities={customerActivities.docs} type="Customer" />
+          ) : (
+            <p>No activities</p>
+          )}
+          {customerActivities && (
+            <Pagination
+              initialPage={paginationData.page ? paginationData.page - 1 : 0}
+              totalDataLength={customerActivities?.totalDocs}
+              currentRange={{ start: 1, end: customerActivities?.totalPages }}
+              pageCount={customerActivities?.totalPages}
+              onPageChange={(page) =>
+                usePaginationData({ page: paginationData.page + 1 })
+              }
+              className="flex-col space-x-0 space-y-2"
+            />
+          )}
         </div>
       </ScrollArea>
     </div>
