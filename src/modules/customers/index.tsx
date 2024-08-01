@@ -331,7 +331,11 @@ export default function Customers() {
         className="w-full max-w-full px-0 pb-0 md:max-w-[520px]"
         showCloseButton>
         {(data2.sheetType === "add" || data2.sheetType === "edit") && (
-          <CustomerForm />
+          <CustomerForm
+            close={toggleSheet}
+            type={data2.sheetType}
+            customer={data2.customer}
+          />
         )}
         {data2.sheetType === "view" && (
           <CustomerProfile customer={data2.customer} />

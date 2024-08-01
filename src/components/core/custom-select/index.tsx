@@ -18,7 +18,7 @@ type CustomSelectProps = {
     icon?: React.ReactNode | string;
   }[];
   value: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
 };
 
 export default function CustomSelect({
