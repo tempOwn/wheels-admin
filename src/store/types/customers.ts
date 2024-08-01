@@ -133,3 +133,33 @@ export type TEditCustomersDto = {
 };
 
 export type TAddCustomerResponse = TApiResponse<{}>;
+
+export type TGetCustomerByIdResponse = TApiResponse<{
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  idCard: [
+    {
+      _id: string;
+      name: string;
+      src: string;
+      key: string;
+      mimetype: string;
+      size: number;
+      createdAt: string;
+      updatedAt: string;
+      __v: number;
+    },
+  ];
+  status: string;
+  updatedAt: string;
+  createdAt: string;
+  role: string;
+  address: string;
+  totalCustomerRentals: number;
+  energy_box: number;
+  capsule: number;
+  big_energy: number;
+}>;

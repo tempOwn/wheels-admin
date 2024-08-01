@@ -10,8 +10,21 @@ import {
 import ScrollArea from "@/src/components/core/scroll-area";
 import TextInput from "@/src/components/core/text-input";
 import FileInput from "@/src/components/core/upload-file-input";
-import { TCustomer } from "@/src/store/types/customers";
+import {
+  useAddCustomerMutation,
+  useEditCustomerMutation,
+  useGetCustomerByIdMutation,
+} from "@/src/store/api/customer";
+import {
+  handleApiErrors,
+  handleApiSuccessResponse,
+} from "@/src/store/api/helper";
+import {
+  TCustomer,
+  TGetCustomerByIdResponse,
+} from "@/src/store/types/customers";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -24,7 +37,7 @@ const formSchema = z.object({
   firstName: z.string().min(4, { message: "Required" }),
   lastName: z.string().min(4, { message: "Required" }),
   email: z.string().email({ message: "Invalid email" }),
-  role: z.string(),
+  role: z.string({ message: "Required" }),
   address: z.string().min(10, { message: "Invalid address" }),
   gender: z.string({ message: "Required" }),
   phoneNumber: z
@@ -35,24 +48,62 @@ const formSchema = z.object({
     .string()
     .min(11, { message: "Required" })
     .max(11, { message: "Required" }),
+  passportPhotograph: z.string({ message: "Required" }),
+  addressProof: z.string({ message: "Required" }),
 });
 export default function CustomerForm({ type, customer }: TCustomerFormProps) {
+  const [currentCustomer, setCurrentCustomer] =
+    useState<TGetCustomerByIdResponse["data"]>();
+  const customerId = customer._id;
+  const [getCustomerById] = useGetCustomerByIdMutation();
+  const [addCustomer] = useAddCustomerMutation();
+  const [editCustomer] = useEditCustomerMutation();
+
+  const getCustomerInfo = async () => {
+    await getCustomerById(customerId)
+      .unwrap()
+      .then((response) => {
+        setCurrentCustomer(response);
+        console.log(response);
+      });
+  };
+
+  // useEffect(() => {
+  //   if (type === "edit" && customerId) {
+  //     getCustomerInfo();
+  //   }
+  // }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      address: "",
+      firstName: currentCustomer?.firstName || "",
+      lastName: currentCustomer?.lastName || "",
+      email: currentCustomer?.email || "",
+      address: currentCustomer?.address || "",
       role: "admin",
       gender: "",
-      phoneNumber: "",
+      phoneNumber: currentCustomer?.phoneNumber || "",
       nin: "",
+      passportPhotograph: "",
+      addressProof: "",
     },
   });
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await (type === "edit"
+        ? editCustomer({ id: customerId, ...values }).unwrap()
+        : addCustomer({ ...values }).unwrap());
+      handleApiSuccessResponse(response);
+    } catch (err) {
+      handleApiErrors(err);
+    }
+  }
   return (
     <Form {...form}>
-      <form className="flex h-full flex-col justify-between">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex h-full flex-col justify-between">
         <h2 className="border-b border-[rgba(207,207,207,1)] px-5 pb-2 text-lg font-medium text-wheels-primary lg:text-xl">
           {type === "edit" ? "Edit" : "Add New"} Customer{" "}
         </h2>
@@ -122,22 +173,24 @@ export default function CustomerForm({ type, customer }: TCustomerFormProps) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="nin"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <TextInput
-                      placeholder="Enter NIN"
-                      label="National Identification Number"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {type === "add" && (
+              <FormField
+                control={form.control}
+                name="nin"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <TextInput
+                        placeholder="Enter NIN"
+                        label="National Identification Number"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="address"
@@ -175,11 +228,11 @@ export default function CustomerForm({ type, customer }: TCustomerFormProps) {
             />
             <FormField
               control={form.control}
-              name="firstName"
+              name="passportPhotograph"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <FileInput label="Passport Photograph" />
+                    <FileInput label="Passport Photograph" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -187,11 +240,11 @@ export default function CustomerForm({ type, customer }: TCustomerFormProps) {
             />
             <FormField
               control={form.control}
-              name="firstName"
+              name="addressProof"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <FileInput label="Proof of Residence" />
+                    <FileInput label="Proof of Residence" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
