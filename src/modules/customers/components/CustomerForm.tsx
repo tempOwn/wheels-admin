@@ -13,7 +13,7 @@ import FileInput from "@/src/components/core/upload-file-input";
 import {
   useAddCustomerMutation,
   useEditCustomerMutation,
-  useGetCustomerByIdMutation,
+  useGetCustomerByIdQuery,
 } from "@/src/store/api/customer";
 import {
   handleApiErrors,
@@ -42,8 +42,8 @@ const formSchema = z.object({
   gender: z.string({ message: "Required" }),
   phoneNumber: z
     .string()
-    .min(13, { message: "Required(Should be in international format)" })
-    .max(13, { message: "Required(Should be in international format)" }),
+    .min(14, { message: "Required(Should be in international format)" })
+    .max(14, { message: "Required(Should be in international format)" }),
   nin: z
     .string()
     .min(11, { message: "Required" })
@@ -52,40 +52,40 @@ const formSchema = z.object({
   addressProof: z.string({ message: "Required" }),
 });
 export default function CustomerForm({ type, customer }: TCustomerFormProps) {
-  const [currentCustomer, setCurrentCustomer] =
-    useState<TGetCustomerByIdResponse["data"]>();
   const customerId = customer._id;
-  const [getCustomerById] = useGetCustomerByIdMutation();
+  const { data: currentCustomer, isLoading } =
+    useGetCustomerByIdQuery(customerId);
   const [addCustomer] = useAddCustomerMutation();
   const [editCustomer] = useEditCustomerMutation();
 
-  const getCustomerInfo = async (id: string) => {
-    await getCustomerById(id)
-      .unwrap()
-      .then((response) => {
-        setCurrentCustomer(response);
-        console.log(response);
-      });
-  };
-
-  if (type === "edit" && !currentCustomer) {
-    getCustomerInfo(customerId);
-  }
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: currentCustomer?.firstName || "",
-      lastName: currentCustomer?.lastName || "",
-      email: currentCustomer?.email || "",
-      address: currentCustomer?.address || "",
-      role: "admin",
-      gender: "",
-      phoneNumber: currentCustomer?.phoneNumber || "",
-      nin: "",
-      passportPhotograph: "",
-      addressProof: "",
-    },
+    defaultValues:
+      type === "edit"
+        ? {
+            firstName: currentCustomer?.firstName || "",
+            lastName: currentCustomer?.lastName || "",
+            email: currentCustomer?.email || "",
+            address: currentCustomer?.address || "",
+            role: "admin",
+            gender: "",
+            phoneNumber: currentCustomer?.phoneNumber || "",
+            nin: "",
+            passportPhotograph: currentCustomer?.idCard[0].src || "",
+            addressProof: "",
+          }
+        : {
+            firstName: "",
+            lastName: "",
+            email: "",
+            address: "",
+            role: "admin",
+            gender: "",
+            phoneNumber: "",
+            nin: "",
+            passportPhotograph: "",
+            addressProof: "",
+          },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -107,81 +107,146 @@ export default function CustomerForm({ type, customer }: TCustomerFormProps) {
           {type === "edit" ? "Edit" : "Add New"} Customer{" "}
         </h2>
         <ScrollArea className="h-full w-full px-5 py-8">
-          <div className="space-y-6">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <TextInput
-                      placeholder="Enter First Name"
-                      label="First Name"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <TextInput
-                      placeholder="Enter First Name"
-                      label="Last Name"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <TextInput
-                      placeholder="Enter Phone Number"
-                      label="Phone Number"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <TextInput
-                      placeholder="Enter Email"
-                      label="Email Address"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {type === "add" && (
+          {type === "edit" ? (
+            currentCustomer &&
+            !isLoading && (
+              <div className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <TextInput
+                          placeholder="Enter First Name"
+                          label="First Name"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <TextInput
+                          placeholder="Enter First Name"
+                          label="Last Name"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="phoneNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <TextInput
+                          placeholder="Enter Phone Number"
+                          label="Phone Number"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <TextInput
+                          placeholder="Enter Email"
+                          label="Email Address"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <TextInput
+                          placeholder="Enter Address"
+                          label="Residential Address"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="gender"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <CustomSelect
+                          placeholder="Gender"
+                          options={[
+                            { name: "Male", value: "Male" },
+                            { name: "Female", value: "Female" },
+                          ]}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="passportPhotograph"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <FileInput label="Passport Photograph" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="addressProof"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <FileInput label="Proof of Residence" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )
+          ) : (
+            <div className="space-y-6">
               <FormField
                 control={form.control}
-                name="nin"
+                name="firstName"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <TextInput
-                        placeholder="Enter NIN"
-                        label="National Identification Number"
+                        placeholder="Enter First Name"
+                        label="First Name"
                         {...field}
                       />
                     </FormControl>
@@ -189,67 +254,133 @@ export default function CustomerForm({ type, customer }: TCustomerFormProps) {
                   </FormItem>
                 )}
               />
-            )}
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <TextInput
-                      placeholder="Enter Address"
-                      label="Residential Address"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <TextInput
+                        placeholder="Enter First Name"
+                        label="Last Name"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phoneNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <TextInput
+                        placeholder="Enter Phone Number"
+                        label="Phone Number"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <TextInput
+                        placeholder="Enter Email"
+                        label="Email Address"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {type === "add" && (
+                <FormField
+                  control={form.control}
+                  name="nin"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <TextInput
+                          placeholder="Enter NIN"
+                          label="National Identification Number"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               )}
-            />
-            <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <CustomSelect
-                      placeholder="Gender"
-                      options={[
-                        { name: "Male", value: "Male" },
-                        { name: "Female", value: "Female" },
-                      ]}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="passportPhotograph"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <FileInput label="Passport Photograph" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="addressProof"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <FileInput label="Proof of Residence" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <TextInput
+                        placeholder="Enter Address"
+                        label="Residential Address"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <CustomSelect
+                        placeholder="Gender"
+                        options={[
+                          { name: "Male", value: "Male" },
+                          { name: "Female", value: "Female" },
+                        ]}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="passportPhotograph"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <FileInput label="Passport Photograph" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="addressProof"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <FileInput label="Proof of Residence" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          )}
         </ScrollArea>
         <div className="flex items-center justify-end space-x-5 px-5 py-2 lg:py-4">
           <Button onClick={close} className="h-12 w-full" variant="secondary">

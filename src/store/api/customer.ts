@@ -53,16 +53,13 @@ export const customerApi = createApi({
       }),
       transformResponse: (response: TGetRentalInfoResponse) => response.data,
     }),
-    getCustomerById: builder.mutation<TGetCustomerByIdResponse["data"], string>(
-      {
-        query: (id) => ({
-          url: `admin-customer/${id}`,
-          method: "GET",
-        }),
-        transformResponse: (response: TGetCustomerByIdResponse) =>
-          response.data,
-      },
-    ),
+    getCustomerById: builder.query<TGetCustomerByIdResponse["data"], string>({
+      query: (id) => ({
+        url: `admin-customer/${id}`,
+        method: "GET",
+      }),
+      transformResponse: (response: TGetCustomerByIdResponse) => response.data,
+    }),
     addCustomer: builder.mutation<string, any>({
       query: (body) => ({
         url: "admin-customer/create-customer",
@@ -85,7 +82,7 @@ export const {
   useAddCustomerMutation,
   useEditCustomerMutation,
   useGetCustomerActivitiesQuery,
-  useGetCustomerByIdMutation,
+  useGetCustomerByIdQuery,
   useGetCustomersStatsQuery,
   useGetRentalQuery,
 } = customerApi;
