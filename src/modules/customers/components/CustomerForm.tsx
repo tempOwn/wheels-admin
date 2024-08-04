@@ -59,8 +59,8 @@ export default function CustomerForm({ type, customer }: TCustomerFormProps) {
   const [addCustomer] = useAddCustomerMutation();
   const [editCustomer] = useEditCustomerMutation();
 
-  const getCustomerInfo = async () => {
-    await getCustomerById(customerId)
+  const getCustomerInfo = async (id: string) => {
+    await getCustomerById(id)
       .unwrap()
       .then((response) => {
         setCurrentCustomer(response);
@@ -68,11 +68,9 @@ export default function CustomerForm({ type, customer }: TCustomerFormProps) {
       });
   };
 
-  // useEffect(() => {
-  //   if (type === "edit" && customerId) {
-  //     getCustomerInfo();
-  //   }
-  // }, []);
+  if (type === "edit" && !currentCustomer) {
+    getCustomerInfo(customerId);
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -99,6 +97,7 @@ export default function CustomerForm({ type, customer }: TCustomerFormProps) {
       handleApiErrors(err);
     }
   }
+
   return (
     <Form {...form}>
       <form

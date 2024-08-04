@@ -11,6 +11,8 @@ import {
   TGetCustomerActivitiesResponse,
   TGetCustomerByIdResponse,
   TGetCustomerStatsResponse,
+  TGetRentalInfo,
+  TGetRentalInfoResponse,
 } from "../types/customers";
 
 export const customerApi = createApi({
@@ -44,11 +46,12 @@ export const customerApi = createApi({
       transformResponse: (response: TGetCustomerActivitiesResponse) =>
         response.data,
     }),
-    getRental: builder.mutation<string, any>({
+    getRental: builder.query<TGetRentalInfo, string>({
       query: (id) => ({
         url: `admin-customer/get-rental/${id}`,
         method: "GET",
       }),
+      transformResponse: (response: TGetRentalInfoResponse) => response.data,
     }),
     getCustomerById: builder.mutation<TGetCustomerByIdResponse["data"], string>(
       {
@@ -84,5 +87,5 @@ export const {
   useGetCustomerActivitiesQuery,
   useGetCustomerByIdMutation,
   useGetCustomersStatsQuery,
-  useGetRentalMutation,
+  useGetRentalQuery,
 } = customerApi;

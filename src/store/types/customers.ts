@@ -163,3 +163,46 @@ export type TGetCustomerByIdResponse = TApiResponse<{
   capsule: number;
   big_energy: number;
 }>;
+
+export type TGetRentalInfo = {
+  _id: string;
+  customerName: string;
+  customerPhoneNumber: string;
+  assets: {
+    _id: string;
+    serialNo: string;
+    status: string;
+    assetType: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+    id: string;
+  }[];
+  ambassador: {
+    _id: string;
+    firstName: string;
+    email: string;
+    lastName: string;
+    phoneOrEmailVerified: boolean;
+    role: string;
+    address: string;
+    status: string;
+    phoneNumber: string;
+    gender: string;
+    createdAt: string;
+    updatedAt: string;
+    userUID: string;
+    fullName: string;
+    id: string;
+  };
+  rentalModel: string;
+  rentalDate: string;
+  expectedReturnDate: string;
+  isReturned: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  pricingUsed: string[];
+};
+
+export type TGetRentalInfoResponse = TApiResponse<TGetRentalInfo>;

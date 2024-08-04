@@ -13,6 +13,7 @@ import { TCustomer } from "@/src/store/types/customers";
 import { useGetCustomerActivitiesQuery } from "@/src/store/api/customer";
 import LoadingEllipsis from "@/src/components/loaders/LoadingEllipsis";
 import { useState } from "react";
+import RentalDetails from "./RentalDetails";
 
 type CustomerProfileProps = {
   customer: TCustomer;
@@ -136,6 +137,7 @@ export default function CustomerProfile({
               className="flex-col space-x-0 space-y-2"
             />
           )}
+          {/* <RentalDetails id="667c6cf32a75377992ff5a17" /> */}
         </div>
       </ScrollArea>
     </div>
