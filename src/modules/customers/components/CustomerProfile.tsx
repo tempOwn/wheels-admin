@@ -10,7 +10,10 @@ import EmissionIcon from "@/src/components/icons/EmissionIcon";
 import UserIcon from "@/src/components/icons/UserIcon";
 import Activities, { TActivity } from "@/src/components/common/Activities";
 import { TCustomer } from "@/src/store/types/customers";
-import { useGetCustomerActivitiesQuery } from "@/src/store/api/customer";
+import {
+  useGetCustomerActivitiesQuery,
+  useGetCustomerByIdQuery,
+} from "@/src/store/api/customer";
 import LoadingEllipsis from "@/src/components/loaders/LoadingEllipsis";
 import { useState } from "react";
 import RentalDetails from "./RentalDetails";
@@ -29,7 +32,7 @@ export default function CustomerProfile({
       page: paginationData.page,
     },
   );
-  console.log(customerActivities);
+  const { data: customerInfo } = useGetCustomerByIdQuery(_id);
   return (
     <div>
       <div>
@@ -62,7 +65,7 @@ export default function CustomerProfile({
               <StatCard
                 icon={<DeliveryVanIcon />}
                 iconClass="bg-[#10B981]"
-                value={24}
+                value={customerInfo?.totalCustomerRentals || 0}
                 description="Total Rentals"
               />
 
@@ -83,21 +86,21 @@ export default function CustomerProfile({
               <StatCard
                 icon={<ClockIcon />}
                 iconClass="bg-[#0070B2]"
-                value="6"
+                value="0"
                 description="Late Returns"
               />
 
               <StatCard
                 icon={<ClockIcon />}
                 iconClass="bg-[#F59E0B]"
-                value="39"
+                value="0"
                 description="Early Returns"
               />
 
               <StatCard
                 icon={<ClockIcon />}
                 iconClass="bg-wheels-grey"
-                value="4"
+                value={customerInfo?.totalIncidentReports || 0}
                 description="Incident Reported"
               />
             </div>
@@ -137,7 +140,10 @@ export default function CustomerProfile({
               className="flex-col space-x-0 space-y-2"
             />
           )}
-          {/* <RentalDetails id="667c6cf32a75377992ff5a17" /> */}
+          {/* <RentalDetails
+            id="667c6cf32a75377992ff5a17"
+            asset={customerActivities?.docs[0]?.asset}
+          /> */}
         </div>
       </ScrollArea>
     </div>

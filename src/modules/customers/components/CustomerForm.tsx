@@ -42,14 +42,40 @@ const formSchema = z.object({
   gender: z.string({ message: "Required" }),
   phoneNumber: z
     .string()
-    .min(14, { message: "Required(Should be in international format)" })
-    .max(14, { message: "Required(Should be in international format)" }),
+    .min(14, { message: "Required (Should be in international format)" })
+    .max(14, { message: "Required (Should be in international format)" }),
   nin: z
     .string()
     .min(11, { message: "Required" })
     .max(11, { message: "Required" }),
-  passportPhotograph: z.string({ message: "Required" }),
-  addressProof: z.string({ message: "Required" }),
+  passportPhotograph: z.array(
+    z.object({
+      _id: z.string(),
+      name: z.string(),
+      src: z.string().url(),
+      key: z.string(),
+      mimetype: z.string(),
+      size: z.number(),
+      createdAt: z.string().datetime(),
+      updatedAt: z.string().datetime(),
+      __v: z.number(),
+    }),
+    { message: "Required" },
+  ),
+  addressProof: z.array(
+    z.object({
+      _id: z.string(),
+      name: z.string(),
+      src: z.string().url(),
+      key: z.string(),
+      mimetype: z.string(),
+      size: z.number(),
+      createdAt: z.string().datetime(),
+      updatedAt: z.string().datetime(),
+      __v: z.number(),
+    }),
+    { message: "Required" },
+  ),
 });
 export default function CustomerForm({ type, customer }: TCustomerFormProps) {
   const customerId = customer._id;
@@ -71,8 +97,8 @@ export default function CustomerForm({ type, customer }: TCustomerFormProps) {
             gender: "",
             phoneNumber: currentCustomer?.phoneNumber || "",
             nin: "",
-            passportPhotograph: currentCustomer?.idCard[0].src || "",
-            addressProof: "",
+            passportPhotograph: currentCustomer?.idCard,
+            addressProof: currentCustomer?.addressProof,
           }
         : {
             firstName: "",
@@ -83,15 +109,42 @@ export default function CustomerForm({ type, customer }: TCustomerFormProps) {
             gender: "",
             phoneNumber: "",
             nin: "",
-            passportPhotograph: "",
-            addressProof: "",
+            passportPhotograph: [
+              {
+                _id: "",
+                name: "",
+                src: "",
+                key: "",
+                mimetype: "",
+                size: 0,
+                createdAt: "",
+                updatedAt: "",
+                __v: 0,
+              },
+            ],
+            addressProof: [
+              {
+                _id: "",
+                name: "",
+                src: "",
+                key: "",
+                mimetype: "",
+                size: 0,
+                createdAt: "",
+                updatedAt: "",
+                __v: 0,
+              },
+            ],
           },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("values", values);
     try {
       const response = await (type === "edit"
         ? editCustomer({ id: customerId, ...values }).unwrap()
         : addCustomer({ ...values }).unwrap());
+
+      console.log(response);
       handleApiSuccessResponse(response);
     } catch (err) {
       handleApiErrors(err);
@@ -383,10 +436,7 @@ export default function CustomerForm({ type, customer }: TCustomerFormProps) {
           )}
         </ScrollArea>
         <div className="flex items-center justify-end space-x-5 px-5 py-2 lg:py-4">
-          <Button onClick={close} className="h-12 w-full" variant="secondary">
-            Close
-          </Button>
-          <Button className="h-12 w-full">
+          <Button type="submit" className="h-12 w-full">
             {type === "add" ? "Add Customer" : "Edit Cusomer"}
           </Button>
         </div>

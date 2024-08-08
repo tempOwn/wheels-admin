@@ -6,12 +6,16 @@ import { useGetRentalQuery } from "@/src/store/api/customer";
 
 type TRentalProps = {
   id: string;
+  asset?: string;
 };
-export default function RentalDetails({ id }: TRentalProps) {
+export default function RentalDetails({ id, asset }: TRentalProps) {
   const { data: rentalInfo, isLoading } = useGetRentalQuery(id);
+  const assetInfo =
+    rentalInfo && rentalInfo.assets.find((found) => found._id === asset);
   return (
-    rentalInfo && (
-      <div className=" flex w-1/3 flex-col items-start space-y-2 bg-white p-2">
+    rentalInfo &&
+    asset && (
+      <div className=" flex w-full flex-col items-center space-y-2 bg-white p-2">
         {
           {
             rented: <RentedOutIcon />,
@@ -20,12 +24,12 @@ export default function RentalDetails({ id }: TRentalProps) {
             received: <ReceivedIcon />,
           }["rented"]
         }
-        <p className="pb-2 font-bold">
+        <p className="pb-2 text-center font-bold">
           {rentalInfo?.isReturned ? "Capsule Returned" : "Capsule Rented"}
         </p>
         <p className="border-b pb-2">
           {"Capsule " +
-            rentalInfo?._id +
+            assetInfo?.serialNo +
             (rentalInfo?.isReturned ? " was returned to " : " was rented to ") +
             rentalInfo?.customerName}
         </p>
@@ -80,9 +84,8 @@ export default function RentalDetails({ id }: TRentalProps) {
         </div>
         <div className=" flex w-full flex-col items-start space-y-2 border-b pb-2">
           <span className="text-sm">Serial Number of Capsules</span>
-          {rentalInfo?.assets.map((asset) => (
-            <p className="font-semibold">{asset.serialNo}</p>
-          ))}
+
+          <p className="font-semibold">{assetInfo?.serialNo}</p>
         </div>
         <div className=" flex w-full flex-col items-start space-y-2 border-b pb-2">
           <span className="text-sm">Ambassador Recieve</span>

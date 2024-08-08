@@ -140,6 +140,19 @@ export type TGetCustomerByIdResponse = TApiResponse<{
   lastName: string;
   email: string;
   phoneNumber: string;
+  addressProof: [
+    {
+      _id: string;
+      name: string;
+      src: string;
+      key: string;
+      mimetype: string;
+      size: number;
+      createdAt: string;
+      updatedAt: string;
+      __v: number;
+    },
+  ];
   idCard: [
     {
       _id: string;
@@ -158,6 +171,8 @@ export type TGetCustomerByIdResponse = TApiResponse<{
   createdAt: string;
   role: string;
   address: string;
+  gender: string;
+  totalIncidentReports: number;
   totalCustomerRentals: number;
   energy_box: number;
   capsule: number;
@@ -166,6 +181,7 @@ export type TGetCustomerByIdResponse = TApiResponse<{
 
 export type TGetRentalInfo = {
   _id: string;
+  ambassadorPercentagesCommissionUsed: [];
   customerName: string;
   customerPhoneNumber: string;
   assets: {

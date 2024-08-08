@@ -63,14 +63,14 @@ export const customerApi = createApi({
     addCustomer: builder.mutation<string, any>({
       query: (body) => ({
         url: "admin-customer/create-customer",
-        method: "GET",
+        method: "POST",
         body,
       }),
     }),
     editCustomer: builder.mutation<TEditCustomersDto, any>({
       query: (body) => ({
         url: `admin-customer/edit-customer/${body.id}`,
-        method: "GET",
+        method: "POST",
         body,
       }),
     }),
